@@ -1,0 +1,109 @@
+{
+    "key": "group_67a1eac6b5ccb",
+    "title": "Aos Animation",
+    "fields": [
+        {
+            "key": "field_67a1eac6ecffc",
+            "label": "Add Animation",
+            "name": "add_animation",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
+        },
+        {
+            "key": "field_67a1eaececffd",
+            "label": "Animations",
+            "name": "animations",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_67a1eac6ecffc",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "fade": "Fade",
+                "fade-up": "Fade Up",
+                "fade-down": "Fade Down",
+                "fade-left": "Fade Left",
+                "fade-right": "Fade RIght",
+                "fade-up-right": "Fade Up Right",
+                "fade-up-left": "Fade Up Left",
+                "fade-down-right": "Fade Down Right",
+                "fade-down-left": "Fade Down Left",
+                "flip-up": "Flip Up",
+                "flip-down": "Flip Down",
+                "flip-left": "Flip Left",
+                "flip-right": "Flip Right",
+                "slide-up": "Slide Up",
+                "slide-down": "Slide Down",
+                "slide-left": "Slide Left",
+                "slide-right": "Slide Right",
+                "zoom-in": "Zoom In",
+                "zoom-in-up": "Zoom In Up",
+                "zoom-in-down": "Zoom In Down",
+                "zoom-in-left": "Zoom In Left",
+                "zoom-in-right": "Zoom In Right",
+                "zoom-out": "Zoom Out",
+                "zoom-out-up": "Zoom Out up",
+                "zoom-out-down": "Zoom Out Down",
+                "zoom-out-left": "Zoom Out Left",
+                "zoom-out-right": "Zoom Out Right"
+            },
+            "default_value": "fade",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "all"
+            },
+            {
+                "param": "block",
+                "operator": "!=",
+                "value": "oboto\/cta-content"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1764195016
+}

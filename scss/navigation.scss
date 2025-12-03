@@ -1,0 +1,138 @@
+.navigation {
+  &__responsive-container {
+    padding: 0;
+    z-index: 1;
+    transition: all 0.3s ease-in-out;
+
+    @media screen and (max-width: 990px) {
+      width: calc(100% - 32px);
+      padding: 0 16px;
+    }
+
+    &__inner-button {
+      position: absolute;
+      bottom: 0;
+    }
+
+    &-head {
+      display: none;
+    }
+
+    &-open {
+      color: inherit;
+      display: none;
+    }
+
+    &-open,
+    &-close {
+      background-color: transparent;
+      border: 0;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    &-close {
+      width: 100%;
+      color: inherit;
+
+      span {
+        width: fit-content;
+      }
+
+      img,
+      span {
+        margin-left: auto;
+        display: block;
+      }
+    }
+
+    &-menu {
+      >ul {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 48px;
+
+        @media screen and (max-width: 990px) {
+          flex-direction: column;
+          align-items: initial;
+          gap: 24px;
+        }
+      }
+
+      .menu-item {
+        a {
+          color: inherit;
+        }
+      }
+    }
+  }
+
+  &.collapse-always {
+    .navigation {
+      &__responsive-container {
+        position: fixed;
+        top: 0;
+        // right: -9999px;
+        transform: translateX(100%);
+        right: 0;
+        bottom: 0;
+        // max-width: 520px;
+
+        &-head {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        }
+
+        &-open,
+        &-close {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+    }
+  }
+
+  &.collapse-mobile {
+    .navigation {
+      &__responsive-container {
+        @media screen and (max-width: 990px) {
+          position: fixed;
+          top: 0;
+          // right: -9999px;
+          right: 0;
+          transform: translateX(100%);
+          bottom: 0;
+          // max-width: 520px;
+
+          &-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          }
+
+          &-open,
+          &-close {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+          }
+        }
+      }
+    }
+  }
+
+  &.collapse-always,
+  &.collapse-mobile {
+    &.menu-opened {
+      .navigation {
+        &__responsive-container {
+          right: 0px;
+          transform: translateY(0px);
+        }
+      }
+    }
+  }
+}

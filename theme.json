@@ -1,0 +1,631 @@
+{
+  "version": 2,
+  "settings": {
+    "border": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "color": {
+      "link": true,
+      "palette": [
+        {
+          "color": "#101010",
+          "name": "main black",
+          "slug": "main-black"
+        },
+        {
+          "color": "#DB2C3E",
+          "name": "Red main",
+          "slug": "red-main"
+        },
+        {
+          "color": "#4F7DF3",
+          "name": "Blue main",
+          "slug": "blue-main"
+        },
+        {
+          "color": "#E6F4FF",
+          "name": "Blue 50",
+          "slug": "blue-50"
+        },
+        {
+          "color": "#4D6BE0",
+          "name": "Blue 800",
+          "slug": "blue-800"
+        },
+        {
+          "color": "#484ABF",
+          "name": "Blue 900",
+          "slug": "blue-900"
+        },
+        {
+          "color": "#C2E2FF",
+          "name": "Blue 100",
+          "slug": "blue-100"
+        },
+        {
+          "color": "#E6F4FF",
+          "name": "Blue 50",
+          "slug": "blue-50"
+        },
+        {
+          "color": "#7B7B7B",
+          "name": "Grayscale 500",
+          "slug": "grayscale-500"
+        },
+        {
+          "color": "#262626",
+          "name": "Grayscale 800",
+          "slug": "grayscale-800"
+        },
+        {
+          "color": "#555",
+          "name": "Grayscale 600",
+          "slug": "grayscale-600"
+        },
+        {
+          "color": "#9D9D9D",
+          "name": "Grayscale 400",
+          "slug": "grayscale-400"
+        },
+        {
+          "color": "#D9D9D9",
+          "name": "Grayscale 200",
+          "slug": "grayscale-200"
+        },
+        {
+          "color": "#D0D3D7",
+          "name": "Grayscale 300",
+          "slug": "grayscale-300"
+        },
+        {
+          "color": "#F6F8FA",
+          "name": "Grayscale 100",
+          "slug": "grayscale-100"
+        },
+        {
+          "color": "#00919D",
+          "name": "Teal 800",
+          "slug": "teal-800"
+        },
+        {
+          "color": "#78E7F1",
+          "name": "Teal 200",
+          "slug": "teal-200"
+        },
+        {
+          "color": "#B0F0F6",
+          "name": "Teal 100",
+          "slug": "teal-100"
+        },
+        {
+          "color": "#DFF9FC",
+          "name": "Teal 50",
+          "slug": "teal-50"
+        },
+        {
+          "color": "#390067",
+          "name": "Purple main",
+          "slug": "purple-main"
+        },
+        {
+          "color": "#760B86",
+          "name": "Purple 600",
+          "slug": "purple-600"
+        },
+        {
+          "color": "#D9B7DB",
+          "name": "Purple 100",
+          "slug": "purple-100"
+        },
+        {
+          "color": "#EFE2F0",
+          "name": "Purple 50",
+          "slug": "purple-50"
+        }
+      ]
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "layout": {
+      "contentSize": "1232px",
+      "wideSize": "1440px"
+    },
+    "blocks": {
+      "core/image": {
+        "lightbox": {
+          "allowEditing": true,
+          "enabled": false
+        }
+      }
+    },
+    "position": {
+      "sticky": true
+    },
+    "spacing": {
+      "blockGap": true,
+      "margin": true,
+      "padding": true,
+      "units": ["px", "em", "rem", "vh", "vw", "%"]
+    },
+    "typography": {
+      "fontFamilies": [
+        {
+          "fontFamily": "Poppins",
+          "slug": "poppins",
+          "name": "Poppins",
+          "fontFace": [
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "900",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Black.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Black.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "900",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-BlackItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-BlackItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "800",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraBold.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraBold.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "800",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraBoldItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraBoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Bold.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Bold.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "700",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-BoldItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-BoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "600",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-SemiBold.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-SemiBold.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "600",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-SemiBoldItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-SemiBoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Medium.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Medium.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "500",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-MediumItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-MediumItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Regular.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Regular.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "400",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Italic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Italic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "300",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Light.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Light.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "300",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-LightItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-LightItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "200",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraLight.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraLight.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "200",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraLightItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ExtraLightItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "100",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Thin.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-Thin.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Poppins",
+              "fontWeight": "100",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ThinItalic.woff",
+                "/wp-content/themes/oboto/fonts/Poppins/Poppins-ThinItalic.woff2"
+              ]
+            }
+          ]
+        },
+         {
+          "fontFamily": "Inter",
+          "slug": "inter",
+          "name": "Inter",
+          "fontFace": [
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "900",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Black.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Black.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "900",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-BlackItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-BlackItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "800",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraBold.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraBold.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "800",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraBoldItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraBoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "700",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Bold.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Bold.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "700",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-BoldItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-BoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "600",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-SemiBold.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-SemiBold.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "600",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-SemiBoldItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-SemiBoldItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Medium.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Medium.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "500",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-MediumItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-MediumItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Regular.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Regular.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "400",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Italic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Italic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "300",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Light.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Light.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "300",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-LightItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-LightItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "200",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraLight.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraLight.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "200",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraLightItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ExtraLightItalic.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "100",
+              "fontStyle": "normal",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Thin.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-Thin.woff2"
+              ]
+            },
+            {
+              "fontFamily": "Inter",
+              "fontWeight": "100",
+              "fontStyle": "italic",
+              "src": [
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ThinItalic.woff",
+                "/wp-content/themes/oboto/fonts/Inter/Inter18pt-ThinItalic.woff2"
+              ]
+            }
+          ]
+        }
+      ],
+
+      "lineHeight": true
+    },
+
+    "custom": {
+      "fontWeight": {
+        "black": 900,
+        "extra_bold": 800,
+        "bold": 700,
+        "semi_bold": 600,
+        "medium": 500,
+        "regular": 400,
+        "light": 300
+      }
+    }
+  },
+  "styles": {
+    "color": {
+      "background": "#000",
+      "text": "#fff"
+    },
+
+    "spacing": {
+      "blockGap": "0",
+      "margin": {
+        "top": 0
+      }
+    },
+    "typography": {
+      "fontFamily": "var(--wp--preset--font-family--poppins)",
+      "fontSize": "14px",
+      "letterSpacing": "normal",
+      "lineHeight": "140%",
+      "fontWeight": "500"
+    },
+    "elements": {
+      "h1": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--poppins)",
+          "fontSize": "52px",
+          "letterSpacing": "normal",
+          "lineHeight": "130%",
+          "fontWeight": "600"
+        }
+      },
+      "h2": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--poppins)",
+          "fontSize": "44px",
+          "letterSpacing": "normal",
+          "lineHeight": "128%",
+          "fontWeight": "600"
+        }
+      },
+      "h3": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--poppins)",
+          "fontSize": "34px",
+          "letterSpacing": "normal",
+          "lineHeight": "130%",
+          "fontWeight": "500"
+        }
+      },
+      "h4": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--poppins)",
+          "fontSize": "28px",
+          "letterSpacing": "normal",
+          "lineHeight": "140%",
+          "fontWeight": "500"
+        }
+      },
+      "h5": {
+        "typography": {
+          "fontFamily": "var(--wp--preset--font-family--poppins)",
+          "fontSize": "24px",
+          "letterSpacing": "normal",
+          "lineHeight": "130%",
+          "fontWeight": "500"
+        }
+      },
+      "button": {
+        "typography": {
+          "fontSize": "16px",
+          "letterSpacing": "normal",
+          "lineHeight": "124%",
+          "fontWeight": "600"
+        },
+
+        "border": {
+          "width": "0",
+          "style": "none",
+          "radius": "4px"
+        },
+        "spacing": {
+          "padding": {
+            "top": "8px;",
+            "right": "16px",
+            "bottom": "8px",
+            "left": "16px"
+          }
+        },
+        "color": {
+          "background": "var(--wp--preset--color--obot-blue-main)",
+          "text": "#FFFFFF"
+        },
+        ":hover": {
+          "color": {
+            "background": "var(--wp--preset--color--obot-blue-800)",
+            "text": "#FFFFFF"
+          }
+        }
+      }
+    },
+    "blocks": {
+      "core/button": {
+        "variations": {
+          "outline": {
+            "border": {
+              "width": "1px",
+              "style": "solid",
+              "radius": "4px"
+            },
+            "spacing": {
+              "padding": {
+                "top": "8px;",
+                "right": "16px",
+                "bottom": "8px",
+                "left": "16px"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

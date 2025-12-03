@@ -1,0 +1,251 @@
+@import "variable";
+
+.oboto-faqs {
+
+  position: relative;
+  color: #fff;
+  padding-top: 120px;
+  padding-bottom: 120px;
+
+  @include mobile {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+  }
+
+
+  >h2 {
+    text-align: center;
+    max-width: 918px;
+    position: relative;
+    z-index: 2;
+    margin: 0 auto 32px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 110%;
+    color: $blue-main;
+    text-transform: uppercase;
+    font-family: $inter;
+    margin: 0 auto 24px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: center;
+
+    .icon {
+      border-radius: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: $blue-main;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+  }
+
+  >h3 {
+    text-align: center;
+    max-width: 918px;
+    position: relative;
+    z-index: 2;
+    margin: 0 auto 28px;
+    font-size: 34px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 130%;
+    margin: 0 auto 40px;
+
+
+    @include mobile {
+
+      font-size: 22px;
+    }
+  }
+
+  .overlay {
+    position: absolute;
+    z-index: 1;
+    filter: blur(380px);
+    border-radius: 100%;
+    width: 100%;
+    max-width: 389px;
+    height: 100%;
+    max-height: 540px;
+    top: 50%;
+    right: 0%;
+    transform: translateY(-50%);
+    background-color: rgb(79, 125, 243);
+
+  }
+
+  &__wrap {
+    background-color: #000;
+    position: relative;
+    z-index: 2;
+    border-radius: 12px;
+    padding: 20px;
+    max-width: 1008px;
+    margin-left: auto;
+    margin-right: auto;
+    color: inherit;
+    padding-bottom: 80px;
+  }
+
+  &__head {
+    position: relative;
+    z-index: 2;
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    >div {
+      display: flex;
+      align-items: center;
+
+      &:nth-child(2) {
+        gap: 10px;
+      }
+
+      &:first-child {
+        align-items: flex-end;
+      }
+
+      span {
+        font-size: 10px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 1;
+      }
+    }
+  }
+
+  &__description {
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    /* 19.6px */
+
+    >* {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      /* 19.6px */
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  &__list {
+    max-width: 640px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  &__questions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    justify-content: space-between;
+    margin: 8px 0 0;
+    overflow: scroll;
+  }
+
+  &__answers {
+    margin-top: 12px;
+  }
+}
+
+.oboto-faq {
+  &__question {
+    display: flex;
+    border-radius: 12px;
+    border: 1px solid $blue-main;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 140%;
+    /* 19.6px */
+    margin: 0;
+    cursor: pointer;
+    justify-content: center;
+    align-items: center;
+    min-width: fit-content;
+    transition: all 300ms ease;
+
+    &:hover,
+    &.active {
+      background-color: rgb(79 125 243 / 20%);
+    }
+  }
+
+  &__answer {
+    display: none;
+
+    &.active {
+      display: block;
+    }
+
+    >p {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 4px;
+
+      span:first-child {
+        border-radius: 16px;
+        background: $grayscale800;
+        box-shadow: 0px 4px 10.7px 0px rgba(0, 0, 0, 0.11);
+        padding: 8px 12px;
+        margin: 0;
+        display: block;
+        max-width: fit-content;
+      }
+    }
+
+    >div {
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 140%;
+      /* 19.6px */
+
+      >* {
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 140%;
+        /* 19.6px */
+      }
+
+      >div {
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 128%;
+        /* 20.48px */
+        color: $blue50;
+        margin: 0 0 8px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+    }
+
+    &__hour {
+      font-size: 12px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 136%;
+      /* 16.32px */
+      color: $grayscale500;
+    }
+  }
+}

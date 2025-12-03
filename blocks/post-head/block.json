@@ -1,0 +1,47 @@
+{
+  "name": "oboto/post-head",
+  "title": "Post Head",
+  "description": "Post Head",
+  "category": "theme_block_category",
+  "icon": "",
+  "keywords": ["post"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["post-head"],
+  "viewScript": ["post-head-script"]
+}

@@ -1,0 +1,65 @@
+$base-font-size: 15;
+
+@function px-to-rem($size) {
+  @return $size / $base-font-size * 1rem;
+}
+
+@mixin desktop {
+  @media only screen and (min-width: 768px) {
+    @content;
+  }
+}
+
+@mixin tablet-lg {
+  @media only screen and (max-width: 1349px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin tablet-s {
+  @media only screen and (max-width: 991px) {
+    @content;
+  }
+}
+
+@mixin mobile {
+  @media only screen and (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin mobile-sm {
+  @media only screen and (max-width: 575px) {
+    @content;
+  }
+}
+
+// Custom Colors
+$grayscale800: var(--wp--preset--color--grayscale-800);
+$grayscale600: var(--wp--preset--color--grayscale-600);
+$grayscale500: var(--wp--preset--color--grayscale-500);
+$grayscale400: var(--wp--preset--color--grayscale-400);
+$grayscale300: var(--wp--preset--color--grayscale-300);
+$grayscale200: var(--wp--preset--color--grayscale-200);
+$grayscale100: var(--wp--preset--color--grayscale-100);
+$blue-main: var(--wp--preset--color--blue-main);
+$blue800: var(--wp--preset--color--blue-800);
+$blue50: var(--wp--preset--color--blue-50);
+$teal800: var(--wp--preset--color--teal-800);
+$teal100: var(--wp--preset--color--teal-100);
+$teal50: var(--wp--preset--color--teal-50);
+$purple50: var(--wp--preset--color--purple-50);
+$purple600: var(--wp--preset--color--purple-600);
+$purple100: var(--wp--preset--color--purple-100);
+$purple-main: var(--wp--preset--color--purple-main);
+$main-black: var(--wp--preset--color--main-black);
+
+// Fonts
+$poppins: var(--wp--preset--font-family--poppins);
+$inter: var(--wp--preset--font-family--inter);

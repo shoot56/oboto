@@ -1,0 +1,88 @@
+01/28/25 9:35:33: style.scss - Undefined variable $blue: header.scss on line 37, at column 7
+Call Stack:
+#0 import header.scss style.scss on line 1
+01/28/25 9:35:33: header.scss - Undefined variable $blue: header.scss on line 37, at column 7
+Call Stack:
+#0 import header.scss style.scss on line 1
+01/28/25 9:36:34: style.scss - Undefined variable $blue: header.scss on line 37, at column 7
+Call Stack:
+#0 import header.scss style.scss on line 1
+01/28/25 9:36:34: header.scss - Undefined variable $blue: header.scss on line 37, at column 7
+Call Stack:
+#0 import header.scss style.scss on line 1
+01/28/25 9:38:35: style.scss - `single` file not found for @import: style.scss on line 3, at column 1
+01/29/25 1:25:44: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:26:40: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:27:45: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:28:16: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:28:30: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:28:47: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:03: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:10: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:17: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:17: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:19: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:33: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:46: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:50: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:51: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:53: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:29:59: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:30:00: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 1:30:03: footer-get-started.scss - Undefined variable $grayscale300: footer-get-started.scss on line 12, at column 9
+01/29/25 3:45:26: footer.scss - Undefined variable $grayscale600: footer.scss on line 10, at column 15
+02/02/25 9:19:49: admin.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:19:49: global.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:19:49: style.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss style.scss on line 1
+#1 import global.scss admin.scss on line 2
+02/02/25 9:20:55: admin.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:20:55: global.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:20:55: style.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss style.scss on line 1
+#1 import global.scss admin.scss on line 2
+02/02/25 9:21:08: admin.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:21:08: global.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:21:08: style.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss style.scss on line 1
+#1 import global.scss admin.scss on line 2
+02/02/25 9:21:19: admin.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:21:19: global.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss admin.scss on line 2
+02/02/25 9:21:19: style.scss - Undefined mixin mobile-s: global.scss on line 25, at column 3
+Call Stack:
+#0 import global.scss style.scss on line 1
+#1 import global.scss admin.scss on line 2
+02/02/25 8:00:46: custom-video.scss - Undefined mixin mobile: custom-video.scss on line 8, at column 3
+02/02/25 8:00:47: custom-video.scss - Undefined mixin mobile: custom-video.scss on line 8, at column 3
+02/02/25 8:00:54: custom-video.scss - Undefined mixin mobile: custom-video.scss on line 8, at column 3
+02/02/25 8:00:55: custom-video.scss - Undefined mixin mobile: custom-video.scss on line 8, at column 3
+02/02/25 8:00:58: custom-video.scss - Undefined mixin mobile: custom-video.scss on line 8, at column 3
+02/04/25 3:06:57: blog.scss - Undefined variable $teal800: blog.scss on line 30, at column 9
+02/04/25 3:07:53: blog.scss - parse error: failed at `$grayscale400 span {` /Users/lauraprocoders/Local Sites/obot/app/public/wp-content/themes/oboto/scss/blog.scss on line 31, at column 9
+02/07/25 11:18:40: hero-questions.scss - Undefined variable $grayscale900: hero-questions.scss on line 25, at column 5
+02/08/25 7:27:49: tools-grid.scss - parse error: failed at `tools-grid__item__tooltip` /Users/lauraprocoders/Local Sites/obot/app/public/wp-content/themes/oboto/scss/tools-grid.scss on line 100, at column 7
+08/05/25 9:12:23: latest-posts.scss - Undefined variable $blue-main: latest-posts.scss on line 23, at column 17
+08/05/25 9:12:39: latest-posts.scss - Undefined variable $blue-main: latest-posts.scss on line 23, at column 17
+08/06/25 8:27:00: work-steps.scss - Undefined mixin mobile: work-steps.scss on line 8, at column 5
+08/06/25 11:17:52: not-found.scss - Undefined variable $main-blue: not-found.scss on line 73, at column 7
+08/07/25 8:36:13: image-tabs.scss - Undefined variable $blue-main: image-tabs.scss on line 8, at column 9
+08/07/25 8:36:55: image-tabs.scss - Undefined variable $blue-main: image-tabs.scss on line 8, at column 9

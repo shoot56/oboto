@@ -1,0 +1,172 @@
+@import "variable";
+
+.faqs {
+  padding-top: 180px;
+  padding-bottom: 180px;
+
+  @include mobile {
+    padding-top: 50px !important;
+    padding-bottom: 50px !important;
+  }
+
+  .label {
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 110%;
+    /* 22px */
+    text-transform: uppercase;
+    color: $blue-main;
+    margin: 0 0 32px;
+    text-align: center;
+  }
+
+  >h3 {
+    text-align: center;
+    margin: 0 0 60px;
+  }
+
+  .accordion-container {
+    max-width: 1032px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+
+  }
+
+  .accordion {
+    padding: 0;
+    border: 0;
+    box-shadow: none;
+    background-color: transparent;
+    border-top: 1px solid var(--wp--preset--color--grayscale-200);
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 24px 0;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.3 linear;
+
+    >* {
+      position: relative;
+      z-index: 1;
+    }
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -24px;
+      width: calc(100% + 48px);
+      height: 100%;
+      background-color: inherit;
+      border-radius: 16px;
+      transition: all 0.3 linear;
+    }
+
+    &-item {
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      background: #141414;
+      padding: 0 24px;
+      cursor: pointer;
+
+      &:hover {
+        background: #1E1E1E;
+
+        .accordion {
+          .icon {
+            background-color: $blue-main;
+          }
+        }
+      }
+    }
+
+    &:first-child {
+      border: 0;
+    }
+
+    &.active {
+      .plus-icon {
+        display: none;
+      }
+
+      .minus-icon {
+        display: inline-block;
+      }
+
+    }
+
+    .minus-icon {
+      display: none;
+    }
+
+    .icon {
+      border-radius: 100%;
+      background: rgba(255, 255, 255, 0.12);
+      width: 36px;
+      height: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3 linear;
+    }
+
+    span {
+      font-size: 28px;
+      font-style: normal;
+      font-weight: 500;
+      line-height: 144%;
+      color: #fff;
+      text-align: left;
+      flex: 1;
+      display: flex;
+
+      @include mobile {
+        font-size: 18px;
+      }
+
+      &.number {
+        font-size: 22px;
+        font-style: normal;
+        font-weight: 600;
+        line-height: 140%;
+        /* 28px */
+        margin-right: 12px;
+        max-width: 18px;
+      }
+    }
+  }
+
+  .panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: all 0.3s ease-in-out;
+    max-width: 716px;
+
+    &.active {
+      grid-template-rows: 1fr;
+    }
+
+    >div {
+      overflow: hidden;
+      color: $grayscale500;
+      padding-bottom: 0;
+
+
+      >* {
+        padding-left: 30px;
+
+      }
+
+      >*:last-child {
+        margin-bottom: 16px;
+      }
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "name": "oboto/posts-list",
+  "title": "Posts List",
+  "description": "Posts List",
+  "category": "theme_block_category",
+  "icon": "list-view",
+  "keywords": ["posts"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["posts"],
+  "viewScript": ["posts-script"]
+}

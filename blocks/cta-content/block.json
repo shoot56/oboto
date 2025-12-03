@@ -1,0 +1,41 @@
+{
+  "name": "oboto/cta-content",
+  "title": "CTA Content",
+  "description": "CTA Content",
+  "category": "theme_block_category",
+  "icon": "",
+  "keywords": ["cta","content"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  }
+}

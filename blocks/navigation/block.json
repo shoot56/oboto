@@ -1,0 +1,43 @@
+{
+  "name": "oboto/navigation",
+  "title": "Navigation",
+  "description": "Navigation",
+  "category": "theme_block_category",
+  "icon": "menu",
+  "keywords": ["menu", "navigation"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["navigation"],
+  "viewScript": ["navigation-script"]
+}

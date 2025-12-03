@@ -1,0 +1,22 @@
+.top-banner {
+  background: linear-gradient(
+    90deg,
+    rgb(85, 3, 118) 0%,
+    rgb(118, 11, 134) 100%
+  );
+  padding: 8px 2.375em;
+  color: #fff;
+  margin-top: 12px;
+  opacity: 1;
+  visibility: visible;
+  transition: all 0.3s ease-in-out;
+
+  > div {
+    text-align: center;
+    margin: 0;
+
+    > *:last-child {
+      margin: 0;
+    }
+  }
+}

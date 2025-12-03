@@ -1,0 +1,84 @@
+@import "variable";
+
+.quote {
+    margin-top: 0;
+    padding-top: 120px;
+    padding-bottom: 120px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 40px;
+    max-width: 800px;
+    box-sizing: border-box;
+    margin-left: auto;
+    margin-right: auto;
+
+    @include mobile {
+        padding-top: 50px !important;
+        padding-bottom: 50px !important;
+    }
+
+    >svg {
+        max-width: 48px;
+
+        @include mobile {
+            max-width: 38px;
+        }
+    }
+
+    &__content {
+        font-size: 34px;
+        font-style: normal;
+        font-weight: 500;
+        line-height: 130%;
+
+        @include mobile {
+            font-size: 22px;
+
+        }
+
+        >* {
+            font-size: 34px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: 130%;
+
+            @include mobile {
+                font-size: 22px;
+
+            }
+        }
+    }
+
+    .btn--quote {
+        border-radius: 48px;
+        border: 1px solid $blue-main;
+        background: rgba(0, 0, 0, 0.48);
+        backdrop-filter: blur(24px);
+        padding: 8px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        max-width: 286px;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 148%;
+
+        @include mobile {
+            font-size: 14px;
+
+        }
+
+
+        span {
+            max-width: 180px;
+
+            @include mobile {
+                max-width: 159px;
+            }
+        }
+    }
+}
