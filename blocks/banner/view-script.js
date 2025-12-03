@@ -9,7 +9,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
     setTimeout(() => {
-      //banner.remove();
+      banner.remove();
     }, 10000);
   }
 });

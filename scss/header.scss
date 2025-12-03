@@ -203,6 +203,7 @@
         height: 100%;
         backdrop-filter: blur(8px);
         background-color: #0000006e;
+        pointer-events: none;
       }
 
       .sub-menu {
