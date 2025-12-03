@@ -45,19 +45,44 @@ if (get_field('add_animation') == 1) {
 
 
         <div class="posts_list" <?= get_field('add_animation') == 1 ? $aos_args : ""; ?>>
-            <?php $posts = get_field('posts'); ?>
-            <?php if ($posts) : ?>
+            <?php 
+            $posts = get_field('posts');
+            $categories = get_field('categories');
+            $exclude_categories = get_field('exclude_categories');
+            
+            // Priority 1: If specific posts are selected, show them (excluding posts from excluded categories)
+            if ($posts && !empty($posts)) : 
+                // Filter out posts that belong to excluded categories
+                if ($exclude_categories && !empty($exclude_categories)) {
+                    $filtered_posts = array();
+                    foreach ($posts as $post_id) {
+                        $post_categories = wp_get_post_categories($post_id);
+                        $has_excluded = false;
+                        foreach ($exclude_categories as $excluded_cat) {
+                            if (in_array($excluded_cat, $post_categories)) {
+                                $has_excluded = true;
+                                break;
+                            }
+                        }
+                        if (!$has_excluded) {
+                            $filtered_posts[] = $post_id;
+                        }
+                    }
+                    $posts = $filtered_posts;
+                }
+            ?>
                 <div class="swiper articleSwiper">
                     <div class="swiper-wrapper">
                         <?php foreach ($posts as $post_ids) : ?>
-
                             <a href="<?= get_permalink($post_ids); ?>" class="post_item swiper-slide" <?= get_field('add_animation') == 1 ? $aos_args : ""; ?>>
                                 <figure class="post_image">
                                     <?php $url = wp_get_attachment_url(get_post_thumbnail_id($post_ids), 'thumbnail'); ?>
-                                    <img src="<?php echo $url ?>" />
+                                    <?php if ($url) : ?>
+                                        <img src="<?php echo $url ?>" />
+                                    <?php endif; ?>
                                 </figure>
                                 <div class="post_data">
-                                    <h3><?= get_the_title(); ?></h3>
+                                    <h3><?= get_the_title($post_ids); ?></h3>
                                     <p class="post_description">
                                         <?= get_the_excerpt($post_ids); ?>
                                     </p>
@@ -71,18 +96,38 @@ if (get_field('add_animation') == 1) {
                                     </p>
                                 </div>
                             </a>
-
                         <?php endforeach; ?>
                     </div>
                 </div>
-            <?php else : ?>
+            <?php 
+            // Priority 2: If categories are selected, show posts from those categories (excluding excluded categories)
+            elseif ($categories && !empty($categories)) : ?>
                 <?php
+                $tax_query = array(
+                    array(
+                        'taxonomy' => 'category',
+                        'field' => 'term_id',
+                        'terms' => $categories,
+                    ),
+                );
+                
+                // Add exclusion if exclude_categories is set
+                if ($exclude_categories && !empty($exclude_categories)) {
+                    $tax_query[] = array(
+                        'taxonomy' => 'category',
+                        'field' => 'term_id',
+                        'terms' => $exclude_categories,
+                        'operator' => 'NOT IN',
+                    );
+                }
+                
                 $args = array(
                     'post_type' => "post",
                     'post_status' => array('publish'),
                     'posts_per_page' => -1,
                     'order' => 'DESC',
-                    'orderby' => 'date'
+                    'orderby' => 'date',
+                    'tax_query' => $tax_query,
                 );
                 $the_query = new WP_Query($args);
                 ?>
@@ -121,6 +166,69 @@ if (get_field('add_animation') == 1) {
                         <!-- <div class="article-swiper-pagination"></div> -->
                     </div>
                 <?php endif; ?>
+                <?php wp_reset_postdata(); ?>
+            <?php 
+            // Priority 3: Otherwise, show all posts (excluding excluded categories if set)
+            else : ?>
+                <?php
+                $args = array(
+                    'post_type' => "post",
+                    'post_status' => array('publish'),
+                    'posts_per_page' => -1,
+                    'order' => 'DESC',
+                    'orderby' => 'date'
+                );
+                
+                // Add exclusion if exclude_categories is set
+                if ($exclude_categories && !empty($exclude_categories)) {
+                    $args['tax_query'] = array(
+                        array(
+                            'taxonomy' => 'category',
+                            'field' => 'term_id',
+                            'terms' => $exclude_categories,
+                            'operator' => 'NOT IN',
+                        ),
+                    );
+                }
+                
+                $the_query = new WP_Query($args);
+                ?>
+                <?php if ($the_query->have_posts()) : ?>
+                    <div class="swiper articleSwiper">
+                        <div class="swiper-wrapper">
+                            <?php
+                            while ($the_query->have_posts()) :
+                                $the_query->the_post();
+                                $post_ids = get_the_ID();
+                            ?>
+                                <a href="<?= get_permalink($post_ids); ?>" class="post_item swiper-slide" <?= get_field('add_animation') == 1 ? $aos_args : ""; ?>>
+                                    <figure class="post_image">
+                                        <?php $url = wp_get_attachment_url(get_post_thumbnail_id($post_ids), 'thumbnail'); ?>
+                                        <?php if ($url) : ?>
+                                            <img src="<?php echo $url ?>" />
+                                        <?php endif; ?>
+                                    </figure>
+                                    <div class="post_data">
+                                        <h3><?= get_the_title(); ?></h3>
+                                        <p class="post_description">
+                                            <?= get_the_excerpt($post_ids); ?>
+                                        </p>
+                                        <p class="btn btn--no-border">
+                                            <span>Read More</span>
+                                            <span class="icon">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                                    <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                </svg>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </a>
+                            <?php endwhile; ?>
+                        </div>
+                        <!-- <div class="article-swiper-pagination"></div> -->
+                    </div>
+                <?php endif; ?>
+                <?php wp_reset_postdata(); ?>
             <?php endif; ?>
         </div>
 

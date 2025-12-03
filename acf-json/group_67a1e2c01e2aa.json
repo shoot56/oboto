@@ -68,6 +68,52 @@
             "elements": "",
             "bidirectional": 0,
             "bidirectional_target": []
+        },
+        {
+            "key": "field_67a1e2f0b0e74",
+            "label": "Categories",
+            "name": "categories",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Select one or more categories. If categories are selected, posts from these categories will be displayed. If no posts and no categories are selected, all posts will be displayed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "category",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "multiple": 1
+        },
+        {
+            "key": "field_67a1e2f1b0e75",
+            "label": "Exclude Categories",
+            "name": "exclude_categories",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Select categories to exclude from the results. These categories will be excluded even if they are selected in the Categories field above.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "category",
+            "field_type": "multi_select",
+            "allow_null": 1,
+            "add_term": 0,
+            "save_terms": 0,
+            "load_terms": 0,
+            "return_format": "id",
+            "multiple": 1
         }
     ],
     "location": [
