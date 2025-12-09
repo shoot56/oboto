@@ -126,6 +126,11 @@ require get_template_directory() . '/inc/custom-post-type.php';
  */
 require get_template_directory() . '/inc/navigations-functions.php';
 
+/**
+ * block free domain sending forms
+ */
+require get_template_directory() . '/inc/class-alison-contact-forms.php';
+
 
 /**
  * Enqueue theme scripts and styles.
