@@ -1,0 +1,47 @@
+{
+  "name": "oboto/learning-center-archive",
+  "title": "Learning Center Archive",
+  "description": "Archive block for Learning Center with category filter and AJAX load more",
+  "category": "theme_block_category",
+  "icon": "list-view",
+  "keywords": ["Learning Center", "Archive", "Filter"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["learning-center"],
+  "viewScript": ["learning-center-archive-script"]
+}

@@ -239,49 +239,48 @@ add_action('enqueue_block_editor_assets', 'mytheme_register_block_styles');
 
 
 
-// Rewrite rules Learning center
-function custom_learning_center_permalink($permalink, $post)
-{
-    // Skip previews
-    if (is_preview() || get_post_status($post) !== 'publish') {
-        return $permalink;
+/**
+ * Learning Center URLs
+ *
+ * The Learning Center now uses the dedicated CPT `learning-center` with the rewrite
+ * slug `resources/learning-center`. Old category-based rewrite rules would hijack
+ * those URLs and cause 404s, so they are removed.
+ *
+ * We also flush rewrite rules once per "rewrite version" after this change.
+ */
+add_action('init', function () {
+    // Bump this string whenever Learning Center CPT/taxonomy rewrites change.
+    // This avoids having to manually visit Permalinks settings.
+    $rewrite_version = 'lc_rewrite_v3_resources_learning_center_and_taxonomy';
+
+    if (get_option('oboto_learning_center_rewrite_flushed') === $rewrite_version) {
+        return;
     }
 
-    if (get_post_type($post) === 'post') {
-        $categories = get_the_category($post->ID);
-        foreach ($categories as $category) {
-            if ($category->slug === 'learning-center') {
-                return home_url('resources/learning-center/' . $post->post_name . '/');
-            }
-        }
-    }
-    return $permalink;
-}
-add_filter('post_link', 'custom_learning_center_permalink', 10, 2);
-
-
-function custom_learning_center_rewrite_rules($rules)
-{
-    $new_rules = [
-        'resources/learning-center/([^/]+)/?$' => 'index.php?name=$matches[1]&category_name=learning-center',
-    ];
-    return $new_rules + $rules;
-}
-add_filter('rewrite_rules_array', 'custom_learning_center_rewrite_rules');
+    flush_rewrite_rules(false);
+    update_option('oboto_learning_center_rewrite_flushed', $rewrite_version);
+}, 20);
 
 /**
- * Override Yoast canonical for Learning Center posts
+ * Learning Center taxonomy fallback routing
+ *
+ * Some environments may keep stale rewrite rules despite a flush. This ensures
+ * Learning Center category URLs keep working:
+ * /resources/learning-center/category/{term}/
  */
-add_filter('wpseo_canonical', function ($canonical) {
-    if (is_preview()) {
-        return $canonical;
+add_filter('option_rewrite_rules', function ($rules) {
+    // Ensure Learning Center taxonomy archives work even if DB rewrite rules are stale.
+    if (!is_array($rules)) {
+        return $rules;
     }
 
-    if (is_single() && in_category('learning-center')) {
-        global $post;
-        return home_url('resources/learning-center/' . $post->post_name . '/');
-    }
-    return $canonical;
+    $lc_rules = [
+        // /resources/learning-center/category/{term}/
+        'resources/learning-center/category/([^/]+)/?$' => 'index.php?learning-center-category=$matches[1]',
+    ];
+
+    // Prepend so it takes priority over more generic rules.
+    return $lc_rules + $rules;
 });
 
 

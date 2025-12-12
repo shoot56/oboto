@@ -58,7 +58,7 @@ function register_learning_center_post_type(){
         "rest_base"             => "learning-center",
         "rest_controller_class" => "WP_REST_Posts_Controller",
         "rest_namespace"        => "wp/v2",
-        "has_archive"           => true,
+        "has_archive"           => 'learning-center',
         "show_in_menu"          => true,
         "show_in_nav_menus"     => true,
         "delete_with_user"      => false,
@@ -70,8 +70,8 @@ function register_learning_center_post_type(){
         'supports'              => array('title', 'editor', 'thumbnail', 'excerpt', 'trackbacks', 'comments', 'revisions', 'author', 'custom-fields'),
         'taxonomies'            => array('learning-center-category'), // Use the custom taxonomy
         'rewrite'               => array(
-            'slug'       => 'learning-center',
-            'with_front' => true 
+            'slug'       => 'resources/learning-center',
+            'with_front' => false 
         ),
         "query_var"             => true,
         'menu_icon'             => 'dashicons-book',

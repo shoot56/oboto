@@ -1,0 +1,46 @@
+{
+  "name": "oboto/learning-center-single",
+  "title": "Learning Center Single",
+  "description": "Single post block for Learning Center with related posts sidebar",
+  "category": "theme_block_category",
+  "icon": "media-document",
+  "keywords": ["Learning Center", "Single", "Related"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["learning-center"]
+}
