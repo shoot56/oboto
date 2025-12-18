@@ -70,14 +70,14 @@ function filter_learning_center_archive()
                     <p class="learning-center-archive__description">
                         <?= get_the_excerpt($post_id); ?>
                     </p>
-                    <p class="btn btn--no-border">
+                    <div class="btn btn--no-border">
                         <span>Read More</span>
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                                 <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         </span>
-                    </p>
+                    </div>
                 </div>
             </a>
         <?php endwhile; ?>
