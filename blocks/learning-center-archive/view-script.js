@@ -71,6 +71,18 @@ jQuery(document).ready(function ($) {
     }
   );
 
+  // Expand/collapse nested categories
+  $(document).on("click", ".learning-center-archive__toggle", function (e) {
+    e.preventDefault();
+
+    const $btn = $(this);
+    const $term = $btn.closest(".learning-center-archive__term");
+    const isOpen = $term.hasClass("is-open");
+
+    $term.toggleClass("is-open", !isOpen);
+    $btn.attr("aria-expanded", String(!isOpen));
+  });
+
   // Load More button click handler
   $(document).on(
     "click",

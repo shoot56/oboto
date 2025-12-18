@@ -47,6 +47,8 @@ function filter_learning_center_archive()
                 'taxonomy' => 'learning-center-category',
                 'field'    => 'slug',
                 'terms'    => $category,
+                // Parent term should include children.
+                'include_children' => true,
             ),
         );
     }
@@ -118,6 +120,8 @@ function load_more_learning_center_archive()
                 'taxonomy' => 'learning-center-category',
                 'field'    => 'slug',
                 'terms'    => $category,
+                // Parent term should include children.
+                'include_children' => true,
             ),
         );
     }

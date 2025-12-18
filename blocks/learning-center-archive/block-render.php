@@ -33,10 +33,16 @@ $wrapper_attributes = get_block_wrapper_attributes([
         <?php
         // If we are on a taxonomy archive, pre-select that term.
         $current_term_slug = '';
+        $current_term_id = 0;
+        $current_term_ancestors = array();
         if (is_tax('learning-center-category')) {
             $queried = get_queried_object();
             if (!empty($queried) && !is_wp_error($queried) && !empty($queried->slug)) {
                 $current_term_slug = (string) $queried->slug;
+                if (!empty($queried->term_id)) {
+                    $current_term_id = (int) $queried->term_id;
+                    $current_term_ancestors = get_ancestors($current_term_id, 'learning-center-category');
+                }
             }
         }
         ?>
@@ -56,14 +62,61 @@ $wrapper_attributes = get_block_wrapper_attributes([
                 
                 <?php if ($categories && !is_wp_error($categories) && !empty($categories)) : ?>
                     <h3 class="learning-center-archive-sidebar__title">Categories</h3>
-                    <ul class="learning-center-archive__categories">
-                        <li class="learning-center-archive__category <?php echo $current_term_slug === '' ? 'active' : ''; ?>" data-category="all">All</li>
-                        <?php foreach ($categories as $category) : ?>
-                            <li class="learning-center-archive__category <?php echo $current_term_slug === $category->slug ? 'active' : ''; ?>" data-category="<?= esc_attr($category->slug); ?>">
-                                <?= esc_html($category->name); ?>
-                            </li>
-                        <?php endforeach; ?>
-                    </ul>
+                    <?php
+                    // Build a children map for hierarchical output.
+                    $children_map = array();
+                    foreach ($categories as $t) {
+                        $parent_id = (int) $t->parent;
+                        if (!isset($children_map[$parent_id])) {
+                            $children_map[$parent_id] = array();
+                        }
+                        $children_map[$parent_id][] = $t;
+                    }
+
+                    $render_tree = function ($parent_id, $depth) use (&$render_tree, $children_map, $current_term_id, $current_term_ancestors, $current_term_slug) {
+                        if (empty($children_map[$parent_id])) {
+                            return;
+                        }
+
+                        echo '<ul class="learning-center-archive__categories' . ($depth > 0 ? ' learning-center-archive__categories--nested' : '') . '">';
+
+                        foreach ($children_map[$parent_id] as $term) {
+                            $term_id = (int) $term->term_id;
+                            $has_children = !empty($children_map[$term_id]);
+
+                            $is_active = ($current_term_slug !== '' && $term_id === $current_term_id);
+                            $is_open = $is_active || in_array($term_id, $current_term_ancestors, true);
+
+                            echo '<li class="learning-center-archive__term' . ($has_children ? ' has-children' : '') . ($is_open ? ' is-open' : '') . '">';
+                            echo '<div class="learning-center-archive__term-row">';
+
+                            // Clickable label (filters)
+                            echo '<button type="button" class="learning-center-archive__category' . ($is_active ? ' active' : '') . '" data-category="' . esc_attr($term->slug) . '" data-term-id="' . esc_attr($term_id) . '">';
+                            echo esc_html($term->name);
+                            echo '</button>';
+
+                            // Toggle caret (expand/collapse)
+                            if ($has_children) {
+                                echo '<button type="button" class="learning-center-archive__toggle" aria-expanded="' . ($is_open ? 'true' : 'false') . '" aria-label="' . esc_attr__('Toggle subcategories', 'obot') . '"></button>';
+                            }
+
+                            echo '</div>';
+
+                            if ($has_children) {
+                                $render_tree($term_id, $depth + 1);
+                            }
+
+                            echo '</li>';
+                        }
+
+                        echo '</ul>';
+                    };
+                    ?>
+
+                    <div class="learning-center-archive__tree">
+                        <button type="button" class="learning-center-archive__category learning-center-archive__category--all <?php echo $current_term_slug === '' ? 'active' : ''; ?>" data-category="all">All</button>
+                        <?php $render_tree(0, 0); ?>
+                    </div>
                 <?php endif; ?>
             </aside>
 
