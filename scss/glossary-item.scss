@@ -67,6 +67,14 @@
     transition: all 0.3s ease-in-out;
   }
 
+  &--editor {
+    .glossary-item__panel {
+      grid-template-rows: 1fr;
+      overflow: visible;
+      position: relative;
+    } 
+  } 
+
   &__panel-inner {
     overflow: hidden;
     color: var(--wp--preset--color--grayscale-500);

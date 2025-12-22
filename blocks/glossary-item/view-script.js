@@ -1,4 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
+  // In the block editor/admin area, keep content always visible for easier editing.
+  if (
+    document.body.classList.contains("wp-admin") ||
+    document.querySelector(".block-editor")
+  ) {
+    return;
+  }
+
   const items = document.querySelectorAll(".glossary-item");
 
   items.forEach((item) => {

@@ -17,6 +17,10 @@ if (!empty($block['anchor'])) {
 
 // Create class attribute allowing for custom "className" and "align" values.
 $classes = 'glossary-item';
+$is_editor = is_admin() || $is_preview;
+if ($is_editor) {
+	$classes .= ' glossary-item--editor is-open';
+}
 $wrapper_attributes = get_block_wrapper_attributes([
 	'class' => $classes
 ]);
@@ -24,6 +28,8 @@ $wrapper_attributes = get_block_wrapper_attributes([
 $title = (string) get_field('title');
 $button_id = $id . '-button';
 $panel_id = $id . '-panel';
+$expanded = $is_editor ? 'true' : 'false';
+$hidden = $is_editor ? 'false' : 'true';
 
 ?>
 
@@ -32,7 +38,7 @@ $panel_id = $id . '-panel';
 		id="<?php echo esc_attr($button_id); ?>"
 		class="glossary-item__trigger"
 		type="button"
-		aria-expanded="false"
+		aria-expanded="<?php echo esc_attr($expanded); ?>"
 		aria-controls="<?php echo esc_attr($panel_id); ?>"
 	>
 		<span class="glossary-item__title"><?php echo esc_html($title); ?></span>
@@ -52,7 +58,7 @@ $panel_id = $id . '-panel';
 		class="glossary-item__panel"
 		role="region"
 		aria-labelledby="<?php echo esc_attr($button_id); ?>"
-		aria-hidden="true"
+		aria-hidden="<?php echo esc_attr($hidden); ?>"
 	>
 		<div class="glossary-item__panel-inner">
 			<div class="glossary-item__content">
