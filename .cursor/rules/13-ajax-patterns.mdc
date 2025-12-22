@@ -1,0 +1,10 @@
+---
+description: Rules for block JS and WordPress AJAX handlers (admin-ajax.php).
+globs: blocks/**/view-script.js, blocks/**/block.php
+alwaysApply: false
+---
+
+- AJAX actions MUST be implemented as WordPress handlers (`wp_ajax_*` and `wp_ajax_nopriv_*`) and return via `wp_send_json_success(...)` (see `./docs/01-architecture.md`).
+- Sanitize all request inputs in PHP (`sanitize_text_field`, `sanitize_email`, `intval`, etc.).
+- Treat `action` names and response shape as contracts with the frontend; do not rename/reshape without updating all callers.
+- Do not introduce new hard-coded `"/wp-admin/admin-ajax.php"` URLs in JS; pass the AJAX URL from PHP in a block-appropriate way.

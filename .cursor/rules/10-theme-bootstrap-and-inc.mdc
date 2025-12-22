@@ -1,0 +1,10 @@
+---
+description: Rules for theme bootstrap and shared PHP modules under inc/.
+globs: functions.php, inc/**/*.php
+alwaysApply: false
+---
+
+- Keep global theme setup in `functions.php` (theme supports, global enqueues, global filters, and includes).
+- Prefer adding new shared PHP logic under `inc/` and include it from `functions.php`.
+- Register WordPress hooks (`add_action`, `add_filter`) close to the function/class definition, consistent with existing style.
+- When changing routing/rewrites or request handling, ensure changes align with `./docs/01-architecture.md` and `./docs/06-versioning-and-evolution.md`.

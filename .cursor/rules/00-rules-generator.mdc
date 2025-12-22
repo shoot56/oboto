@@ -1,0 +1,25 @@
+---
+description: Guidance for maintaining docs and rules as the source of truth. Apply this when making substantial architectural or cross-cutting changes.
+globs:
+alwaysApply: true
+---
+
+- Treat `./docs/*.md` as the single source of truth for architecture, conventions, reuse, integrations, and evolution.
+- Update `./docs/*.md` **only** after substantial changes:
+  - New/removed core modules or cross-cutting concerns (`./docs/01-architecture.md`).
+  - Changed request/response or AJAX flows, or new public contracts (action names, response shapes) (`./docs/01-architecture.md`).
+  - Major changes to the content model, routing/rewrites, or versioning expectations (`./docs/06-versioning-and-evolution.md`).
+  - Major introduction/removal of external services or plugin dependencies (`./docs/04-integrations-and-infra.md`).
+- Do **not** update docs/rules for minor refactors, formatting, or trivial bug fixes.
+- When a docs update is required:
+  - Keep it minimal, precise, and consistent with the existing doc structure.
+  - Explicitly state what changed and where in code (file paths / key hooks / block names).
+  - Avoid restating entire docs; update only affected sections.
+- When a rules update is required:
+  - Never overwrite or delete rules blindly; prefer small edits or adding a narrowly-scoped new rule.
+  - Avoid duplicates/conflicts: search existing `.cursor/rules/*.mdc` and relevant `./docs/*.md` first.
+  - Each `.mdc` must live under `.cursor/rules/` and include valid YAML frontmatter: `description`, `globs`, `alwaysApply`.
+  - Keep rule bodies as short, actionable bullet points.
+- External APIs/tools not clearly documented in `./docs` or not used in-repo:
+  - Use MCP **context7** to fetch official docs/examples before implementing.
+  - If MCP context7 is unavailable at runtime, mark unknowns as **TODO: Clarify with tech lead** and do not guess signatures/options.

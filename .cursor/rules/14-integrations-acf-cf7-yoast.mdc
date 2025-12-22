@@ -1,0 +1,10 @@
+---
+description: Rules for working with existing integrations (ACF, Contact Form 7, Yoast, and related theme hooks).
+globs: functions.php, inc/**/*.php, blocks/**/*.php, parts/**/*.html
+alwaysApply: false
+---
+
+- ACF is foundational in this theme: use `get_field(...)` for block/options fields and keep `acf-json/` synced when changing fields (see `./docs/04-integrations-and-infra.md`).
+- Contact Form 7 is integrated via hooks/filters; implement CF7 behavior changes via CF7 filters (not custom mail pipelines) (see `./docs/04-integrations-and-infra.md`).
+- Yoast canonical behavior is customized for blog routing; keep routing/redirect/canonical changes consistent (see `./docs/01-architecture.md`).
+- If adding/changing any integration not clearly documented in `./docs` or used in-repo, use MCP context7 first; otherwise mark **TODO: Clarify with tech lead**.

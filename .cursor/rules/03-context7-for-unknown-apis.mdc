@@ -1,0 +1,8 @@
+---
+description: Prevent guessing external APIs. Use MCP context7 for any library/tool not clearly documented in docs or shown in-repo.
+globs:
+alwaysApply: true
+---
+
+- If you need to use or change an external library/tool and it is not clearly documented in `./docs` or has no usage examples in this repo, use MCP **context7** to retrieve official docs/examples first.
+- If MCP context7 is unavailable at runtime, do not fabricate behavior/signatures; mark **TODO: Clarify with tech lead** and proceed only with changes supported by existing code patterns.

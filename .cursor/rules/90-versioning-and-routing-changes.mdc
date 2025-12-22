@@ -1,0 +1,9 @@
+---
+description: Checklist for changes that affect routing, rewrites, or theme versioning.
+globs:
+alwaysApply: false
+---
+
+- If you change Learning Center CPT/taxonomy rewrites, bump the `$rewrite_version` string in `functions.php` (see `./docs/06-versioning-and-evolution.md`).
+- Treat routing, permalink, redirect, and canonical changes as public contracts; update all affected code paths together (see `./docs/01-architecture.md`).
+- When making contract-level changes, bump the theme `Version` in `style.css` (see `./docs/06-versioning-and-evolution.md`).

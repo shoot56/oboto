@@ -1,0 +1,10 @@
+---
+description: Rules for FSE templates, template parts, and patterns (presentation layer).
+globs: templates/**/*.html, parts/**/*.html, patterns/**/*.php
+alwaysApply: false
+---
+
+- Use `templates/*.html` to compose pages from blocks and `parts/*.html` (do not add new route logic here).
+- Prefer inserting existing custom blocks instead of duplicating markup (see `./docs/03-reuse-catalog.md`).
+- Avoid hardcoding environment-specific hostnames/URLs in markup; prefer WordPress-managed URLs/assets.
+- Keep changes minimal and consistent with the theme’s block-first rendering model (`./docs/01-architecture.md`).

@@ -1,0 +1,13 @@
+---
+description: Block authoring rules for ACF-rendered custom blocks under blocks/.
+globs: blocks/**/block.json, blocks/**/block.php, blocks/**/block-render.php
+alwaysApply: false
+---
+
+- New blocks MUST follow the existing folder contract: `blocks/<slug>/{block.json,block.php,block-render.php}` (see `./docs/02-conventions.md`).
+- `block.json` MUST use `acf.renderTemplate: "block-render.php"` and reference registered asset handles via `style` and `viewScript` (not ad-hoc enqueues in templates).
+- `block-render.php` MUST:
+  - Respect `anchor` and use `get_block_wrapper_attributes(...)`.
+  - Prefer WordPress APIs (`WP_Query`, `get_terms`, etc.) over custom data access.
+  - Escape output where appropriate; sanitize any derived inputs.
+- Before creating a new block, check `./docs/03-reuse-catalog.md` and reuse an existing block if it matches the use case.

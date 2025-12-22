@@ -1,0 +1,10 @@
+---
+description: Use the project docs as the authoritative guide for architecture, conventions, reuse, and integrations.
+globs:
+alwaysApply: true
+---
+
+- Use `./docs/*.md` as primary context before making changes.
+- Follow architecture boundaries from `./docs/01-architecture.md` (theme bootstrap → inc modules → blocks → templates/parts).
+- Before creating anything “new”, check `./docs/03-reuse-catalog.md` and reuse existing blocks/modules where applicable.
+- If `./docs` and code disagree, do not guess: mark **TODO: Clarify with tech lead** and propose the smallest safe change.

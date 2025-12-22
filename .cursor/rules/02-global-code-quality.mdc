@@ -1,0 +1,12 @@
+---
+description: Global quality constraints for this WordPress theme: English-only, DRY, safe input handling, and clear naming.
+globs:
+alwaysApply: true
+---
+
+- All comments, inline docs, and any commit messages you suggest MUST be in English.
+- Prefer reuse over duplication: check `./docs/03-reuse-catalog.md` before adding new helpers/blocks.
+- Avoid magic numbers in new code: use named constants/config/options when a value is not self-evident.
+- Use clear, descriptive names; avoid cryptic abbreviations.
+- For request-driven code (e.g. AJAX handlers), sanitize inputs and escape output where appropriate (see `./docs/02-conventions.md`).
+- Do not compile SCSS as part of your work in this repo.
