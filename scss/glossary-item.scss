@@ -1,0 +1,100 @@
+@import "variable";
+
+
+.glossary-item {
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 16px;
+  background: #141414;
+  padding: 0 24px;
+
+  @include mobile {
+    padding: 0 16px;
+  }
+
+  &:hover {
+    background: #1e1e1e;
+  }
+
+  &__trigger {
+    width: 100%;
+    padding: 24px 0;
+    border: 0;
+    box-shadow: none;
+    background-color: transparent;
+    cursor: pointer;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  &__title {
+    flex: 1;
+    display: block;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 144%;
+    color: #fff;
+    text-align: left;
+  }
+
+  &__icon {
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    border-radius: 100%;
+    background: rgba(255, 255, 255, 0.12);
+    transition: all 0.3s linear;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &:hover &__icon {
+    background-color: var(--wp--preset--color--blue-main);
+  }
+
+  &__icon-minus {
+    display: none;
+  }
+
+  &__panel {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: all 0.3s ease-in-out;
+  }
+
+  &__panel-inner {
+    overflow: hidden;
+    color: var(--wp--preset--color--grayscale-500);
+    // padding-bottom: 16px;
+
+    > *:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &.is-open {
+    .glossary-item__icon-plus {
+      display: none;
+    }
+
+    .glossary-item__icon-minus {
+      display: block;
+    }
+
+    .glossary-item__panel {
+      grid-template-rows: 1fr;
+    }
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  .glossary-item__title {
+    font-size: 18px;
+  }
+}
+
