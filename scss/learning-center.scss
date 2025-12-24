@@ -463,6 +463,7 @@
             margin: 0;
             display: -webkit-box;
             -webkit-line-clamp: 2;
+            line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
@@ -529,31 +530,34 @@
 
     .learning-center-single__content {
         font-size: 16px;
-        line-height: 1.7;
+        // line-height: 1.4;
         color: #e5e5e5;
-
-        h2, h3, h4, h5, h6 {
-            margin-top: 32px;
-            margin-bottom: 16px;
-            font-weight: 600;
-            line-height: 1.3;
+        & > * {
+            margin-bottom: 24px;
         }
 
-        h2 {
-            font-size: 28px;
-        }
+        // h2, h3, h4, h5, h6 {
+        //     margin-top: 32px;
+        //     margin-bottom: 16px;
+        //     font-weight: 600;
+        //     line-height: 1.3;
+        // }
 
-        h3 {
-            font-size: 24px;
-        }
+        // h2 {
+        //     font-size: 28px;
+        // }
 
-        h4 {
-            font-size: 20px;
-        }
+        // h3 {
+        //     font-size: 24px;
+        // }
 
-        p {
-            margin-bottom: 16px;
-        }
+        // h4 {
+        //     font-size: 20px;
+        // }
+
+        // p {
+        //     margin-bottom: 16px;
+        // }
 
         ul, ol {
             margin-bottom: 16px;
@@ -566,7 +570,7 @@
 
         a {
             // color: $blue-main;
-            text-decoration: underline;
+            // text-decoration: underline;
 
             &:hover {
                 text-decoration: none;
@@ -576,8 +580,8 @@
         img {
             max-width: 100%;
             height: auto;
-            border-radius: 8px;
-            margin: 24px 0;
+            // border-radius: 8px;
+            // margin: 24px 0;
         }
 
         code {
@@ -600,13 +604,13 @@
             }
         }
 
-        blockquote {
-            border-left: 4px solid $blue-main;
-            padding-left: 20px;
-            margin: 24px 0;
-            font-style: italic;
-            color: #b5b5b5;
-        }
+        // blockquote {
+        //     border-left: 4px solid $blue-main;
+        //     padding-left: 20px;
+        //     margin: 24px 0;
+        //     font-style: italic;
+        //     color: #b5b5b5;
+        // }
     }
 }
 
