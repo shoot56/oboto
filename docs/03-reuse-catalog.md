@@ -100,6 +100,8 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/oboto-faqs`** — Oboto Faqs block.
   - **When to use**: A second FAQ variant; see `blocks/oboto-faqs/*`.
   - **TODO: Clarify with tech lead**: intended difference vs `oboto/faqs`.
+- **`obot/glossary-item`** — Glossary item block (accordion row with InnerBlocks content).
+  - **When to use**: Glossary/definition lists where each item expands to reveal rich content.
 - **`oboto/footer-get-started`** — Footer Get Started block.
   - **When to use**: Footer “get started” CTA section.
 - **`oboto/not-found`** — 404 Block.
