@@ -113,11 +113,14 @@ if ($categories && !is_wp_error($categories)) {
                                 <span class="learning-center-single__date"><?= get_the_date(); ?></span>
                                 <span class="learning-center-single__categories">
                                     <?php 
-                                    $category_names = array();
+                                    $category_links = array();
                                     foreach ($categories as $category) {
-                                        $category_names[] = $category->name;
+                                        $term_link = get_term_link($category);
+                                        if (!is_wp_error($term_link)) {
+                                            $category_links[] = '<a href="' . esc_url($term_link) . '">' . esc_html($category->name) . '</a>';
+                                        }
                                     }
-                                    echo implode(', ', $category_names);
+                                    echo implode(', ', $category_links);
                                     ?>
                                 </span>
                             </div>
