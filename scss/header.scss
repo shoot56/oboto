@@ -497,5 +497,14 @@
         >.sub-menu {}
       }
     }
+    .menu-item--depth-1:first-child {
+      & > .item-type--title {
+        display: none;
+      }
+      & > .submenu__container {
+        display: block;
+        padding-inline: 0;
+      }
+    }
   }
 }
