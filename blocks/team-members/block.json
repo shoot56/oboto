@@ -1,0 +1,47 @@
+{
+  "name": "obot/team-members",
+  "title": "Team Members",
+  "description": "Display team members with photos, names, positions and social links",
+  "category": "theme_block_category",
+  "icon": "groups",
+  "keywords": ["team", "members", "people", "staff"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["team-members"],
+  "viewScript": ["team-members-script"]
+}
