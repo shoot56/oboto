@@ -262,6 +262,7 @@
               "fontFamily": "Poppins",
               "fontWeight": "400",
               "fontStyle": "normal",
+              "fontDisplay": "swap",
               "src": [
                 "/wp-content/themes/oboto/fonts/Poppins/Poppins-Regular.woff",
                 "/wp-content/themes/oboto/fonts/Poppins/Poppins-Regular.woff2"
