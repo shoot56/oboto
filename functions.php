@@ -139,11 +139,11 @@ function theme_scripts()
 {
     wp_enqueue_style('theme-style', get_stylesheet_uri(), [], wp_get_theme()->get('Version'));
     wp_enqueue_style('style', get_template_directory_uri() . '/css/style.css', [], filemtime(get_template_directory() . '/css/style.css'));
-    wp_enqueue_style('swipper-style', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css', array(), wp_get_theme()->get('Version'), false);
-    wp_enqueue_style('aos-style', 'https://unpkg.com/aos@2.3.1/dist/aos.css', array(), wp_get_theme()->get('Version'), false);
+    wp_enqueue_style('swipper-style', get_template_directory_uri() . '/css/swiper-bundle.min.css', array(), wp_get_theme()->get('Version'));
+    wp_enqueue_style('aos-style', get_template_directory_uri() . '/css/aos.css', array(), wp_get_theme()->get('Version'));
 
     // Prims
-    wp_enqueue_style('prism', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-okaidia.css', array(), wp_get_theme()->get('Version'), false);
+    wp_enqueue_style('prism', get_template_directory_uri() . '/css/prism-okaidia.css', array(), wp_get_theme()->get('Version'));
 
 
 
@@ -151,38 +151,38 @@ function theme_scripts()
     // JS
     wp_enqueue_script('custom', get_template_directory_uri() . '/js/script.js', array('jquery'), filemtime(get_template_directory() . '/js/script.js'), false, array("in_footer"));
 
-    wp_enqueue_script('lottie-player', 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js', array(), null,  array(
+    wp_enqueue_script('lottie-player', get_template_directory_uri() . '/js/lottie-player.js', array(), null,  array(
         'in_footer' => true,
         'strategy'  => 'defer',
     ));
 
-    wp_enqueue_script('swipper-script', 'https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js', array(), null,  array(
+    wp_enqueue_script('swipper-script', get_template_directory_uri() . '/js/swiper-bundle.min.js', array(), null,  array(
         'in_footer' => true,
         'strategy'  => 'defer',
     ));
 
-    wp_enqueue_script('aos-script', 'https://unpkg.com/aos@2.3.1/dist/aos.js', array(), null,  array(
+    wp_enqueue_script('aos-script', get_template_directory_uri() . '/js/aos.js', array(), null,  array(
         'in_footer' => true,
         'strategy'  => 'defer',
     ));
 
     // The core GSAP library
-    wp_enqueue_script('gsap-js', 'https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js', array(), false, true);
+    wp_enqueue_script('gsap-js', get_template_directory_uri() . '/js/gsap.min.js', array(), false, true);
     // ScrollTrigger - with gsap.js passed as a dependency
-    wp_enqueue_script('gsap-st', 'https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js', array('gsap-js'), false, true);
+    wp_enqueue_script('gsap-st', get_template_directory_uri() . '/js/ScrollTrigger.min.js', array('gsap-js'), false, true);
 
 
     //Highlight js
-    wp_enqueue_script('highlight', 'https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js', array('custom'), null,  array(
+    wp_enqueue_script('highlight', get_template_directory_uri() . '/js/highlight.min.js', array('custom'), null,  array(
         'in_footer' => true,
     ));
 
     // Prims
-    wp_enqueue_script('prism-main', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js', array('custom'), null,  array(
+    wp_enqueue_script('prism-main', get_template_directory_uri() . '/js/prism-core.min.js', array('custom'), null,  array(
         'in_footer' => true,
     ));
 
-    wp_enqueue_script('prism-autoloader', 'https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js', array('custom', 'prism-main'), null,  array(
+    wp_enqueue_script('prism-autoloader', get_template_directory_uri() . '/js/prism-autoloader.min.js', array('custom', 'prism-main'), null,  array(
         'in_footer' => true,
     ));
 }
