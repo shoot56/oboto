@@ -258,6 +258,9 @@ td:empty {
         background: var(--Blue-700-Main, #4F7DF3);
         filter: blur(380px);
         z-index: -1;
+        @include mobile {
+            margin-right: 0;
+        }
     }
 }
 .has-about-right-deco {
@@ -275,5 +278,8 @@ td:empty {
         background: var(--Blue-700-Main, #4F7DF3);
         filter: blur(380px);
         z-index: -1;
+        @include mobile {
+            margin-left: 0;
+        }
     }
 }
