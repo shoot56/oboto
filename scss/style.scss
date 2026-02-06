@@ -241,3 +241,39 @@ td:empty {
 .banner__content>*:last-child {
     line-height: 1.5;
 }
+
+
+.has-about-left-deco {
+    position: relative;
+    &:before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        margin-top: -270px;
+        right: 100%;
+        margin-right: -200px;
+        width: 389px;
+        height: 540px;
+        border-radius: 540px;
+        background: var(--Blue-700-Main, #4F7DF3);
+        filter: blur(380px);
+        z-index: -1;
+    }
+}
+.has-about-right-deco {
+    position: relative;
+    &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        margin-top: -270px;
+        left: 100%;
+        margin-left: -250px;
+        width: 389px;
+        height: 540px;
+        border-radius: 540px;
+        background: var(--Blue-700-Main, #4F7DF3);
+        filter: blur(380px);
+        z-index: -1;
+    }
+}
