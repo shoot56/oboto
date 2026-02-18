@@ -1,4 +1,7 @@
-<?php 
+<?php
+
+require_once get_template_directory() . '/inc/class-mcp-catalog-fetcher.php';
+
 // Setup acf gutenberg blocks
 if (function_exists('acf_register_block_type')) {
     add_action('acf/init', 'register_my_blocks');

@@ -1,0 +1,47 @@
+{
+  "name": "oboto/mcp-list",
+  "title": "MCP List",
+  "description": "Catalog of MCP servers with search and category filters (manual or auto from GitHub).",
+  "category": "theme_block_category",
+  "icon": "",
+  "keywords": ["mcp", "catalog", "servers"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["mcp-list"],
+  "viewScript": ["mcp-list-script"]
+}

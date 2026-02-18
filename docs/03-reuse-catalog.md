@@ -77,6 +77,8 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **When to use**: Tabbed tool/item presentation.
 - **`obot/cards`** — Cards block.
   - **When to use**: Card grids/lists.
+- **`oboto/mcp-list`** — MCP List block.
+  - **When to use**: Catalog of MCP servers (from [obot-platform/mcp-catalog](https://github.com/obot-platform/mcp-catalog)) with search and category filters. Supports manual (ACF repeater) or automatic (GitHub API with transient cache) data source.
 - **`obot/steps`** — Steps block.
   - **When to use**: Step-by-step sections.
 - **`obot/work-steps`** — work-steps block.
