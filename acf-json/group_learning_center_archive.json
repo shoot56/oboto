@@ -1,0 +1,45 @@
+{
+    "key": "group_learning_center_archive",
+    "title": "Block: Learning Center Archive",
+    "fields": [
+        {
+            "key": "field_lc_archive_show_category_name",
+            "label": "Show category name in header",
+            "name": "show_category_name",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "When this block is used on a Learning Center category archive page, show the category name as an H2 below the main title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "oboto/learning-center-archive"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1739900000
+}
