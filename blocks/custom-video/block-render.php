@@ -25,8 +25,8 @@ $wrapper_attributes = get_block_wrapper_attributes([
 
 if (get_field('add_animation') == 1) {
     $data_aos = get_field('animations');
-    $delay = "1000";
-    $aos_args = 'data-aos="' . $data_aos . '" delay="' . $delay . '" data-aos-mirror="true" data-aos-once="false" data-aos-easing="ease-in-out"';
+    $delay = "100";
+    $aos_args = 'data-aos="' . $data_aos . '" data-aos-delay="' . $delay . '" data-aos-mirror="true" data-aos-once="false" data-aos-easing="ease-in-out"';
 }
 
 
