@@ -159,7 +159,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
             <?php $get_started_link = get_field( 'get_started_link' ); ?>
             <?php if ( $get_started_link ) : ?>
                 <h2 class="get-started-title" <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?>>Get started with Obot</h2>
-                <a <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?> class="btn btn--primary" href="<?php echo esc_url( $get_started_link['url'] ); ?>" target="<?php echo esc_attr( $get_started_link['target'] ); ?>"><?php echo esc_html( $get_started_link['title'] ); ?></a>
+                <a <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?> class="btn btn--primary" href="<?php echo esc_url( $get_started_link['url'] ); ?>"<?php if ( ! empty( $get_started_link['target'] ) ) : ?> target="<?php echo esc_attr( $get_started_link['target'] ); ?>"<?php endif; ?>><?php echo esc_html( $get_started_link['title'] ); ?></a>
             <?php endif; ?>
        
             <?php if ( have_rows( 'join_comunity_buttons' ) ) : ?>
@@ -171,7 +171,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
                     <?php $icon = get_sub_field( 'icon' ); ?>
                     <?php $link = get_sub_field( 'link' ); ?>
                     <?php if ( $link ) : ?>
-                        <a <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?> href="<?php echo esc_url( $link['url'] ); ?>" target="<?php echo esc_attr( $link['target'] ); ?>">
+                        <a <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?> href="<?php echo esc_url( $link['url'] ); ?>"<?php if ( ! empty( $link['target'] ) ) : ?> target="<?php echo esc_attr( $link['target'] ); ?>"<?php endif; ?>>
                             <?php if ( $icon ) : ?>
                                 <span><img src="<?php echo esc_url( $icon['url'] ); ?>" alt="<?php echo esc_attr( $icon['alt'] ); ?>" /></span>    
                             <?php endif; ?>

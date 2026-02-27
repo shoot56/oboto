@@ -32,7 +32,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
 <?php else : ?>
     <?php $link = get_field('link'); ?>
     <?php if ($link) : ?>
-        <a id="<?php echo esc_attr($id); ?>" <?php echo $wrapper_attributes; ?> href="<?php echo esc_url($link['url']); ?>" target="<?php echo esc_attr($link['target']); ?>">
+        <a id="<?php echo esc_attr($id); ?>" <?php echo $wrapper_attributes; ?> href="<?php echo esc_url($link['url']); ?>" <?php if ( ! empty( $link['target'] ) ) : ?> target="<?php echo esc_attr( $link['target'] ); ?>"<?php endif; ?>>
             <span class="text-wrap">
                 <?php echo esc_html($link['title']); ?>
             </span>

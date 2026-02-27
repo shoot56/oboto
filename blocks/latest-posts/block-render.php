@@ -234,7 +234,7 @@ if (get_field('add_animation') == 1) {
 
         <?php $read_all = get_field('read_all'); ?>
         <?php if ($read_all) : ?>
-            <a href="<?php echo esc_url($read_all['url']); ?>" target="<?php echo esc_attr($read_all['target']); ?>" class="btn btn--outline">
+            <a href="<?php echo esc_url($read_all['url']); ?>"<?php if ( ! empty( $read_all['target'] ) ) : ?> target="<?php echo esc_attr( $read_all['target'] ); ?>"<?php endif; ?> class="btn btn--outline">
                 <span><?php echo esc_html($read_all['title']); ?></span>
                 <span class="icon">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

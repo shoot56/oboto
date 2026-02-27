@@ -42,7 +42,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
              <h2 class="section-title"><?= get_field( 'title' ); ?></h2>
              <?php $read_all = get_field( 'read_all' ); ?>
             <?php if ( $read_all ) : ?>
-                <a href="<?php echo esc_url( $read_all['url'] ); ?>" target="<?php echo esc_attr( $read_all['target'] ); ?>">
+                <a href="<?php echo esc_url( $read_all['url'] ); ?>"<?php if ( ! empty( $read_all['target'] ) ) : ?> target="<?php echo esc_attr( $read_all['target'] ); ?>"<?php endif; ?>>
                     <span><?php echo esc_html( $read_all['title'] ); ?></span>
                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
                         <path d="M8.29289 4.29289C7.90237 4.68342 7.90237 5.31658 8.29289 5.70711L14.5858 12L8.29289 18.2929C7.90237 18.6834 7.90237 19.3166 8.29289 19.7071C8.68342 20.0976 9.31658 20.0976 9.70711 19.7071L16.7071 12.7071C17.0976 12.3166 17.0976 11.6834 16.7071 11.2929L9.70711 4.29289C9.31658 3.90237 8.68342 3.90237 8.29289 4.29289Z" fill="#00919D"/>

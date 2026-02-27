@@ -77,7 +77,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
 
                 <?php $header_button = get_field('header_button', 'option'); ?>
                 <?php if ($header_button && $menu == "main-menu") : ?>
-                    <a class="btn btn--primary" href="<?php echo esc_url($header_button['url']); ?>" target="<?php echo esc_attr($header_button['target']); ?>">
+                    <a class="btn btn--primary" href="<?php echo esc_url($header_button['url']); ?>"<?php if ( ! empty( $header_button['target'] ) ) : ?> target="<?php echo esc_attr( $header_button['target'] ); ?>"<?php endif; ?>>
                         <span><?php echo esc_html($header_button['title']); ?></span>
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -95,7 +95,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
     </nav>
     <?php $header_button = get_field('header_button', 'option'); ?>
     <?php if ($header_button && $menu == "main-menu") : ?>
-        <a class="btn btn--primary hide-mobile" href="<?php echo esc_url($header_button['url']); ?>" target="<?php echo esc_attr($header_button['target']); ?>">
+        <a class="btn btn--primary hide-mobile" href="<?php echo esc_url($header_button['url']); ?>"<?php if ( ! empty( $header_button['target'] ) ) : ?> target="<?php echo esc_attr( $header_button['target'] ); ?>"<?php endif; ?>>
             <span><?php echo esc_html($header_button['title']); ?></span>
             <span class="icon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

@@ -56,7 +56,7 @@ if (get_field('add_animation') == 1) {
 
             <?php $button = get_field('button'); ?>
             <?php if ($button) : ?>
-                <a class="btn btn--outline" href="<?php echo esc_url($button['url']); ?>" target="<?php echo esc_attr($button['target']); ?>">
+                <a class="btn btn--outline" href="<?php echo esc_url($button['url']); ?>"<?php if ( ! empty( $button['target'] ) ) : ?> target="<?php echo esc_attr( $button['target'] ); ?>"<?php endif; ?>>
                     <span>
 
                         <span><?php echo esc_html($button['title']); ?></span>

@@ -45,7 +45,7 @@ if (get_field('add_animation') == 1) {
                 <?php $button_primary = get_field('button_primary'); ?>
                 <?php if ($button_primary) : ?>
 
-                    <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn btn--primary" href="<?php echo esc_url($button_primary['url']); ?>" target="<?php echo esc_attr($button_primary['target']); ?>">
+                    <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn btn--primary" href="<?php echo esc_url($button_primary['url']); ?>"<?php if ( ! empty( $button_primary['target'] ) ) : ?> target="<?php echo esc_attr( $button_primary['target'] ); ?>"<?php endif; ?>>
                         <span><?php echo esc_html($button_primary['title']); ?></span>
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -56,7 +56,7 @@ if (get_field('add_animation') == 1) {
                 <?php endif; ?>
                 <?php $button_secondary_1 = get_field('button_secondary_1'); ?>
                 <?php if ($button_secondary_1) : ?>
-                    <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn btn--no-border" href="<?php echo esc_url($button_secondary_1['url']); ?>" target="<?php echo esc_attr($button_secondary_1['target']); ?>">
+                    <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn btn--no-border" href="<?php echo esc_url($button_secondary_1['url']); ?>"<?php if ( ! empty( $button_secondary_1['target'] ) ) : ?> target="<?php echo esc_attr( $button_secondary_1['target'] ); ?>"<?php endif; ?>>
                         <span><?php echo esc_html($button_secondary_1['title']); ?></span>
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -68,7 +68,7 @@ if (get_field('add_animation') == 1) {
 
                 <?php $button_secondary_2 = get_field('button_secondary_2'); ?>
                 <?php if ($button_secondary_2) : ?>
-                    <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn btn--no-border" href="<?php echo esc_url($button_secondary_2['url']); ?>" target="<?php echo esc_attr($button_secondary_2['target']); ?>">
+                    <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn btn--no-border" href="<?php echo esc_url($button_secondary_2['url']); ?>"<?php if ( ! empty( $button_secondary_2['target'] ) ) : ?> target="<?php echo esc_attr( $button_secondary_2['target'] ); ?>"<?php endif; ?>>
                         <span><?php echo esc_html($button_secondary_2['title']); ?></span>
                         <span class="icon">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">

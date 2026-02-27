@@ -43,7 +43,7 @@ if (get_field('add_animation') == 1) {
         <div class="quote__content" <?= get_field('add_animation') == 1 ? $aos_args : ""; ?>><?php the_field('content'); ?></div>
         <?php $button = get_field('button'); ?>
         <?php if ($button) : ?>
-            <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn--quote" href="<?php echo esc_url($button['url']); ?>" target="<?php echo esc_attr($button['target']); ?>">
+            <a <?= get_field('add_animation') == 1 ? $aos_args : ""; ?> class="btn--quote" href="<?php echo esc_url($button['url']); ?>"<?php if ( ! empty( $button['target'] ) ) : ?> target="<?php echo esc_attr( $button['target'] ); ?>"<?php endif; ?>>
                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none">
                     <path d="M15 0L15.8938 11.3735L21.9708 1.71816L17.4768 12.2043L27.3448 6.47903L18.4923 13.6756L29.8906 13.1919L18.7078 15.4502L29.0252 20.3191L18.0738 17.1217L24.9468 26.2277L16.7357 18.3072L18.5897 29.5641L15 18.735L11.4103 29.5641L13.2643 18.3072L5.05316 26.2277L11.9262 17.1217L0.974756 20.3191L11.2922 15.4502L0.109366 13.1919L11.5077 13.6756L2.65524 6.47903L12.5232 12.2043L8.02915 1.71816L14.1062 11.3735L15 0Z" fill="#4F7DF3" />
                 </svg>

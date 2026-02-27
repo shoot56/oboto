@@ -44,7 +44,7 @@ if (get_field('add_animation') == 1) {
 
                     <?php $step = get_sub_field('step'); ?>
                     <?php if ($step) : ?>
-                        <a class="step" href="<?php echo esc_url($step['url']); ?>" target="<?php echo esc_attr($step['target']); ?>"><?php echo esc_html($step['title']); ?></a>
+                        <a class="step" href="<?php echo esc_url($step['url']); ?>"<?php if ( ! empty( $step['target'] ) ) : ?> target="<?php echo esc_attr( $step['target'] ); ?>"<?php endif; ?>><?php echo esc_html($step['title']); ?></a>
                     <?php endif; ?>
                 <?php endwhile; ?>
             </div>

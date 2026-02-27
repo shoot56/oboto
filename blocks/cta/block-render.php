@@ -57,7 +57,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
                 <p <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?>><?= the_field( 'description' ); ?></p>
                 <?php $link = get_field( 'link' ); ?>
                 <?php if ( $link ) : ?>
-                    <a <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?> class="btn btn--primary" href="<?php echo esc_url( $link['url'] ); ?>" target="<?php echo esc_attr( $link['target'] ); ?>"><?php echo esc_html( $link['title'] ); ?></a>
+                    <a <?= get_field( 'add_animation' ) == 1 ? $aos_args : "";?> class="btn btn--primary" href="<?php echo esc_url( $link['url'] ); ?>"<?php if ( ! empty( $link['target'] ) ) : ?> target="<?php echo esc_attr( $link['target'] ); ?>"<?php endif; ?>><?php echo esc_html( $link['title'] ); ?></a>
                 <?php endif; ?>
 
                 <?php $big_bottom_right_image = get_field( 'big_bottom_right_image' ); ?>

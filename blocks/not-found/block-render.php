@@ -44,7 +44,7 @@ if (get_field('add_animation') == 1) {
                 <h1>Oops!</h1>
                 <p>Sorry we couldn't find the page you're looking for</p>
 
-                <a class="btn btn--primary" href="/" target="">
+                <a class="btn btn--primary" href="/">
                     <span>Go to Home Page</span>
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
