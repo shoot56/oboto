@@ -125,7 +125,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
                             <?php endif; ?>
                         </figure>
                         <div>
-                            <h5><?= get_sub_field('title'); ?></h5>
+                            <h3 class="cards__list-title h5"><?= get_sub_field('title'); ?></h3>
                             <p class="description"><?= get_sub_field('description'); ?></p>
                         </div>
 
