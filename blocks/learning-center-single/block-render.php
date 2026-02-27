@@ -106,11 +106,14 @@ if ($categories && !is_wp_error($categories)) {
                 
                 <article class="learning-center-single__article">
                     <header class="learning-center-single__header">
-                        <h1 class="learning-center-single__title"><?= get_the_title(); ?></h1>
+                        <h1 class="learning-center-single__title"><?php echo esc_html(get_the_title()); ?></h1>
                         
-                        <?php if ($categories && !is_wp_error($categories) && !empty($categories)) : ?>
-                            <div class="learning-center-single__meta">
-                                <span class="learning-center-single__date"><?= get_the_date(); ?></span>
+                        <div class="learning-center-single__meta">
+                            <p class="post-meta learning-center-single__date">
+                                Published: <time datetime="<?php echo esc_attr(get_the_date('c')); ?>"><?php echo esc_html(get_the_date()); ?></time><br>
+                                Last Updated: <time datetime="<?php echo esc_attr(get_the_modified_date('c')); ?>"><?php echo esc_html(get_the_modified_date()); ?></time>
+                            </p>
+                            <?php if ($categories && !is_wp_error($categories) && !empty($categories)) : ?>
                                 <span class="learning-center-single__categories">
                                     <?php 
                                     $category_links = array();
@@ -123,8 +126,8 @@ if ($categories && !is_wp_error($categories)) {
                                     echo implode(', ', $category_links);
                                     ?>
                                 </span>
-                            </div>
-                        <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
                         <ul class="share-links">
                             <li>
                                 <a onClick="javascript:open('https://www.linkedin.com/shareArticle?mini=true&url=<?= get_permalink() ?>', '', 'height=500,width=500')">
@@ -157,6 +160,28 @@ if ($categories && !is_wp_error($categories)) {
                                 </a>
                             </li>
                         </ul>
+                        <?php
+                        $article_ld = array(
+                            '@context'    => 'https://schema.org',
+                            '@type'       => 'Article',
+                            'headline'    => get_the_title(),
+                            'datePublished' => get_the_date('c'),
+                            'dateModified'  => get_the_modified_date('c'),
+                            'author'      => array(
+                                '@type' => 'Person',
+                                'name'  => get_the_author_meta('display_name'),
+                            ),
+                            'publisher'   => array(
+                                '@type' => 'Organization',
+                                'name'  => get_bloginfo('name'),
+                            ),
+                            'mainEntityOfPage' => array(
+                                '@type' => 'WebPage',
+                                '@id'   => get_permalink(),
+                            ),
+                        );
+                        ?>
+                        <script type="application/ld+json"><?php echo wp_json_encode($article_ld); ?></script>
                     </header>
                     
                     <?php if (has_post_thumbnail()) : ?>

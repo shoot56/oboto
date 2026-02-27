@@ -54,15 +54,39 @@ $wrapper_attributes = get_block_wrapper_attributes([
             </figure>
         <?php endif; ?>
 
-        <p class="post-head_date_auth"><?= get_the_date('', get_the_ID()); ?>
+        <p class="post-meta post-head_date_auth">
+            Published: <time datetime="<?php echo esc_attr(get_the_date('c', get_the_ID())); ?>"><?php echo esc_html(get_the_date('', get_the_ID())); ?></time><br>
+            Last Updated: <time datetime="<?php echo esc_attr(get_the_modified_date('c', get_the_ID())); ?>"><?php echo esc_html(get_the_modified_date('', get_the_ID())); ?></time>
             <span> by
                 <span>
-                    <a href="<?= get_author_posts_url(get_the_author_meta('ID')); ?>">
-                        <?= str_replace("-", " ", get_the_author_meta('display_name')); ?>
+                    <a href="<?php echo esc_url(get_author_posts_url(get_the_author_meta('ID'))); ?>">
+                        <?php echo esc_html(str_replace("-", " ", get_the_author_meta('display_name'))); ?>
                     </a>
                 </span>
             </span>
         </p>
+        <?php
+        $article_ld = array(
+            '@context'    => 'https://schema.org',
+            '@type'       => 'Article',
+            'headline'    => get_the_title(),
+            'datePublished' => get_the_date('c', get_the_ID()),
+            'dateModified'  => get_the_modified_date('c', get_the_ID()),
+            'author'      => array(
+                '@type' => 'Person',
+                'name'  => get_the_author_meta('display_name'),
+            ),
+            'publisher'   => array(
+                '@type' => 'Organization',
+                'name'  => get_bloginfo('name'),
+            ),
+            'mainEntityOfPage' => array(
+                '@type' => 'WebPage',
+                '@id'   => get_permalink(),
+            ),
+        );
+        ?>
+        <script type="application/ld+json"><?php echo wp_json_encode($article_ld); ?></script>
 
         <ul class="share-links">
             <li>
