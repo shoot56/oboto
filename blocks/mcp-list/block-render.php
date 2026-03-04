@@ -71,20 +71,13 @@ $enable_category_filter = get_field( 'enable_category_filter' );
 $enable_category_filter = ( $enable_category_filter === null || $enable_category_filter === '' ) ? true : (bool) $enable_category_filter;
 $show_bar               = $enable_search || $enable_category_filter;
 $catalog_url           = 'https://github.com/obot-platform/mcp-catalog';
-$refresh_url = '';
+$show_refresh = false;
+$refresh_ajax_url = '';
+$refresh_nonce = '';
 if ( $is_preview && 'automatic' === $data_src ) {
-	$redirect_to = get_edit_post_link( $post_id, 'raw' );
-	if ( ! $redirect_to ) {
-		$redirect_to = isset( $_GET['redirect'] ) ? sanitize_url( wp_unslash( $_GET['redirect'] ) ) : '';
-	}
-	$refresh_url = add_query_arg(
-		array(
-			'action'   => 'mcp_list_refresh_cache',
-			'nonce'    => wp_create_nonce( 'mcp_list_refresh_cache' ),
-			'redirect' => $redirect_to,
-		),
-		admin_url( 'admin-ajax.php' )
-	);
+	$show_refresh   = true;
+	$refresh_ajax_url = admin_url( 'admin-ajax.php' );
+	$refresh_nonce  = wp_create_nonce( 'mcp_list_refresh_cache' );
 }
 
 if ( isset( $block['data']['preview_image_help'] ) ) {
@@ -98,12 +91,10 @@ if ( isset( $block['data']['preview_image_help'] ) ) {
 		<h2 class="mcp-list__title"><?php echo esc_html( $block_title ); ?></h2>
 	<?php endif; ?>
 
-	<?php if ( $refresh_url && $is_preview ) : ?>
-		<div class="mcp-list__editor-actions" role="region" aria-label="<?php esc_attr_e( 'Catalog cache', 'oboto' ); ?>">
-			<a href="<?php echo esc_url( $refresh_url ); ?>" class="mcp-list__refresh-link mcp-list__refresh-btn"><?php esc_html_e( 'Refresh catalog from GitHub', 'oboto' ); ?></a>
-			<?php if ( isset( $_GET['mcp_cache_refreshed'] ) ) : ?>
-				<span class="mcp-list__refresh-ok"><?php esc_html_e( 'Cache refreshed.', 'oboto' ); ?></span>
-			<?php endif; ?>
+	<?php if ( $show_refresh ) : ?>
+		<div class="mcp-list__editor-actions" role="region" aria-label="<?php esc_attr_e( 'Catalog cache', 'oboto' ); ?>" data-mcp-refresh-ajax-url="<?php echo esc_url( $refresh_ajax_url ); ?>" data-mcp-refresh-nonce="<?php echo esc_attr( $refresh_nonce ); ?>">
+			<button type="button" class="mcp-list__refresh-link mcp-list__refresh-btn"><?php esc_html_e( 'Refresh catalog from GitHub', 'oboto' ); ?></button>
+			<span class="mcp-list__refresh-ok mcp-list__refresh-ok--hidden" aria-live="polite"></span>
 		</div>
 	<?php endif; ?>
 
