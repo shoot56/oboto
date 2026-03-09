@@ -160,6 +160,7 @@ if ($categories && !is_wp_error($categories)) {
                                 </a>
                             </li>
                         </ul>
+                        <?php /*
                         <?php
                         $article_ld = array(
                             '@context'    => 'https://schema.org',
@@ -182,6 +183,7 @@ if ($categories && !is_wp_error($categories)) {
                         );
                         ?>
                         <script type="application/ld+json"><?php echo wp_json_encode($article_ld); ?></script>
+                        */ ?>
                     </header>
                     
                     <?php if (has_post_thumbnail()) : ?>
