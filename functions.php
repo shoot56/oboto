@@ -131,6 +131,11 @@ require get_template_directory() . '/inc/navigations-functions.php';
  */
 require get_template_directory() . '/inc/class-alison-contact-forms.php';
 
+/**
+ * Disable comments globally.
+ */
+require get_template_directory() . '/inc/disable-comments.php';
+
 
 /**
  * Enqueue theme scripts and styles.
