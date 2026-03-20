@@ -1,0 +1,46 @@
+{
+  "name": "oboto/resources-hub",
+  "title": "Resources Hub",
+  "description": "Resources page hub: Docs & Resources buttons, latest Blog and Learning Center articles, community links and events.",
+  "category": "theme_block_category",
+  "icon": "admin-links",
+  "keywords": ["resources", "hub", "blog", "learning center", "community"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "example": {
+    "attributes": {
+      "preview": true,
+      "data": {
+        "preview_image_help": "screenshot.png"
+      }
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["resources-hub"]
+}

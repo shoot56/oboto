@@ -108,6 +108,8 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **When to use**: Footer “get started” CTA section.
 - **`oboto/not-found`** — 404 Block.
   - **When to use**: Not-found/empty-state UI.
+- **`oboto/resources-hub`** — Resources Hub block.
+  - **When to use**: Resources landing page: Docs & Resources buttons (from main nav + optional extra links), latest 3 blog posts, latest 3 Learning Center posts, community links (Discord/GitHub), and manual events list. Use template `page-resources.html` or add the block to any page.
 
 ## Reusable patterns (`patterns/`)
 
