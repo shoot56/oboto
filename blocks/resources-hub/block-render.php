@@ -3,8 +3,8 @@
 /**
  * Block template file: block-render.php
  *
- * Renders the Resources Hub: Docs & Resources buttons (manual),
- * latest Blog and Learning Center posts, community links and manual events.
+ * Renders the Resources Hub: hero, primary links under hero, Docs & Resources grid,
+ * latest Blog posts, Learning Center category cards, community links and manual events.
  *
  * @param array $block The block settings and attributes.
  * @param string $content The block inner HTML (empty).
@@ -19,11 +19,20 @@ if (!empty($block['anchor'])) {
 
 $wrapper_attributes = get_block_wrapper_attributes(['class' => 'resources-hub']);
 
+$hero_title = get_field('hero_title');
+$hero_description = get_field('hero_description');
+$primary_links_raw = (array) get_field('hero_primary_links');
+$primary_links = array_values(array_filter($primary_links_raw, static function ($row) {
+    if (!is_array($row)) {
+        return false;
+    }
+    $link = $row['link'] ?? null;
+    return is_array($link) && !empty($link['url']);
+}));
+
 $resource_links = (array) get_field('extra_resource_links');
 $resources_title = get_field('resources_title') ?: 'Docs & Resources';
 $resources_description = get_field('resources_description') ?: 'All you need to get started with the Obot MCP Gateway';
-$hero_title = get_field('hero_title');
-$hero_description = get_field('hero_description');
 
 $blogs_title = get_field('blogs_title') ?: 'Blogs';
 $blogs_description = get_field('blogs_description') ?: 'Detailed guides and inspiration focused on using MCP and agentic AI tools.';
@@ -33,11 +42,44 @@ $lc_title = get_field('learning_center_title') ?: 'Learning Center';
 $lc_description = get_field('learning_center_description') ?: 'A catalog of interesting articles on MCP basics, advanced guides, and all things AI, LLM, and more.';
 $lc_read_all = get_field('learning_center_read_all');
 
+$lc_taxonomy = 'learning-center-category';
+$lc_terms = [];
+$lc_categories_selected = get_field('learning_center_categories');
+
+if (!empty($lc_categories_selected)) {
+    $picked = is_array($lc_categories_selected) ? $lc_categories_selected : array($lc_categories_selected);
+    foreach ($picked as $item) {
+        if ($item instanceof WP_Term) {
+            $lc_terms[] = $item;
+            continue;
+        }
+        if (is_numeric($item)) {
+            $term = get_term((int) $item, $lc_taxonomy);
+            if ($term instanceof WP_Term && !is_wp_error($term)) {
+                $lc_terms[] = $term;
+            }
+        }
+    }
+} else {
+    $all_lc_terms = get_terms(array(
+        'taxonomy'   => $lc_taxonomy,
+        'hide_empty' => false,
+        'orderby'    => 'name',
+        'order'      => 'ASC',
+    ));
+    if (!is_wp_error($all_lc_terms) && is_array($all_lc_terms)) {
+        $lc_terms = $all_lc_terms;
+    }
+}
+
 $community_title = get_field('community_title') ?: "See what's happening in our community";
 $community_description = get_field('community_description');
 $discord_link = get_field('discord_link');
 $github_link = get_field('github_link');
 $events_items = (array) get_field('events_items');
+
+$has_hero_content = !empty($hero_title) || !empty($hero_description);
+$show_hero_stack = $has_hero_content || $primary_links !== [];
 
 ?>
 <?php if (isset($block['data']['preview_image_help'])) : ?>
@@ -48,43 +90,74 @@ $events_items = (array) get_field('events_items');
 <?php else : ?>
 <div id="<?php echo esc_attr($id); ?>" <?php echo $wrapper_attributes; ?>>
 
-    <?php if (!empty($hero_title) || !empty($hero_description)) : ?>
-    <!-- Hero -->
-    <section class="resources-hub__hero">
-        <div class="resources-hub__hero-content">
-            <?php if (!empty($hero_title)) : ?>
-                <h1 class="resources-hub__hero-title"><?php echo esc_html($hero_title); ?></h1>
-            <?php endif; ?>
-            <?php if (!empty($hero_description)) : ?>
-                <p class="resources-hub__hero-desc"><?php echo esc_html($hero_description); ?></p>
-            <?php endif; ?>
-        </div>
-    </section>
-    <?php endif; ?>
+    <?php if ($show_hero_stack) : ?>
+    <div class="resources-hub__hero-stack">
+        <?php if ($has_hero_content) : ?>
+        <section class="resources-hub__hero">
+            <div class="resources-hub__hero-content">
+                <?php if (!empty($hero_title)) : ?>
+                    <h1 class="resources-hub__hero-title"><?php echo esc_html($hero_title); ?></h1>
+                <?php endif; ?>
+                <?php if (!empty($hero_description)) : ?>
+                    <p class="resources-hub__hero-desc"><?php echo esc_html($hero_description); ?></p>
+                <?php endif; ?>
+            </div>
+        </section>
+        <?php endif; ?>
 
-    <!-- Docs & Resources (quick links) -->
-    <section class="resources-hub__section">
-        <h2 class="resources-hub__section-title"><?php echo esc_html($resources_title); ?></h2>
-        <p class="resources-hub__section-desc"><?php echo esc_html($resources_description); ?></p>
-        <div class="resources-hub__buttons">
-            <?php foreach ($resource_links as $row) :
-                $link = is_array($row) && isset($row['link']) ? $row['link'] : $row;
-                if (empty($link) || !is_array($link) || empty($link['url'])) continue;
-                $title = !empty($link['title']) ? $link['title'] : $link['url'];
-                $target = !empty($link['target']) ? $link['target'] : '_self';
-                $icon = isset($row['icon']) && is_array($row['icon']) && !empty($row['icon']['url']) ? $row['icon'] : null;
-            ?>
-                <a href="<?php echo esc_url($link['url']); ?>" class="btn btn--outline"<?php echo ($target !== '_self') ? ' target="' . esc_attr($target) . '" rel="noopener"' : ''; ?>>
-                    <span><?php echo esc_html($title); ?></span>
+        <?php if ($primary_links !== []) : ?>
+        <nav class="resources-hub__primary-links" aria-label="<?php esc_attr_e('Primary resources', 'oboto'); ?>">
+            <div class="resources-hub__primary-links-inner">
+                <?php foreach ($primary_links as $row) :
+                    $link = $row['link'];
+                    $title = !empty($link['title']) ? $link['title'] : $link['url'];
+                    $target = !empty($link['target']) ? $link['target'] : '_self';
+                    $icon = isset($row['icon']) && is_array($row['icon']) && !empty($row['icon']['url']) ? $row['icon'] : null;
+                    ?>
+                <a href="<?php echo esc_url($link['url']); ?>" class="btn btn--primary resources-hub__hub-btn"<?php echo ($target !== '_self') ? ' target="' . esc_attr($target) . '" rel="noopener"' : ''; ?>>
                     <span class="icon">
                         <?php if ($icon) : ?>
-                            <img src="<?php echo esc_url($icon['url']); ?>" alt="<?php echo esc_attr($icon['alt'] ?? $title); ?>" width="24" height="24" />
+                            <img src="<?php echo esc_url($icon['url']); ?>" alt="" width="24" height="24" />
                         <?php else : ?>
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
                                 <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
                             </svg>
                         <?php endif; ?>
                     </span>
+                    <span><?php echo esc_html($title); ?></span>
+                </a>
+                <?php endforeach; ?>
+            </div>
+        </nav>
+        <?php endif; ?>
+    </div>
+    <?php endif; ?>
+
+    <!-- Docs & Resources (uniform grid) -->
+    <section class="resources-hub__section">
+        <h2 class="resources-hub__section-title"><?php echo esc_html($resources_title); ?></h2>
+        <p class="resources-hub__section-desc"><?php echo esc_html($resources_description); ?></p>
+        <div class="resources-hub__docs-grid">
+            <?php foreach ($resource_links as $row) :
+                $link = is_array($row) && isset($row['link']) ? $row['link'] : $row;
+                if (empty($link) || !is_array($link) || empty($link['url'])) {
+                    continue;
+                }
+                $title = !empty($link['title']) ? $link['title'] : $link['url'];
+                $target = !empty($link['target']) ? $link['target'] : '_self';
+                $icon = isset($row['icon']) && is_array($row['icon']) && !empty($row['icon']['url']) ? $row['icon'] : null;
+                ?>
+                <a href="<?php echo esc_url($link['url']); ?>" class="btn btn--primary resources-hub__hub-btn resources-hub__docs-grid-cell"<?php echo ($target !== '_self') ? ' target="' . esc_attr($target) . '" rel="noopener"' : ''; ?>>
+                    <span class="icon">
+                        <?php if ($icon) : ?>
+                            <img src="<?php echo esc_url($icon['url']); ?>" alt="" width="24" height="24" />
+                        <?php else : ?>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        <?php endif; ?>
+                    </span>
+                    <span><?php echo esc_html($title); ?></span>
                 </a>
             <?php endforeach; ?>
         </div>
@@ -146,46 +219,36 @@ $events_items = (array) get_field('events_items');
         <?php endif; ?>
     </section>
 
-    <!-- Learning Center (latest 3) -->
-    <section class="resources-hub__section">
+    <!-- Learning Center (category cards) -->
+    <section class="resources-hub__section resources-hub__section--learning-center">
         <h2 class="resources-hub__section-title"><?php echo esc_html($lc_title); ?></h2>
         <p class="resources-hub__section-desc"><?php echo esc_html($lc_description); ?></p>
-        <?php
-        $lc_query = new WP_Query(array(
-            'post_type'      => 'learning-center',
-            'post_status'    => 'publish',
-            'posts_per_page' => 3,
-            'order'          => 'DESC',
-            'orderby'        => 'date',
-        ));
-        ?>
-        <div class="resources-hub__grid resources-hub__grid--three">
-            <?php if ($lc_query->have_posts()) : while ($lc_query->have_posts()) : $lc_query->the_post(); $pid = get_the_ID(); ?>
-                <a href="<?php echo esc_url(get_permalink($pid)); ?>" class="resources-hub__card">
-                    <?php $thumb = wp_get_attachment_image_url(get_post_thumbnail_id($pid), 'medium_large'); ?>
-                    <?php if ($thumb) : ?>
-                        <figure class="resources-hub__card-image">
-                            <img src="<?php echo esc_url($thumb); ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
-                        </figure>
-                    <?php endif; ?>
-                    <div class="resources-hub__card-data">
-                        <h3 class="resources-hub__card-title"><?php echo esc_html(get_the_title()); ?></h3>
-                        <p class="resources-hub__card-desc"><?php echo esc_html(wp_trim_words(get_the_excerpt($pid), 22, '...')); ?></p>
-                        <span class="btn btn--no-border">
-                            <span>Read More</span>
-                            <span class="icon">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                    <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                </svg>
-                            </span>
+        <div class="resources-hub__grid resources-hub__grid--three resources-hub__lc-grid">
+            <?php foreach ($lc_terms as $lc_term) :
+                if (!($lc_term instanceof WP_Term)) {
+                    continue;
+                }
+                $lc_term_link = get_term_link($lc_term);
+                if (is_wp_error($lc_term_link)) {
+                    continue;
+                }
+                $lc_term_title = $lc_term->name;
+                ?>
+                <a href="<?php echo esc_url($lc_term_link); ?>" class="resources-hub__lc-card">
+                    <div class="resources-hub__lc-card-body">
+                        <h3 class="resources-hub__lc-card-title"><?php echo esc_html($lc_term_title); ?></h3>
+                        <span class="resources-hub__lc-card-arrow" aria-hidden="true">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                                <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
                         </span>
                     </div>
                 </a>
-            <?php endwhile; wp_reset_postdata(); endif; ?>
+            <?php endforeach; ?>
         </div>
         <?php if ($lc_read_all && !empty($lc_read_all['url'])) : ?>
             <div class="resources-hub__read-all">
-                <a href="<?php echo esc_url($lc_read_all['url']); ?>" class="btn btn--outline"<?php if (!empty($lc_read_all['target'])) : ?> target="<?php echo esc_attr($lc_read_all['target']); ?>" rel="noopener"<?php endif; ?>>
+                <a href="<?php echo esc_url($lc_read_all['url']); ?>" class="btn btn--outline resources-hub__lc-read-all-btn"<?php if (!empty($lc_read_all['target'])) : ?> target="<?php echo esc_attr($lc_read_all['target']); ?>" rel="noopener"<?php endif; ?>>
                     <span><?php echo esc_html(!empty($lc_read_all['title']) ? $lc_read_all['title'] : 'View all'); ?></span>
                     <span class="icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -239,9 +302,11 @@ $events_items = (array) get_field('events_items');
                             $event_title = !empty($row['title']) ? $row['title'] : $row['url'];
                         }
                     }
-                    if (!$event_link || empty($event_link['url'])) continue;
+                    if (!$event_link || empty($event_link['url'])) {
+                        continue;
+                    }
                     $target = !empty($event_link['target']) ? $event_link['target'] : '_self';
-                ?>
+                    ?>
                     <a href="<?php echo esc_url($event_link['url']); ?>" class="resources-hub__card"<?php echo ($target !== '_self') ? ' target="' . esc_attr($target) . '" rel="noopener"' : ''; ?>>
                         <div class="resources-hub__card-data">
                             <h3 class="resources-hub__card-title"><?php echo esc_html($event_title); ?></h3>
