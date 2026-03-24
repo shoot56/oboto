@@ -34,7 +34,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
     <section id="<?php echo esc_attr($id); ?>" <?php echo $wrapper_attributes; ?>>
         <?php $postTypeObj = get_post_type_object(get_post_type());  ?>
 
-        <a href="<?= get_post_type() == "post" ? "/blog" : "/" . get_post_type(); ?>" class="back-link">
+        <a href="<?= get_post_type() === 'post' ? '/blog/' : '/' . get_post_type() . '/'; ?>" class="back-link">
             <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 28 28" fill="none">
                 <path d="M23.625 14H4.375" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M12.25 6.125L4.375 14L12.25 21.875" stroke="white" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" />
