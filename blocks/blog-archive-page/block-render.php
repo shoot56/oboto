@@ -19,11 +19,11 @@ if (isset($block['data']['preview_image_help'])) :
     $file_url = str_replace(get_stylesheet_directory(), '', dirname(__FILE__));
     echo '<img src="' . get_stylesheet_directory_uri() . $file_url . '/' . $block['data']['preview_image_help'] . '" style="width:100%; height:auto;">';
 else :
-    global $wp_query;
     $current_page = oboto_blog_archive_get_current_page();
     $current_category_slug = oboto_blog_archive_get_current_category_slug();
     $terms = oboto_blog_archive_get_filter_terms();
     $current_category = is_category() ? get_queried_object() : null;
+    $posts_query = oboto_blog_archive_get_display_query();
     $current_category_name = '';
     $current_category_description = '';
     $archive_title = '';
@@ -78,9 +78,9 @@ else :
         </ul>
 
         <div class="blog_list">
-            <?php echo oboto_blog_archive_render_posts_markup($wp_query); ?>
+            <?php echo oboto_blog_archive_render_posts_markup($posts_query); ?>
         </div>
 
-        <?php echo oboto_blog_archive_render_pagination($wp_query); ?>
+        <?php echo oboto_blog_archive_render_pagination($posts_query); ?>
     </section>
 <?php endif; ?>

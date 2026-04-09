@@ -69,6 +69,21 @@ function oboto_blog_archive_get_query_args($categories = array(), $paged = 1)
     );
 }
 
+function oboto_blog_archive_get_display_query()
+{
+    $current_page = oboto_blog_archive_get_current_page();
+
+    if (is_category()) {
+        $current_category_slug = oboto_blog_archive_get_current_category_slug();
+
+        if ($current_category_slug !== '') {
+            return new WP_Query(oboto_blog_archive_get_query_args(array($current_category_slug), $current_page));
+        }
+    }
+
+    return new WP_Query(oboto_blog_archive_get_query_args(array(), $current_page));
+}
+
 function oboto_blog_archive_get_current_page()
 {
     $paged = max(1, (int) get_query_var('paged'));
