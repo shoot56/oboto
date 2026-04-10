@@ -1,26 +1,26 @@
 jQuery(document).ready(function ($) {
-  let currentCategory = "all";
-  let currentPage = 1;
+  const ajaxUrl =
+    window.obotoLearningCenterArchive?.ajaxUrl || "/wp-admin/admin-ajax.php";
 
-  // Initialize from server-rendered active category (taxonomy pages)
-  const $initialActive = $(".learning-center-archive-block .learning-center-archive__category.active").first();
-  if ($initialActive.length) {
-    const initialSlug = $initialActive.data("category");
-    if (initialSlug) {
-      currentCategory = initialSlug;
-    }
+  function isAjaxMode($block) {
+    return ($block.attr("data-navigation-mode") || "ajax") === "ajax";
   }
 
   // Category filter click handler
   $(document).on(
     "click",
-    ".learning-center-archive__category",
+    "button.learning-center-archive__category",
     function (e) {
-      e.preventDefault();
-
       const $category = $(this);
       const categorySlug = $category.data("category");
       const $block = $category.closest(".learning-center-archive-block");
+
+      if (!isAjaxMode($block)) {
+        return;
+      }
+
+      e.preventDefault();
+
       const $list = $block.find(".learning-center-archive__list");
       const $loadMoreBtn = $block.find(".learning-center-archive__load-more");
 
@@ -30,16 +30,12 @@ jQuery(document).ready(function ($) {
         .removeClass("active");
       $category.addClass("active");
 
-      // Update current category
-      currentCategory = categorySlug;
-      currentPage = 1;
-
       // Show loading state
       $list.css("opacity", "0.5");
 
       // AJAX request to filter posts
       $.ajax({
-        url: "/wp-admin/admin-ajax.php",
+        url: ajaxUrl,
         type: "POST",
         data: {
           action: "filter_learning_center_archive",
@@ -92,13 +88,16 @@ jQuery(document).ready(function ($) {
 
       const $btn = $(this);
       const $block = $btn.closest(".learning-center-archive-block");
+
+      if (!isAjaxMode($block)) {
+        return;
+      }
+
       const $list = $block.find(".learning-center-archive__list");
       const currentPage = parseInt($btn.data("current-page")) || 1;
       const maxPage = parseInt($btn.data("max-page")) || 1;
       const nextPage = currentPage + 1;
-      // Prefer per-button category if present
-      const btnCategory = $btn.data("current-category");
-      const effectiveCategory = btnCategory ? btnCategory : currentCategory;
+      const effectiveCategory = $btn.data("current-category") || "all";
 
       if (nextPage > maxPage) {
         return;
@@ -111,7 +110,7 @@ jQuery(document).ready(function ($) {
 
       // AJAX request to load more posts
       $.ajax({
-        url: "/wp-admin/admin-ajax.php",
+        url: ajaxUrl,
         type: "POST",
         data: {
           action: "load_more_learning_center_archive",

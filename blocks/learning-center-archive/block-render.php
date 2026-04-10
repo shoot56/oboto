@@ -29,7 +29,13 @@ $wrapper_attributes = get_block_wrapper_attributes([
     echo '<img src="' . get_stylesheet_directory_uri() . $fileUrl . '/' . $block['data']['preview_image_help'] . '" style="width:100%; height:auto;">';
     ?>
 <?php else : ?>
-    <section id="<?php echo esc_attr($id); ?>" <?php echo $wrapper_attributes; ?>>
+    <?php
+    $navigation_mode = get_field('navigation_mode');
+    if ($navigation_mode !== 'pagination') {
+        $navigation_mode = 'ajax';
+    }
+    ?>
+    <section id="<?php echo esc_attr($id); ?>" <?php echo $wrapper_attributes; ?> data-navigation-mode="<?php echo esc_attr($navigation_mode); ?>">
         <?php
         // If we are on a taxonomy archive, pre-select that term.
         $current_term_slug = '';
@@ -48,6 +54,9 @@ $wrapper_attributes = get_block_wrapper_attributes([
             }
         }
         $show_category_name = (bool) get_field('show_category_name');
+        $current_page = learning_center_archive_get_current_page();
+        $archive_url = get_post_type_archive_link('learning-center');
+        $the_query = new WP_Query(learning_center_archive_get_query_args($current_term_slug, $current_page));
         ?>
         <div class="learning-center-archive-block__header">
             <h1>Learning Center</h1>
@@ -79,7 +88,7 @@ $wrapper_attributes = get_block_wrapper_attributes([
                         $children_map[$parent_id][] = $t;
                     }
 
-                    $render_tree = function ($parent_id, $depth) use (&$render_tree, $children_map, $current_term_id, $current_term_ancestors, $current_term_slug) {
+                    $render_tree = function ($parent_id, $depth) use (&$render_tree, $children_map, $current_term_id, $current_term_ancestors, $current_term_slug, $navigation_mode) {
                         if (empty($children_map[$parent_id])) {
                             return;
                         }
@@ -96,10 +105,19 @@ $wrapper_attributes = get_block_wrapper_attributes([
                             echo '<li class="learning-center-archive__term' . ($has_children ? ' has-children' : '') . ($is_open ? ' is-open' : '') . '">';
                             echo '<div class="learning-center-archive__term-row">';
 
-                            // Clickable label (filters)
-                            echo '<button type="button" class="learning-center-archive__category' . ($is_active ? ' active' : '') . '" data-category="' . esc_attr($term->slug) . '" data-term-id="' . esc_attr($term_id) . '">';
-                            echo esc_html($term->name);
-                            echo '</button>';
+                            if ($navigation_mode === 'pagination') {
+                                $term_link = get_term_link($term);
+
+                                if (!is_wp_error($term_link)) {
+                                    echo '<a class="learning-center-archive__category' . ($is_active ? ' active' : '') . '" href="' . esc_url($term_link) . '" data-term-id="' . esc_attr($term_id) . '">';
+                                    echo esc_html($term->name);
+                                    echo '</a>';
+                                }
+                            } else {
+                                echo '<button type="button" class="learning-center-archive__category' . ($is_active ? ' active' : '') . '" data-category="' . esc_attr($term->slug) . '" data-term-id="' . esc_attr($term_id) . '">';
+                                echo esc_html($term->name);
+                                echo '</button>';
+                            }
 
                             // Toggle caret (expand/collapse)
                             if ($has_children) {
@@ -120,7 +138,11 @@ $wrapper_attributes = get_block_wrapper_attributes([
                     ?>
 
                     <div class="learning-center-archive__tree">
-                        <button type="button" class="learning-center-archive__category learning-center-archive__category--all <?php echo $current_term_slug === '' ? 'active' : ''; ?>" data-category="all">All</button>
+                        <?php if ($navigation_mode === 'pagination' && $archive_url) : ?>
+                            <a class="learning-center-archive__category learning-center-archive__category--all <?php echo $current_term_slug === '' ? 'active' : ''; ?>" href="<?php echo esc_url($archive_url); ?>">All</a>
+                        <?php else : ?>
+                            <button type="button" class="learning-center-archive__category learning-center-archive__category--all <?php echo $current_term_slug === '' ? 'active' : ''; ?>" data-category="all">All</button>
+                        <?php endif; ?>
                         <?php $render_tree(0, 0); ?>
                     </div>
                 <?php endif; ?>
@@ -128,59 +150,15 @@ $wrapper_attributes = get_block_wrapper_attributes([
 
             <!-- Main content area -->
             <div class="learning-center-archive-content">
-                <?php
-                $args = array(
-                    'post_type' => 'learning-center',
-                    'post_status' => array('publish'),
-                    'posts_per_page' => 12,
-                );
-                if ($current_term_slug !== '') {
-                    $args['tax_query'] = array(
-                        array(
-                            'taxonomy' => 'learning-center-category',
-                            'field'    => 'slug',
-                            'terms'    => $current_term_slug,
-                        ),
-                    );
-                }
-                $the_query = new WP_Query($args);
-                ?>
-
                 <?php if ($the_query->have_posts()) : ?>
                     <div class="learning-center-archive__list">
-                        <?php
-                        while ($the_query->have_posts()) :
-                            $the_query->the_post();
-                            $post_id = get_the_ID();
-                        ?>
-                            <a class="learning-center-archive__item" href="<?= get_permalink($post_id); ?>">
-                                <figure class="learning-center-archive__image">
-                                    <?php $url = wp_get_attachment_url(get_post_thumbnail_id($post_id), 'thumbnail'); ?>
-                                    <?php if ($url) : ?>
-                                        <img src="<?php echo esc_url($url) ?>" alt="<?php echo esc_attr(get_the_title()); ?>" />
-                                    <?php endif; ?>
-                                </figure>
-                                <div class="learning-center-archive__data">
-                                    <h3><?= get_the_title(); ?></h3>
-                                    <p class="learning-center-archive__description">
-                                        <?= get_the_excerpt($post_id); ?>
-                                    </p>
-                                    <div class="btn btn--no-border">
-                                        <span>Read More</span>
-                                        <span class="icon">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                                                <path d="M18 18V6M18 6H6M18 6L6 17.9998" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
-                                            </svg>
-                                        </span>
-                                    </div>
-                                </div>
-                            </a>
-                        <?php endwhile; ?>
-                        <?php wp_reset_postdata(); ?>
+                        <?php echo learning_center_archive_render_posts_markup($the_query); ?>
                     </div>
-                    
-                    <?php if ($the_query->max_num_pages > 1) : ?>
-                        <button class="learning-center-archive__load-more btn btn--outline" data-max-page="<?= $the_query->max_num_pages ?>" data-current-page="1" data-current-category="<?= esc_attr($current_term_slug !== '' ? $current_term_slug : 'all'); ?>">
+
+                    <?php if ($navigation_mode === 'pagination') : ?>
+                        <?php echo learning_center_archive_render_pagination($the_query); ?>
+                    <?php elseif ($the_query->max_num_pages > 1) : ?>
+                        <button class="learning-center-archive__load-more btn btn--outline" data-max-page="<?= $the_query->max_num_pages ?>" data-current-page="<?= esc_attr($current_page); ?>" data-current-category="<?= esc_attr($current_term_slug !== '' ? $current_term_slug : 'all'); ?>">
                             <span>Load more</span>
                             <span class="icon">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
@@ -193,6 +171,10 @@ $wrapper_attributes = get_block_wrapper_attributes([
                     <div class="learning-center-archive__list">
                         <p><?php esc_html_e('Sorry, no posts matched your criteria.'); ?></p>
                     </div>
+
+                    <?php if ($navigation_mode === 'pagination') : ?>
+                        <?php echo learning_center_archive_render_pagination($the_query); ?>
+                    <?php endif; ?>
                 <?php endif; ?>
             </div>
             
