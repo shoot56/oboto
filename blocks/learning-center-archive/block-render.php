@@ -64,11 +64,11 @@ $wrapper_attributes = get_block_wrapper_attributes([
             <h1>Obot Learning Center</h1>
             <?php if ($show_category_name && $current_term_name !== '') : ?>
                 <h2 class="learning-center-archive-block__category-title"><?php echo esc_html($current_term_name); ?></h2>
-            <?php endif; ?>
-            <?php if ($current_term_description !== '') : ?>
-                <div class="learning-center-archive-block__description">
-                    <?php echo wp_kses_post($current_term_description); ?>
-                </div>
+                <?php if ($current_term_description !== '') : ?>
+                    <div class="learning-center-archive-block__description">
+                        <?php echo wp_kses_post($current_term_description); ?>
+                    </div>
+                <?php endif; ?>
             <?php endif; ?>
         </div>
         <div class="learning-center-archive-layout">

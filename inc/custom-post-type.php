@@ -105,7 +105,7 @@ function register_learning_center_post_type(){
         'show_admin_column' => true,
         'query_var'         => 'learning-center-category',
         'rewrite'           => array(
-            'slug'       => 'resources/learning-center/category',
+            'slug'       => 'learning-center/category',
             'with_front' => false
         ),
     );
@@ -116,4 +116,3 @@ function register_learning_center_post_type(){
 }
 
 add_action('init', 'register_learning_center_post_type');
-
