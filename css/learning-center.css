@@ -48,3 +48,30 @@
 .learning-center-archive-block .learning-center-archive__page-link.dots {
   pointer-events: none;
 }
+
+.learning-center-archive-block .learning-center-archive-block__description {
+  max-width: 760px;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.5;
+  color: #9d9d9d;
+}
+
+.learning-center-archive-block .learning-center-archive-block__description p:last-child {
+  margin-bottom: 0;
+}
+
+.learning-center-archive-block .learning-center-archive-block__category-title {
+  margin-bottom: 12px;
+}
+
+.learning-center-archive-block .learning-center-archive-block__header {
+  margin-bottom: 60px;
+}
+
+@media only screen and (max-width: 767px) {
+  .learning-center-archive-block .learning-center-archive-block__description {
+    font-size: 16px;
+  }
+}
