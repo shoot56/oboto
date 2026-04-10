@@ -55,20 +55,25 @@ $wrapper_attributes = get_block_wrapper_attributes([
                 }
             }
         }
-        $show_category_name = (bool) get_field('show_category_name');
         $current_page = learning_center_archive_get_current_page();
         $archive_url = get_post_type_archive_link('learning-center');
         $the_query = new WP_Query(learning_center_archive_get_query_args($current_term_slug, $current_page));
+        $archive_title = 'Obot Learning Center';
+
+        if ($current_term_name !== '') {
+            $archive_title = $current_page > 1
+                ? sprintf('%s - Page %d', $current_term_name, $current_page)
+                : $current_term_name;
+        } elseif ($current_page > 1) {
+            $archive_title = sprintf('Obot Learning Center - Page %d', $current_page);
+        }
         ?>
         <div class="learning-center-archive-block__header">
-            <h1>Obot Learning Center</h1>
-            <?php if ($show_category_name && $current_term_name !== '') : ?>
-                <h2 class="learning-center-archive-block__category-title"><?php echo esc_html($current_term_name); ?></h2>
-                <?php if ($current_term_description !== '') : ?>
-                    <div class="learning-center-archive-block__description">
-                        <?php echo wp_kses_post($current_term_description); ?>
-                    </div>
-                <?php endif; ?>
+            <h1><?php echo esc_html($archive_title); ?></h1>
+            <?php if ($current_term_description !== '') : ?>
+                <div class="learning-center-archive-block__description">
+                    <?php echo wp_kses_post($current_term_description); ?>
+                </div>
             <?php endif; ?>
         </div>
         <div class="learning-center-archive-layout">
