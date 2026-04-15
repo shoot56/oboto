@@ -248,15 +248,15 @@ add_action('enqueue_block_editor_assets', 'mytheme_register_block_styles');
  * Learning Center URLs
  *
  * The Learning Center now uses the dedicated CPT `learning-center` with the rewrite
- * slug `resources/learning-center`. Old category-based rewrite rules would hijack
- * those URLs and cause 404s, so they are removed.
+ * slug `resources/learning-center` for single posts and `/learning-center/category/...`
+ * for taxonomy archives.
  *
  * We also flush rewrite rules once per "rewrite version" after this change.
  */
 add_action('init', function () {
     // Bump this string whenever Learning Center CPT/taxonomy rewrites change.
     // This avoids having to manually visit Permalinks settings.
-    $rewrite_version = 'lc_rewrite_v3_resources_learning_center_and_taxonomy';
+    $rewrite_version = 'lc_rewrite_v4_learning_center_taxonomy_archive_path';
 
     if (get_option('oboto_learning_center_rewrite_flushed') === $rewrite_version) {
         return;
@@ -271,7 +271,7 @@ add_action('init', function () {
  *
  * Some environments may keep stale rewrite rules despite a flush. This ensures
  * Learning Center category URLs keep working:
- * /resources/learning-center/category/{term}/
+ * /learning-center/category/{term}/
  */
 add_filter('option_rewrite_rules', function ($rules) {
     // Ensure Learning Center taxonomy archives work even if DB rewrite rules are stale.
@@ -280,8 +280,8 @@ add_filter('option_rewrite_rules', function ($rules) {
     }
 
     $lc_rules = [
-        // /resources/learning-center/category/{term}/
-        'resources/learning-center/category/([^/]+)/?$' => 'index.php?learning-center-category=$matches[1]',
+        // /learning-center/category/{term}/
+        'learning-center/category/([^/]+)/?$' => 'index.php?learning-center-category=$matches[1]',
     ];
 
     // Prepend so it takes priority over more generic rules.

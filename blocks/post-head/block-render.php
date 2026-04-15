@@ -44,6 +44,9 @@ $wrapper_attributes = get_block_wrapper_attributes([
 
         <?php
         $categories = get_the_category();
+        $post_type = get_post_type();
+        $meta_taxonomy = $post_type === 'post' ? 'category' : 'learning-center-category';
+        $meta_terms = get_the_terms(get_the_ID(), $meta_taxonomy);
         ?>
 
 
@@ -55,6 +58,15 @@ $wrapper_attributes = get_block_wrapper_attributes([
         <?php endif; ?>
 
         <p class="post-meta post-head_date_auth">
+            <?php if (!empty($meta_terms) && !is_wp_error($meta_terms)) : ?>
+                Category:
+                <?php foreach ($meta_terms as $index => $term) : ?>
+                    <a href="<?php echo esc_url(get_term_link($term)); ?>">
+                        <?php echo esc_html($term->name); ?>
+                    </a><?php echo $index < count($meta_terms) - 1 ? ', ' : ''; ?>
+                <?php endforeach; ?>
+                <br>
+            <?php endif; ?>
             Published: <time datetime="<?php echo esc_attr(get_the_date('c', get_the_ID())); ?>"><?php echo esc_html(get_the_date('', get_the_ID())); ?></time><br>
             Last Updated: <time datetime="<?php echo esc_attr(get_the_modified_date('c', get_the_ID())); ?>"><?php echo esc_html(get_the_modified_date('', get_the_ID())); ?></time>
             <span> by

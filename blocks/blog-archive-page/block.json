@@ -1,0 +1,17 @@
+{
+  "name": "oboto/blog-archive-page",
+  "title": "Blog Archive Page",
+  "description": "Blog archive page block for the posts page template.",
+  "category": "theme_block_category",
+  "icon": "list-view",
+  "keywords": ["blog", "archive", "posts"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": true,
+    "anchor": true
+  },
+  "style": ["blog-archive-page"]
+}

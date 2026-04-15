@@ -1,7 +1,7 @@
 {
   "name": "oboto/learning-center-archive",
   "title": "Learning Center Archive",
-  "description": "Archive block for Learning Center with category filter and AJAX load more",
+  "description": "Archive block for Learning Center with category filter, AJAX load more, or pagination",
   "category": "theme_block_category",
   "icon": "list-view",
   "keywords": ["Learning Center", "Archive", "Filter"],
