@@ -223,7 +223,9 @@ pre.wp-block-code {
 code[class*="language-"],
 pre[class*="language-"] {
     position: relative;
-    white-space: normal !important;
+    white-space: pre-wrap !important;
+    word-break: normal;
+    overflow-wrap: normal;
 }
 
 .site-header {
