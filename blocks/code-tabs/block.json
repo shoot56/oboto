@@ -8,6 +8,7 @@
   "keywords": ["code", "syntax", "shiki"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "supports": {

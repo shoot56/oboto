@@ -1,10 +1,10 @@
 /*
  * Client-side syntax highlighting for the Code Tabs block.
- * Shiki is loaded lazily from CDN because this theme has no JS bundling pipeline.
+ * Shiki is loaded lazily from a local bundle.
  */
 (function () {
   const BLOCK_SELECTOR = "[data-code-tabs]";
-  const SHIKI_URL = "https://esm.sh/shiki@4.0.2";
+  const SHIKI_URL = window.codeTabsConfig?.shikiUrl || "";
   const DEFAULT_THEME = "github-dark";
   const LANGUAGE_ALIASES = {
     js: "javascript",
@@ -23,7 +23,6 @@
 
   let shikiModulePromise = null;
   let highlighterPromise = null;
-  const loadedLanguages = new Set(["text"]);
 
   function normalizeLanguage(language) {
     const normalized = String(language || "text").trim().toLowerCase();
@@ -36,6 +35,11 @@
 
   function getShikiModule() {
     if (!shikiModulePromise) {
+      if (!SHIKI_URL) {
+        shikiModulePromise = Promise.reject(new Error("Missing local Shiki bundle URL."));
+        return shikiModulePromise;
+      }
+
       shikiModulePromise = import(SHIKI_URL);
     }
 
@@ -44,10 +48,9 @@
 
   async function getHighlighter() {
     if (!highlighterPromise) {
-      highlighterPromise = getShikiModule().then(({ createHighlighter }) =>
-        createHighlighter({
-          themes: [DEFAULT_THEME],
-          langs: ["text"],
+      highlighterPromise = getShikiModule().then(({ createCodeTabsHighlighter }) =>
+        createCodeTabsHighlighter({
+          defaultTheme: DEFAULT_THEME,
         })
       );
     }
@@ -58,17 +61,26 @@
   async function ensureLanguage(highlighter, language) {
     const normalized = normalizeLanguage(language);
 
-    if (loadedLanguages.has(normalized)) {
-      return normalized;
-    }
-
     try {
-      await highlighter.loadLanguage(normalized);
-      loadedLanguages.add(normalized);
-      return normalized;
+      const resolvedLanguage = await highlighter.ensureLanguage(normalized);
+
+      if (normalized !== "text" && resolvedLanguage === "text") {
+        console.warn("[code-tabs] Unsupported local Shiki language:", normalized);
+      }
+
+      return resolvedLanguage;
     } catch (error) {
-      console.warn("[code-tabs] Failed to load Shiki language:", normalized, error);
+      console.warn("[code-tabs] Failed to load Shiki language:", language, error);
       return "text";
+    }
+  }
+
+  async function ensureTheme(highlighter, theme) {
+    try {
+      return await highlighter.ensureTheme(theme);
+    } catch (error) {
+      console.warn("[code-tabs] Failed to load Shiki theme:", theme, error);
+      return DEFAULT_THEME;
     }
   }
 
@@ -90,9 +102,10 @@
     try {
       const highlighter = await getHighlighter();
       const language = await ensureLanguage(highlighter, panel.dataset.language);
+      const resolvedTheme = await ensureTheme(highlighter, theme);
       const html = highlighter.codeToHtml(code, {
         lang: language,
-        theme,
+        theme: resolvedTheme,
       });
 
       output.innerHTML = html;
