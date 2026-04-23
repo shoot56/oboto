@@ -1,0 +1,269 @@
+@import "variable";
+
+.code-tabs {
+  margin: 0;
+
+  &__shell {
+    background: $main-black;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 24px;
+    box-shadow: 0 18px 40px rgba(1, 4, 9, 0.36);
+    overflow: hidden;
+  }
+
+  &__empty {
+    padding: 20px 24px;
+    border: 1px dashed rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    color: $grayscale400;
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  &__tablist {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-width: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  &__tab {
+    position: relative;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    color: $grayscale300;
+    cursor: pointer;
+    flex: 0 0 auto;
+    font: inherit;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 0;
+    padding: 18px 12px 14px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      color: $grayscale100;
+      outline: none;
+    }
+
+    &.is-active {
+      border-bottom-color: $grayscale100;
+      color: $grayscale100;
+      font-weight: 600;
+    }
+  }
+
+  &__copy {
+    align-items: center;
+    appearance: none;
+    background: transparent;
+    border: 0;
+    border-radius: 10px;
+    color: $grayscale400;
+    cursor: pointer;
+    display: inline-flex;
+    flex: 0 0 auto;
+    justify-content: center;
+    line-height: 1;
+    margin: 0;
+    min-width: 40px;
+    min-height: 40px;
+    padding: 8px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(255, 255, 255, 0.08);
+      color: $grayscale100;
+      outline: none;
+    }
+
+    &.is-copied {
+      .code-tabs__copy-icon-copy {
+        display: none;
+      }
+
+      .code-tabs__copy-icon-check {
+        display: block;
+      }
+    }
+  }
+
+  &__copy-icon {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    position: relative;
+    width: 20px;
+    height: 20px;
+
+    svg {
+      inset: 0;
+      position: absolute;
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  &__copy-icon-copy {
+    display: block;
+  }
+
+  &__copy-icon-check {
+    display: none;
+  }
+
+  &__panel[hidden] {
+    display: none;
+  }
+
+  &__editor {
+    display: grid;
+    grid-template-columns: 60px minmax(0, 1fr);
+  }
+
+  &__lines {
+    border-right: 1px solid rgba(255, 255, 255, 0.12);
+    color: $grayscale400;
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.4;
+    padding: 20px 0 20px 14px;
+    text-align: right;
+    user-select: none;
+
+    span {
+      display: block;
+      padding-right: 14px;
+    }
+  }
+
+  &__code {
+    min-width: 0;
+    overflow: auto;
+    padding: 20px 20px 20px 16px;
+
+    .shiki {
+      background: transparent !important;
+    }
+  }
+
+  &__fallback {
+    background: transparent !important;
+    color: $grayscale100;
+  }
+
+  &__fallback,
+  &__code .shiki {
+    font-family: Consolas, Monaco, "Andale Mono", "Ubuntu Mono", monospace;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.4;
+    margin: 0 !important;
+    min-width: max-content;
+    padding: 0 !important;
+    border-radius: 0;
+    white-space: pre;
+  }
+
+  &__fallback code,
+  &__code .shiki code {
+    color: inherit;
+    cursor: text;
+    display: block;
+    font-family: inherit;
+    font-size: inherit;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    padding-right: 0;
+    pointer-events: auto;
+    position: static;
+
+    &::before {
+      display: none;
+    }
+  }
+
+  &__code .shiki,
+  &__code .shiki code {
+    line-height: 1.4 !important;
+  }
+
+  &__code .shiki .line {
+    display: inline-block;
+    height: 19.6px;
+    line-height: 19.6px !important;
+    vertical-align: top;
+  }
+
+  &__code .shiki .line span {
+    line-height: 19.6px !important;
+  }
+
+  @include mobile {
+    &__header {
+      align-items: center;
+      flex-direction: row;
+      padding: 0 12px;
+    }
+
+    &__tablist {
+      flex: 1 1 auto;
+    }
+
+    &__tab {
+      font-size: 14px;
+      padding: 14px 10px 12px;
+    }
+
+    &__copy {
+      align-self: auto;
+      flex: 0 0 auto;
+      margin-left: auto;
+      margin-bottom: 0;
+    }
+
+    &__editor {
+      grid-template-columns: 48px minmax(0, 1fr);
+    }
+
+    &__lines {
+      font-size: 14px;
+      padding: 20px 0 20px 8px;
+
+      span {
+        padding-right: 10px;
+      }
+    }
+
+    &__code {
+      padding: 20px 16px 20px 12px;
+    }
+
+    &__fallback,
+    &__code .shiki {
+      font-size: 14px;
+    }
+  }
+}

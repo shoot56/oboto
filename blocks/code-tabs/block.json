@@ -1,0 +1,22 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "name": "oboto/code-tabs",
+  "title": "Code Tabs",
+  "description": "Code snippets with language tabs and Shiki syntax highlighting.",
+  "category": "theme_block_category",
+  "icon": "editor-code",
+  "keywords": ["code", "syntax", "shiki"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "spacing": {
+      "margin": true
+    }
+  },
+  "style": ["code-tabs"],
+  "script": ["code-tabs-script"]
+}

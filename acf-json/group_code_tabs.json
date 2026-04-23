@@ -1,0 +1,162 @@
+{
+  "key": "group_code_tabs",
+  "title": "Block: Code Tabs",
+  "fields": [
+    {
+      "key": "field_code_tabs_items",
+      "label": "Tabs",
+      "name": "tabs",
+      "aria-label": "",
+      "type": "repeater",
+      "instructions": "Add one snippet per language tab.",
+      "required": 1,
+      "conditional_logic": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "layout": "block",
+      "pagination": 0,
+      "min": 1,
+      "max": 0,
+      "collapsed": "field_code_tabs_language",
+      "button_label": "Add Code Tab",
+      "rows_per_page": 20,
+      "sub_fields": [
+        {
+          "key": "field_code_tabs_tab_label",
+          "label": "Tab Label",
+          "name": "tab_label",
+          "aria-label": "",
+          "type": "text",
+          "instructions": "Optional. If left empty, the selected language name will be used.",
+          "required": 0,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "40",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "JavaScript",
+          "prepend": "",
+          "append": "",
+          "parent_repeater": "field_code_tabs_items"
+        },
+        {
+          "key": "field_code_tabs_language",
+          "label": "Language",
+          "name": "language",
+          "aria-label": "",
+          "type": "select",
+          "instructions": "",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "25",
+            "class": "",
+            "id": ""
+          },
+          "choices": {
+            "bash": "Bash / Shell",
+            "css": "CSS",
+            "html": "HTML",
+            "javascript": "JavaScript",
+            "json": "JSON",
+            "jsx": "JSX",
+            "markdown": "Markdown",
+            "php": "PHP",
+            "python": "Python",
+            "scss": "SCSS",
+            "sql": "SQL",
+            "text": "Plain text",
+            "tsx": "TSX",
+            "typescript": "TypeScript",
+            "xml": "XML",
+            "yaml": "YAML",
+            "custom": "Custom Shiki language ID"
+          },
+          "default_value": "javascript",
+          "return_format": "value",
+          "multiple": 0,
+          "allow_null": 0,
+          "ui": 0,
+          "ajax": 0,
+          "placeholder": "",
+          "parent_repeater": "field_code_tabs_items"
+        },
+        {
+          "key": "field_code_tabs_custom_language",
+          "label": "Custom Language ID",
+          "name": "custom_language",
+          "aria-label": "",
+          "type": "text",
+          "instructions": "Use a Shiki language ID exactly as documented, for example `go` or `rust`.",
+          "required": 1,
+          "conditional_logic": [
+            [
+              {
+                "field": "field_code_tabs_language",
+                "operator": "==",
+                "value": "custom"
+              }
+            ]
+          ],
+          "wrapper": {
+            "width": "35",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "go",
+          "prepend": "",
+          "append": "",
+          "parent_repeater": "field_code_tabs_items"
+        },
+        {
+          "key": "field_code_tabs_code",
+          "label": "Code",
+          "name": "code",
+          "aria-label": "",
+          "type": "textarea",
+          "instructions": "Paste the full code snippet here.",
+          "required": 1,
+          "conditional_logic": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "rows": 16,
+          "placeholder": "const client = new ElevenLabsClient();",
+          "new_lines": "",
+          "parent_repeater": "field_code_tabs_items"
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "oboto\/code-tabs"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "",
+  "show_in_rest": 0,
+  "modified": 1776854828
+}
