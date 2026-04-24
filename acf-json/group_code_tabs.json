@@ -61,6 +61,7 @@
           },
           "choices": {
             "bash": "Bash / Shell",
+            "csharp": ".NET / C#",
             "css": "CSS",
             "html": "HTML",
             "javascript": "JavaScript",
@@ -69,6 +70,7 @@
             "markdown": "Markdown",
             "php": "PHP",
             "python": "Python",
+            "rust": "Rust",
             "scss": "SCSS",
             "sql": "SQL",
             "text": "Plain text",

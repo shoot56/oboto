@@ -22,6 +22,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 
 $language_labels = array(
 	'bash'       => 'Bash',
+	'csharp'     => '.NET',
 	'css'        => 'CSS',
 	'html'       => 'HTML',
 	'javascript' => 'JavaScript',
@@ -30,6 +31,7 @@ $language_labels = array(
 	'markdown'   => 'Markdown',
 	'php'        => 'PHP',
 	'python'     => 'Python',
+	'rust'       => 'Rust',
 	'scss'       => 'SCSS',
 	'sql'        => 'SQL',
 	'text'       => 'Plain text',

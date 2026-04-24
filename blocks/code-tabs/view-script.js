@@ -9,6 +9,10 @@
   const LANGUAGE_ALIASES = {
     js: "javascript",
     ts: "typescript",
+    cs: "csharp",
+    "c#": "csharp",
+    ".net": "csharp",
+    dotnet: "csharp",
     yml: "yaml",
     md: "markdown",
     plaintext: "text",
