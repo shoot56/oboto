@@ -114,3 +114,17 @@ footer {
     }
   }
 }
+
+.site-footer > :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  padding-inline: 28px;
+  .alignfull {
+    margin-inline: -28px;
+
+    @include mobile {
+      margin-inline: -16px;
+    }
+  }
+  @include mobile {
+    padding-inline: 16px;
+  }
+}
