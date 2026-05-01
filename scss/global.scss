@@ -91,13 +91,11 @@ nav {
   }
 }
 
-body .is-layout-constrained> :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
-  padding-left: 28px;
-  padding-right: 28px;
+body .alignfull.is-layout-constrained> :where(:not(.alignleft):not(.alignright):not(.alignfull)) {
+  padding-inline: 28px;
 
   @include mobile {
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-inline: 16px;
   }
 }
 
