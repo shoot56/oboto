@@ -431,6 +431,7 @@ pre[class*="language-"] {
     transform: translate(-50%, -50%);
     max-width: 389;
     max-height: 540px;
+    pointer-events: none;
   }
 }
 
