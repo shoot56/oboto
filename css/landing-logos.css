@@ -118,7 +118,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-logos.obot
 }
 
 .obot-landing-logos__item:hover .obot-landing-logos__image {
-    opacity: 0.85;
+    opacity: 0.7;
 }
 
 .obot-landing-logos__text {
