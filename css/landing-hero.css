@@ -331,10 +331,6 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-hero.obot-
     transition: color 0.2s ease;
 }
 
-.obot-landing-hero__meta-link::after {
-    content: " ->";
-}
-
 .obot-landing-hero__meta-link:hover {
     color: #6b91f5;
 }
