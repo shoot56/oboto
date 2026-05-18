@@ -1,0 +1,266 @@
+.obot-landing-traction {
+    --landing-traction-blue: #4f7df3;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: clamp(64px, 7vw, 96px) clamp(24px, 4vw, 48px);
+    overflow: hidden;
+    background-color: #000;
+    color: #fff;
+}
+
+.obot-landing-traction.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-landing-traction.obot-landing-traction,
+body .is-layout-flow > .wp-block-oboto-landing-traction.obot-landing-traction,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-traction.obot-landing-traction {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-landing-traction__inner {
+    width: 100%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-landing-traction__header {
+    margin-bottom: 48px;
+    text-align: center;
+}
+
+.obot-landing-traction__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 8px 16px;
+    border: 1px solid rgba(79, 125, 243, 0.4);
+    border-radius: 999px;
+    background-color: rgba(79, 125, 243, 0.1);
+    color: var(--landing-traction-blue);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.obot-landing-traction__eyebrow-status {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.obot-landing-traction__eyebrow-pulse,
+.obot-landing-traction__eyebrow-dot {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background-color: var(--landing-traction-blue);
+}
+
+.obot-landing-traction__eyebrow-pulse {
+    opacity: 0.6;
+    animation: obotLandingTractionPing 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.obot-landing-traction__cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 24px;
+    margin: 0 0 48px;
+    padding: 0;
+    list-style: none;
+}
+
+.obot-landing-traction__card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 240px;
+    padding: 40px 28px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.03);
+    text-align: center;
+    backdrop-filter: blur(4px);
+    transition: border-color 300ms ease, transform 300ms ease;
+}
+
+.obot-landing-traction__card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(79, 125, 243, 0.4);
+}
+
+.obot-landing-traction__card-value {
+    margin-bottom: 16px;
+    color: #fff;
+    font-size: clamp(36px, 4.5vw, 56px);
+    font-weight: 700;
+    line-height: 1;
+    letter-spacing: 0;
+}
+
+.obot-landing-traction__card-text {
+    max-width: 24ch;
+    margin: 0 auto;
+    color: rgba(255, 255, 255, 0.65);
+    font-size: clamp(14px, 1vw, 16px);
+    line-height: 1.65;
+}
+
+.obot-landing-traction__quote {
+    position: relative;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: clamp(40px, 5vw, 56px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    box-shadow: 0 0 80px -20px rgba(79, 125, 243, 0.3);
+    backdrop-filter: blur(4px);
+}
+
+.obot-landing-traction__quote-icon {
+    position: absolute;
+    top: -28px;
+    left: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 8px;
+    background-color: var(--landing-traction-blue);
+    box-shadow: 0 8px 24px -4px rgba(79, 125, 243, 0.6);
+}
+
+.obot-landing-traction__quote-svg {
+    display: block;
+    fill: none;
+    stroke: #fff;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 2px;
+}
+
+.obot-landing-traction__quote-text {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent !important;
+    background-color: transparent !important;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.obot-landing-traction__quote-author {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.875rem;
+    line-height: 1.4;
+}
+
+.obot-landing-traction__quote-line {
+    width: 32px;
+    height: 1px;
+    background-color: var(--landing-traction-blue);
+}
+
+.obot-landing-traction__cards-placeholder,
+.obot-landing-traction__quote-placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 120px;
+    margin-bottom: 48px;
+    border: 1px dashed rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.obot-landing-traction__quote-placeholder {
+    max-width: 820px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+@keyframes obotLandingTractionPing {
+    75%,
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+@media (max-width: 991px) {
+    .obot-landing-traction__cards {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 767px) {
+    .obot-landing-traction {
+        padding: 64px 16px;
+    }
+
+    .obot-landing-traction__header {
+        margin-bottom: 40px;
+    }
+
+    .obot-landing-traction__cards {
+        gap: 16px;
+        margin-bottom: 48px;
+    }
+
+    .obot-landing-traction__card {
+        min-height: 200px;
+        padding: 32px 24px;
+    }
+
+    .obot-landing-traction__quote {
+        padding: 44px 24px 32px;
+    }
+
+    .obot-landing-traction__quote-icon {
+        left: 24px;
+        width: 48px;
+        height: 48px;
+    }
+
+    .obot-landing-traction__quote-text {
+        font-size: 1.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .obot-landing-traction__eyebrow-pulse {
+        animation: none !important;
+    }
+
+    .obot-landing-traction__card {
+        transition: none;
+    }
+}

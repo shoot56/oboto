@@ -1,0 +1,42 @@
+{
+  "name": "oboto/landing-video",
+  "title": "Landing Video",
+  "description": "Obot landing page video section with YouTube embed and three CTA buttons.",
+  "category": "obot_landing",
+  "icon": "format-video",
+  "keywords": ["landing", "video", "youtube", "cta", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["landing-video"],
+  "viewScript": ["landing-video-script"]
+}

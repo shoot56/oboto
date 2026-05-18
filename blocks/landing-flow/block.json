@@ -1,0 +1,41 @@
+{
+  "name": "oboto/landing-flow",
+  "title": "Landing Flow",
+  "description": "Obot landing page MCP traffic flow section with animated SVG and captions.",
+  "category": "obot_landing",
+  "icon": "networking",
+  "keywords": ["landing", "flow", "svg", "animation", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["landing-flow"]
+}

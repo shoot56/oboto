@@ -1,0 +1,41 @@
+{
+  "name": "oboto/landing-final-cta",
+  "title": "Landing Final CTA",
+  "description": "Obot landing page final CTA section with checklist, HubSpot form, and bottom links.",
+  "category": "obot_landing",
+  "icon": "megaphone",
+  "keywords": ["landing", "cta", "hubspot", "form", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["landing-final-cta"]
+}

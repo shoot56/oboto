@@ -2,6 +2,14 @@
 
 require_once get_template_directory() . '/inc/class-mcp-catalog-fetcher.php';
 
+if ( ! defined( 'OBOTO_LANDING_AOS_DURATION' ) ) {
+	define( 'OBOTO_LANDING_AOS_DURATION', 700 );
+}
+
+if ( ! defined( 'OBOTO_LANDING_AOS_OFFSET' ) ) {
+	define( 'OBOTO_LANDING_AOS_OFFSET', 80 );
+}
+
 // Setup acf gutenberg blocks
 if (function_exists('acf_register_block_type')) {
     add_action('acf/init', 'register_my_blocks');
@@ -27,11 +35,55 @@ function add_custom_block_categories( $categories, $post ) {
 		'title' => __( wp_get_theme()->get( 'Name' ) ),
 		'icon'  => 'admin-appearance',
 	);
+	$obot_landing_category = array(
+		'slug' => 'obot_landing',
+		'title' => __( 'Obot Landing', 'oboto' ),
+		'icon'  => 'cover-image',
+	);
 	array_unshift( $categories, $custom_category_one);
+	$categories[] = $obot_landing_category;
 
 	return $categories;
 }
 add_filter( 'block_categories_all', 'add_custom_block_categories', 10, 2 );
+
+function oboto_get_aos_attributes( $delay = 300 ) {
+	if ( ! function_exists( 'get_field' ) || (int) get_field( 'add_animation' ) !== 1 ) {
+		return '';
+	}
+
+	$animation = get_field( 'animations' );
+	if ( ! is_string( $animation ) || trim( $animation ) === '' ) {
+		return '';
+	}
+
+	$attributes = array(
+		'data-aos' => sanitize_key( $animation ),
+		'data-aos-delay' => absint( $delay ),
+		'data-aos-duration' => OBOTO_LANDING_AOS_DURATION,
+		'data-aos-offset' => OBOTO_LANDING_AOS_OFFSET,
+		'data-aos-mirror' => 'true',
+		'data-aos-once' => 'false',
+		'data-aos-easing' => 'ease-out',
+	);
+
+	$attribute_parts = array();
+	foreach ( $attributes as $name => $value ) {
+		$attribute_parts[] = sprintf( '%s="%s"', esc_attr( $name ), esc_attr( (string) $value ) );
+	}
+
+	return implode( ' ', $attribute_parts );
+}
+
+function oboto_the_aos_attributes( $delay = 300 ) {
+	$attributes = oboto_get_aos_attributes( $delay );
+
+	if ( $attributes === '' ) {
+		return;
+	}
+
+	echo ' ' . $attributes; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
 
 // Register pattern category
 if(function_exists('register_block_pattern_category')) {
