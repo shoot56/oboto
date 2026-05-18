@@ -1,0 +1,41 @@
+{
+  "name": "oboto/landing-alerts",
+  "title": "Landing Alerts",
+  "description": "Obot landing page threat monitor alert section.",
+  "category": "obot_landing",
+  "icon": "warning",
+  "keywords": ["landing", "alerts", "problem", "threat", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["landing-alerts"]
+}

@@ -1,0 +1,380 @@
+.obot-landing-capabilities {
+    --landing-capabilities-blue: #4f7df3;
+    position: relative;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: clamp(64px, 7vw, 96px) clamp(24px, 4vw, 48px);
+    overflow: hidden;
+    background: linear-gradient(135deg, #060a1f 0%, #0e1740 50%, #060a1f 100%);
+    color: #fff;
+}
+
+.obot-landing-capabilities.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-landing-capabilities.obot-landing-capabilities,
+body .is-layout-flow > .wp-block-oboto-landing-capabilities.obot-landing-capabilities,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-capabilities.obot-landing-capabilities {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-landing-capabilities__glow {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 40%;
+    height: 40%;
+    background: radial-gradient(ellipse at top right, rgba(79, 125, 243, 0.08), transparent 70%);
+    filter: blur(80px);
+    pointer-events: none;
+}
+
+.obot-landing-capabilities__inner {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-landing-capabilities__header {
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.obot-landing-capabilities__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    border: 1px solid rgba(79, 125, 243, 0.4);
+    border-radius: 999px;
+    background-color: rgba(79, 125, 243, 0.1);
+    color: var(--landing-capabilities-blue);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.obot-landing-capabilities__eyebrow-status {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.obot-landing-capabilities__eyebrow-pulse,
+.obot-landing-capabilities__eyebrow-dot {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background-color: var(--landing-capabilities-blue);
+}
+
+.obot-landing-capabilities__eyebrow-pulse {
+    opacity: 0.6;
+    animation: obotLandingCapabilitiesPing 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.obot-landing-capabilities__title {
+    margin: 0;
+    color: #fff;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+}
+
+.obot-landing-capabilities__tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+}
+
+.obot-landing-capabilities__tabs::-webkit-scrollbar {
+    display: none;
+}
+
+.obot-landing-capabilities__tab {
+    flex: 0 0 auto;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.03);
+    color: rgba(255, 255, 255, 0.65);
+    cursor: pointer;
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.25;
+    letter-spacing: 0;
+    white-space: nowrap;
+    transition: background-color 200ms ease, border-color 200ms ease, color 200ms ease;
+}
+
+.obot-landing-capabilities__tab:hover,
+.obot-landing-capabilities__tab:focus-visible,
+.obot-landing-capabilities__tab.is-active {
+    border-color: rgba(79, 125, 243, 0.7);
+    background-color: rgba(79, 125, 243, 0.18);
+    color: #fff;
+}
+
+.obot-landing-capabilities__progress {
+    position: relative;
+    height: 2px;
+    margin-bottom: 32px;
+    overflow: hidden;
+    border-radius: 2px;
+    background-color: rgba(255, 255, 255, 0.08);
+}
+
+.obot-landing-capabilities__progress-fill {
+    position: absolute;
+    inset: 0;
+    display: block;
+    background: linear-gradient(90deg, rgba(79, 125, 243, 0.4), var(--landing-capabilities-blue));
+    transform: scaleX(0);
+    transform-origin: left center;
+}
+
+.obot-landing-capabilities.is-progressing .obot-landing-capabilities__progress-fill {
+    animation: obotLandingCapabilitiesProgress 5000ms linear forwards;
+}
+
+.obot-landing-capabilities__panels {
+    position: relative;
+}
+
+.obot-landing-capabilities__panel {
+    overflow: hidden;
+    min-height: 340px;
+    padding: clamp(28px, 4vw, 48px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+    box-shadow: 0 30px 80px -30px rgba(79, 125, 243, 0.4);
+}
+
+.obot-landing-capabilities__panel[hidden] {
+    display: none;
+}
+
+.obot-landing-capabilities__panel.is-active .obot-landing-capabilities__panel-content {
+    animation: obotLandingCapabilitiesPanelIn 280ms ease-out;
+}
+
+.obot-landing-capabilities__panel-content {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    gap: 32px;
+}
+
+.obot-landing-capabilities__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(79, 125, 243, 0.4);
+    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(79, 125, 243, 0.3), rgba(79, 125, 243, 0.05));
+    box-shadow: 0 0 20px -4px rgba(79, 125, 243, 0.4);
+}
+
+.obot-landing-capabilities__icon svg,
+.obot-landing-capabilities__icon-image {
+    display: block;
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+}
+
+.obot-landing-capabilities__icon svg {
+    color: var(--landing-capabilities-blue);
+}
+
+.obot-landing-capabilities__panel-title {
+    margin: 0 0 16px;
+    color: #fff;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 1.18;
+    letter-spacing: 0;
+}
+
+.obot-landing-capabilities__text {
+    margin: 0 0 20px;
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.125rem;
+    line-height: 1.7;
+}
+
+.obot-landing-capabilities__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--landing-capabilities-blue);
+    font-size: 0.875rem;
+    font-weight: 500;
+    line-height: 1.4;
+    text-decoration: none;
+    transition: color 200ms ease;
+}
+
+.obot-landing-capabilities__link:hover,
+.obot-landing-capabilities__link:focus-visible {
+    color: #6b91f5;
+}
+
+.obot-landing-capabilities__link-arrow {
+    width: 14px;
+    height: 14px;
+    transform: translateY(-1px);
+}
+
+.obot-landing-capabilities__link-arrow::before,
+.obot-landing-capabilities__link-arrow::after {
+    content: "";
+    position: absolute;
+    background-color: currentColor;
+}
+
+.obot-landing-capabilities__link-arrow::before {
+    width: 10px;
+    height: 2px;
+    transform: translate(2px, 7px) rotate(-45deg);
+}
+
+.obot-landing-capabilities__link-arrow::after {
+    width: 7px;
+    height: 7px;
+    border-top: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+    background-color: transparent;
+    transform: translate(5px, 2px);
+}
+
+.obot-landing-capabilities__media {
+    width: 100%;
+    max-width: 380px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-landing-capabilities__media svg,
+.obot-landing-capabilities__image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.obot-landing-capabilities__media-placeholder,
+.obot-landing-capabilities__empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    border: 1px dashed rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+.obot-landing-capabilities__empty {
+    min-height: 160px;
+}
+
+@keyframes obotLandingCapabilitiesPing {
+    75%,
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+@keyframes obotLandingCapabilitiesProgress {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+@keyframes obotLandingCapabilitiesPanelIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 767px) {
+    .obot-landing-capabilities {
+        padding: 64px 16px;
+    }
+
+    .obot-landing-capabilities__header {
+        margin-bottom: 32px;
+    }
+
+    .obot-landing-capabilities__title {
+        font-size: 32px;
+    }
+
+    .obot-landing-capabilities__panel {
+        min-height: 0;
+        padding: 28px 20px;
+    }
+
+    .obot-landing-capabilities__panel-content {
+        grid-template-columns: 1fr;
+    }
+
+    .obot-landing-capabilities__panel-title {
+        font-size: 24px;
+    }
+
+    .obot-landing-capabilities__text {
+        font-size: 1rem;
+    }
+
+    .obot-landing-capabilities__media {
+        max-width: 320px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .obot-landing-capabilities__eyebrow-pulse,
+    .obot-landing-capabilities.is-progressing .obot-landing-capabilities__progress-fill,
+    .obot-landing-capabilities__panel.is-active .obot-landing-capabilities__panel-content {
+        animation: none !important;
+    }
+}

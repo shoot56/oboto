@@ -1,0 +1,61 @@
+:root {
+	--obot-landing-aos-distance: 24px;
+	--obot-landing-aos-easing: cubic-bezier(0, 0, 0.2, 1);
+}
+
+:is([class*="obot-landing-"])[data-aos][data-aos],
+:is([class*="obot-landing-"]) [data-aos][data-aos] {
+	transition-timing-function: var(--obot-landing-aos-easing);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-up"],
+:is([class*="obot-landing-"]) [data-aos="fade-up"] {
+	transform: translate3d(0, var(--obot-landing-aos-distance), 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-down"],
+:is([class*="obot-landing-"]) [data-aos="fade-down"] {
+	transform: translate3d(0, calc(var(--obot-landing-aos-distance) * -1), 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-right"],
+:is([class*="obot-landing-"]) [data-aos="fade-right"] {
+	transform: translate3d(calc(var(--obot-landing-aos-distance) * -1), 0, 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-left"],
+:is([class*="obot-landing-"]) [data-aos="fade-left"] {
+	transform: translate3d(var(--obot-landing-aos-distance), 0, 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-up-right"],
+:is([class*="obot-landing-"]) [data-aos="fade-up-right"] {
+	transform: translate3d(calc(var(--obot-landing-aos-distance) * -1), var(--obot-landing-aos-distance), 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-up-left"],
+:is([class*="obot-landing-"]) [data-aos="fade-up-left"] {
+	transform: translate3d(var(--obot-landing-aos-distance), var(--obot-landing-aos-distance), 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-down-right"],
+:is([class*="obot-landing-"]) [data-aos="fade-down-right"] {
+	transform: translate3d(calc(var(--obot-landing-aos-distance) * -1), calc(var(--obot-landing-aos-distance) * -1), 0);
+}
+
+:is([class*="obot-landing-"])[data-aos="fade-down-left"],
+:is([class*="obot-landing-"]) [data-aos="fade-down-left"] {
+	transform: translate3d(var(--obot-landing-aos-distance), calc(var(--obot-landing-aos-distance) * -1), 0);
+}
+
+:is([class*="obot-landing-"])[data-aos^="fade"][data-aos^="fade"].aos-animate,
+:is([class*="obot-landing-"]) [data-aos^="fade"][data-aos^="fade"].aos-animate {
+	transform: translateZ(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	:is([class*="obot-landing-"])[data-aos][data-aos],
+	:is([class*="obot-landing-"]) [data-aos][data-aos] {
+		transition-duration: 1ms !important;
+	}
+}

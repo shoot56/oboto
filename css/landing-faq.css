@@ -1,0 +1,283 @@
+.obot-landing-faq {
+    --landing-faq-blue: #4f7df3;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: clamp(64px, 7vw, 96px) clamp(24px, 4vw, 48px);
+    overflow: hidden;
+    background: linear-gradient(135deg, #060a1f 0%, #0e1740 50%, #060a1f 100%);
+    color: #fff;
+}
+
+.obot-landing-faq.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-landing-faq.obot-landing-faq,
+body .is-layout-flow > .wp-block-oboto-landing-faq.obot-landing-faq,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-faq.obot-landing-faq {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-landing-faq__inner {
+    width: 100%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-landing-faq__header {
+    margin-bottom: 48px;
+    text-align: center;
+}
+
+.obot-landing-faq__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 24px;
+    padding: 8px 16px;
+    border: 1px solid rgba(79, 125, 243, 0.4);
+    border-radius: 999px;
+    background-color: rgba(79, 125, 243, 0.1);
+    color: var(--landing-faq-blue);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0;
+    text-transform: uppercase;
+}
+
+.obot-landing-faq__eyebrow-status {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.obot-landing-faq__eyebrow-pulse,
+.obot-landing-faq__eyebrow-dot {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background-color: var(--landing-faq-blue);
+}
+
+.obot-landing-faq__eyebrow-pulse {
+    opacity: 0.6;
+    animation: obotLandingFaqPing 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.obot-landing-faq__title {
+    max-width: 860px;
+    margin: 0 auto;
+    color: #fff;
+    font-size: 56px;
+    font-weight: 600;
+    line-height: 1.1;
+    letter-spacing: 0;
+}
+
+.obot-landing-faq__list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+    max-width: 860px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-landing-faq__item {
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 0.02);
+    transition: border-color 300ms ease, background-color 300ms ease;
+}
+
+.obot-landing-faq__item[data-open="true"],
+.obot-landing-faq__item:hover {
+    border-color: rgba(79, 125, 243, 0.4);
+    background-color: rgba(255, 255, 255, 0.04);
+}
+
+.obot-landing-faq__question {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    width: 100%;
+    padding: 24px 28px;
+    border: 0;
+    background: transparent;
+    color: #fff;
+    text-align: left;
+    cursor: pointer;
+}
+
+.obot-landing-faq__question-text {
+    min-width: 0;
+    color: #fff;
+    font-size: 1.25rem;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: 0;
+}
+
+.obot-landing-faq__icon {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+    background-color: rgba(79, 125, 243, 0.1);
+    box-shadow: 0 0 0 1px rgba(79, 125, 243, 0.3);
+    color: var(--landing-faq-blue);
+    transition: transform 300ms ease;
+}
+
+.obot-landing-faq__icon::before,
+.obot-landing-faq__icon::after {
+    content: "";
+    position: absolute;
+    width: 10px;
+    height: 2px;
+    border-radius: 999px;
+    background-color: currentColor;
+}
+
+.obot-landing-faq__icon::before {
+    transform: translateX(-3px) rotate(45deg);
+}
+
+.obot-landing-faq__icon::after {
+    transform: translateX(3px) rotate(-45deg);
+}
+
+.obot-landing-faq__item[data-open="true"] .obot-landing-faq__icon {
+    transform: rotate(180deg);
+}
+
+.obot-landing-faq__answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    opacity: 0;
+    transition: grid-template-rows 300ms ease, opacity 300ms ease;
+}
+
+.obot-landing-faq__item[data-open="true"] .obot-landing-faq__answer {
+    grid-template-rows: 1fr;
+    opacity: 1;
+}
+
+.obot-landing-faq__answer-inner {
+    overflow: hidden;
+    padding: 0 28px;
+    border-top: 1px solid rgba(255, 255, 255, 0);
+    color: rgba(255, 255, 255, 0.75);
+    font-size: 1.125rem;
+    line-height: 1.7;
+    transition: padding 300ms ease, border-color 300ms ease;
+}
+
+.obot-landing-faq__item[data-open="true"] .obot-landing-faq__answer-inner {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-color: rgba(255, 255, 255, 0.1);
+}
+
+.obot-landing-faq__answer-inner p {
+    margin: 0;
+}
+
+.obot-landing-faq__answer-inner p + p {
+    margin-top: 0.8em;
+}
+
+.obot-landing-faq__answer-inner a {
+    color: var(--landing-faq-blue);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.obot-landing-faq__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 160px;
+    max-width: 860px;
+    margin-right: auto;
+    margin-left: auto;
+    border: 1px dashed rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+@keyframes obotLandingFaqPing {
+    75%,
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+@media (max-width: 767px) {
+    .obot-landing-faq {
+        padding: 64px 16px;
+    }
+
+    .obot-landing-faq__header {
+        margin-bottom: 40px;
+    }
+
+    .obot-landing-faq__title {
+        font-size: 32px;
+    }
+
+    .obot-landing-faq__question {
+        padding: 20px 18px;
+    }
+
+    .obot-landing-faq__question-text {
+        font-size: 1.0625rem;
+    }
+
+    .obot-landing-faq__icon {
+        width: 32px;
+        height: 32px;
+    }
+
+    .obot-landing-faq__answer-inner {
+        padding-right: 18px;
+        padding-left: 18px;
+        font-size: 1rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .obot-landing-faq__eyebrow-pulse {
+        animation: none !important;
+    }
+
+    .obot-landing-faq__item,
+    .obot-landing-faq__icon,
+    .obot-landing-faq__answer,
+    .obot-landing-faq__answer-inner {
+        transition: none;
+    }
+}

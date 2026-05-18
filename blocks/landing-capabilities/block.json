@@ -1,0 +1,42 @@
+{
+  "name": "oboto/landing-capabilities",
+  "title": "Landing Capabilities",
+  "description": "Obot landing page capabilities tabs with icon, copy, link, and animated visual.",
+  "category": "obot_landing",
+  "icon": "index-card",
+  "keywords": ["landing", "capabilities", "tabs", "features", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["landing-capabilities"],
+  "viewScript": ["landing-capabilities-script"]
+}

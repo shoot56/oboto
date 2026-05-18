@@ -1,0 +1,179 @@
+.obot-landing-logos {
+    --landing-logos-blue: #4f7df3;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: clamp(48px, 6vw, 80px) clamp(24px, 4vw, 48px);
+    background: linear-gradient(135deg, #060a1f 0%, #0e1740 50%, #060a1f 100%);
+    color: #fff;
+}
+
+.obot-landing-logos.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-landing-logos.obot-landing-logos,
+body .is-layout-flow > .wp-block-oboto-landing-logos.obot-landing-logos,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-logos.obot-landing-logos {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-landing-logos__inner {
+    width: 100%;
+    max-width: 1200px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-landing-logos__header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 24px;
+    text-align: center;
+}
+
+.obot-landing-logos__title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 8px 16px;
+    border: 1px solid rgba(79, 125, 243, 0.4);
+    border-radius: 999px;
+    background-color: rgba(79, 125, 243, 0.1);
+    color: var(--landing-logos-blue);
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.obot-landing-logos__status {
+    position: relative;
+    display: inline-flex;
+    flex: 0 0 auto;
+    width: 0.5rem;
+    height: 0.5rem;
+}
+
+.obot-landing-logos__status-pulse,
+.obot-landing-logos__status-dot {
+    position: absolute;
+    inset: 0;
+    border-radius: 999px;
+    background-color: var(--landing-logos-blue);
+}
+
+.obot-landing-logos__status-pulse {
+    opacity: 0.6;
+    animation: obotLandingLogosPulse 1s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.obot-landing-logos__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 24px 48px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.obot-landing-logos__item {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-width: 96px;
+    min-height: 32px;
+    color: rgba(255, 255, 255, 0.45);
+    filter: grayscale(1);
+    transition: color 0.25s ease, filter 0.25s ease, transform 0.25s ease;
+}
+
+.obot-landing-logos__item:hover {
+    color: rgba(255, 255, 255, 0.7);
+    filter: grayscale(0);
+    transform: translateY(-1px);
+}
+
+.obot-landing-logos__image {
+    display: block;
+    width: auto;
+    max-width: 160px;
+    max-height: 36px;
+    opacity: 0.45;
+    object-fit: contain;
+    transition: opacity 0.25s ease;
+}
+
+.obot-landing-logos__item:hover .obot-landing-logos__image {
+    opacity: 0.7;
+}
+
+.obot-landing-logos__text {
+    display: inline-block;
+    color: currentColor;
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+    white-space: nowrap;
+}
+
+.obot-landing-logos__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+    border: 1px dashed rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 0.875rem;
+    text-align: center;
+}
+
+@keyframes obotLandingLogosPulse {
+    75%,
+    100% {
+        opacity: 0;
+        transform: scale(2);
+    }
+}
+
+@media (max-width: 767px) {
+    .obot-landing-logos {
+        padding: 48px 16px;
+    }
+
+    .obot-landing-logos__list {
+        gap: 20px 32px;
+    }
+
+    .obot-landing-logos__item {
+        min-width: 80px;
+    }
+
+    .obot-landing-logos__image {
+        max-width: 132px;
+        max-height: 32px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .obot-landing-logos__status-pulse,
+    .obot-landing-logos__item {
+        animation: none;
+        transition: none;
+    }
+}

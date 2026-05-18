@@ -1,0 +1,41 @@
+{
+  "name": "oboto/landing-solution",
+  "title": "Landing Solution",
+  "description": "Obot landing page solution section with copy, image, and badges.",
+  "category": "obot_landing",
+  "icon": "superhero",
+  "keywords": ["landing", "solution", "image", "badges", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["landing-solution"]
+}

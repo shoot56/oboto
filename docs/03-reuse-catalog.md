@@ -8,7 +8,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **When to use**: Always; it is the block registration backbone.
   - **Provides**
     - Registers all blocks by scanning `blocks/*` and calling `register_block_type($blockDir)` + `require $blockDir.'/block.php'`.
-    - Registers a custom block category `theme_block_category`.
+    - Registers custom block categories `theme_block_category` and `obot_landing`.
     - Registers a pattern category `theme_pattern_category`.
     - `dd(mixed $data, string $label = '', bool $return = false)` debug helper (prints styled dump and terminates).
 - **`inc/custom-post-type.php`**
@@ -65,6 +65,42 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 
 ### Content sections / components
 
+- **Obot Landing AOS attributes** — `oboto_get_aos_attributes(...)` in `inc/helpers.php` and `css/obot-landing-aos.css`.
+  - **When to use**: Add the existing ACF `Add Animation` / `Animations` behavior to `oboto/landing-*` block elements.
+  - **Note**: Reuses the legacy AOS field group and the globally enqueued AOS assets; landing blocks apply it to individual inner elements with staggered delays, 700ms duration, and a reduced 24px fade movement to match the archived frontend reference.
+- **`oboto/landing-hero`** — Landing Hero block.
+  - **When to use**: Obot landing pages that need the MCP gateway hero from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for hero copy, rotating subheading text, and the optional GitHub meta link.
+- **`oboto/landing-logos`** — Landing Logos block.
+  - **When to use**: Obot landing pages that need the logo strip from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for the section title and a repeater of uploaded logo images.
+- **`oboto/landing-alerts`** — Landing Alerts block.
+  - **When to use**: Obot landing pages that need the threat monitor alert section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for section header text, bottom text, and a repeater of alerts. The monitor title and live status label are hardcoded; the active count comes from the alert rows.
+- **`oboto/landing-solution`** — Landing Solution block.
+  - **When to use**: Obot landing pages that need the solution copy/image section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, text, image, and a repeater of badges.
+- **`oboto/landing-flow`** — Landing Flow block.
+  - **When to use**: Obot landing pages that need the MCP traffic flow section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, an uploaded animated SVG, and bottom badge/caption text rows.
+- **`oboto/landing-capabilities`** — Landing Capabilities block.
+  - **When to use**: Obot landing pages that need the tabbed capabilities section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, and capability rows with tab text, icon, title, copy, link, and uploaded animated image/SVG.
+- **`oboto/landing-how-it-works`** — Landing How It Works block.
+  - **When to use**: Obot landing pages that need the rollout steps section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, a list repeater, image, and two CTA buttons.
+- **`oboto/landing-video`** — Landing Video block.
+  - **When to use**: Obot landing pages that need the YouTube video section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, text, YouTube URL, and three CTA buttons.
+- **`oboto/landing-traction`** — Landing Traction block.
+  - **When to use**: Obot landing pages that need the traction cards and quote section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, three metric cards, quote text, and quote author.
+- **`oboto/landing-faq`** — Landing FAQ block.
+  - **When to use**: Obot landing pages that need the FAQ accordion section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, and FAQ rows with question and answer text.
+- **`oboto/landing-final-cta`** — Landing Final CTA block.
+  - **When to use**: Obot landing pages that need the final conversion section from the archived frontend reference.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, text, checklist rows, HubSpot form embed code, and bottom button rows.
 - **`obot/hero`** — Hero block.
   - **When to use**: Primary hero sections on landing pages.
 - **`oboto/hero-questions`** — Hero Chat block.
