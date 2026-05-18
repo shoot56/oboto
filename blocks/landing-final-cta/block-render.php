@@ -110,18 +110,13 @@ $hubspot_form_css  = '
 	--hsf-richtext__color: rgba(255,255,255,0.72);
 	--hsf-erroralert__color: #fca5a5;
 }
-body {
-	margin: 0;
-	padding: 0;
-	background: transparent;
-	color: rgba(255,255,255,0.78);
-	font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-	color-scheme: dark;
-}
 form,
 .hs-form {
 	margin: 0;
 	background: transparent;
+	color: rgba(255,255,255,0.78);
+	font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+	color-scheme: dark;
 }
 .hbspt-form,
 .obot-hubspot-raw-form {

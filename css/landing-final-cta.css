@@ -13,6 +13,10 @@
     color: #fff;
 }
 
+body:has(.obot-landing-final-cta) .site-header {
+    background-color: #000;
+}
+
 .obot-landing-final-cta.alignfull {
     width: 100vw !important;
     max-width: none !important;
