@@ -123,7 +123,7 @@ if ( is_array( $badges ) ) {
 		<?php if ( $badge_items ) : ?>
 			<ul class="obot-landing-solution__badges" aria-label="<?php esc_attr_e( 'Solution capabilities', 'oboto' ); ?>">
 				<?php foreach ( $badge_items as $index => $badge ) : ?>
-					<li class="obot-landing-solution__badge"<?php oboto_the_aos_attributes( 420 + ( $index * 70 ) ); ?>><?php echo esc_html( $badge ); ?></li>
+					<li class="obot-landing-solution__badge"<?php oboto_the_aos_attributes( 400 + ( $index * 50 ) ); ?>><?php echo esc_html( $badge ); ?></li>
 				<?php endforeach; ?>
 			</ul>
 		<?php elseif ( $is_preview ) : ?>

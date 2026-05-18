@@ -10,6 +10,10 @@ if ( ! defined( 'OBOTO_LANDING_AOS_OFFSET' ) ) {
 	define( 'OBOTO_LANDING_AOS_OFFSET', 80 );
 }
 
+if ( ! defined( 'OBOTO_LANDING_AOS_DELAY_STEP' ) ) {
+	define( 'OBOTO_LANDING_AOS_DELAY_STEP', 50 );
+}
+
 // Setup acf gutenberg blocks
 if (function_exists('acf_register_block_type')) {
     add_action('acf/init', 'register_my_blocks');
@@ -57,9 +61,11 @@ function oboto_get_aos_attributes( $delay = 300 ) {
 		return '';
 	}
 
+	$normalized_delay = (int) round( absint( $delay ) / OBOTO_LANDING_AOS_DELAY_STEP ) * OBOTO_LANDING_AOS_DELAY_STEP;
+
 	$attributes = array(
 		'data-aos' => sanitize_key( $animation ),
-		'data-aos-delay' => absint( $delay ),
+		'data-aos-delay' => $normalized_delay,
 		'data-aos-duration' => OBOTO_LANDING_AOS_DURATION,
 		'data-aos-offset' => OBOTO_LANDING_AOS_OFFSET,
 		'data-aos-mirror' => 'true',
