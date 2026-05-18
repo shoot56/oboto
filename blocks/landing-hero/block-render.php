@@ -28,6 +28,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 $heading             = trim( (string) get_field( 'heading' ) );
 $subheading_lead     = trim( (string) get_field( 'subheading_lead' ) );
 $description         = trim( (string) get_field( 'description' ) );
+$primary_button      = get_field( 'primary_button' );
 $github_intro        = trim( (string) get_field( 'github_intro' ) );
 $github_link         = get_field( 'github_link' );
 $subheading_emphasis = get_field( 'subheading_emphasis' );
@@ -117,6 +118,24 @@ if ( $has_rotating_emphasis ) {
 
 			<?php if ( $description ) : ?>
 				<p class="obot-landing-hero__description"<?php oboto_the_aos_attributes( 300 ); ?>><?php echo esc_html( $description ); ?></p>
+			<?php endif; ?>
+
+			<?php if ( is_array( $primary_button ) && ! empty( $primary_button['url'] ) ) : ?>
+				<?php
+				$primary_button_target = ! empty( $primary_button['target'] ) ? $primary_button['target'] : '';
+				$primary_button_title  = ! empty( $primary_button['title'] ) ? $primary_button['title'] : $primary_button['url'];
+				?>
+				<div class="obot-landing-hero__actions"<?php oboto_the_aos_attributes( 360 ); ?>>
+					<a
+						class="obot-landing-how__button obot-landing-how__button--primary"
+						href="<?php echo esc_url( $primary_button['url'] ); ?>"
+						<?php echo $primary_button_target ? 'target="' . esc_attr( $primary_button_target ) . '"' : ''; ?>
+						<?php echo $primary_button_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
+					>
+						<span><?php echo esc_html( $primary_button_title ); ?></span>
+						<span class="obot-landing-how__button-arrow obot-landing-how__button-arrow--right" aria-hidden="true"></span>
+					</a>
+				</div>
 			<?php endif; ?>
 		</div>
 

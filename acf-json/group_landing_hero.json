@@ -100,6 +100,18 @@
             "new_lines": ""
         },
         {
+            "key": "field_landing_hero_primary_button",
+            "label": "Primary Button",
+            "name": "primary_button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Leave empty to hide the button.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
             "key": "field_landing_hero_github_intro",
             "label": "Meta Text",
             "name": "github_intro",
@@ -146,5 +158,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1778859391
+    "modified": 1779120000
 }
