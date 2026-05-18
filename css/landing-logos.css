@@ -93,15 +93,16 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-logos.obot
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 10px;
     min-width: 96px;
     min-height: 32px;
-    opacity: 0.45;
+    color: rgba(255, 255, 255, 0.45);
     filter: grayscale(1);
-    transition: opacity 0.25s ease, filter 0.25s ease, transform 0.25s ease;
+    transition: color 0.25s ease, filter 0.25s ease, transform 0.25s ease;
 }
 
 .obot-landing-logos__item:hover {
-    opacity: 0.85;
+    color: rgba(255, 255, 255, 0.7);
     filter: grayscale(0);
     transform: translateY(-1px);
 }
@@ -111,7 +112,23 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-logos.obot
     width: auto;
     max-width: 160px;
     max-height: 36px;
+    opacity: 0.45;
     object-fit: contain;
+    transition: opacity 0.25s ease;
+}
+
+.obot-landing-logos__item:hover .obot-landing-logos__image {
+    opacity: 0.85;
+}
+
+.obot-landing-logos__text {
+    display: inline-block;
+    color: currentColor;
+    font-size: clamp(1rem, 1.3vw, 1.125rem);
+    font-weight: 600;
+    line-height: 1.2;
+    letter-spacing: 0;
+    white-space: nowrap;
 }
 
 .obot-landing-logos__placeholder {

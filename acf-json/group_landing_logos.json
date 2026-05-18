@@ -32,7 +32,7 @@
             "pagination": 0,
             "min": 0,
             "max": 0,
-            "collapsed": "field_landing_logos_logo",
+            "collapsed": "field_landing_logos_text",
             "button_label": "Add Logo",
             "rows_per_page": 20,
             "sub_fields": [
@@ -56,6 +56,22 @@
                     "max_size": "",
                     "mime_types": "",
                     "preview_size": "medium"
+                },
+                {
+                    "key": "field_landing_logos_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "maxlength": "",
+                    "placeholder": "",
+                    "prepend": "",
+                    "append": ""
                 }
             ]
         }

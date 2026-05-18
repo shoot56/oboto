@@ -63,9 +63,13 @@ if ( is_array( $logos ) ) {
 	foreach ( $logos as $row ) {
 		$logo = is_array( $row ) && array_key_exists( 'logo', $row ) ? $row['logo'] : null;
 		$logo = $normalize_logo( $logo );
+		$text = is_array( $row ) && array_key_exists( 'text', $row ) ? trim( (string) $row['text'] ) : '';
 
-		if ( $logo ) {
-			$logo_items[] = $logo;
+		if ( $logo || $text ) {
+			$logo_items[] = array(
+				'logo' => $logo,
+				'text' => $text,
+			);
 		}
 	}
 }
@@ -88,14 +92,20 @@ if ( is_array( $logos ) ) {
 
 		<?php if ( $logo_items ) : ?>
 			<ul class="obot-landing-logos__list"<?php echo $title ? ' aria-label="' . esc_attr( $title ) . '"' : ''; ?>>
-				<?php foreach ( $logo_items as $index => $logo ) : ?>
+				<?php foreach ( $logo_items as $index => $logo_item ) : ?>
 					<li class="obot-landing-logos__item"<?php oboto_the_aos_attributes( 180 + ( $index * 60 ) ); ?>>
-						<img
-							class="obot-landing-logos__image"
-							src="<?php echo esc_url( $logo['url'] ); ?>"
-							alt="<?php echo esc_attr( $logo['alt'] ); ?>"
-							loading="lazy"
-						>
+						<?php if ( ! empty( $logo_item['logo'] ) ) : ?>
+							<img
+								class="obot-landing-logos__image"
+								src="<?php echo esc_url( $logo_item['logo']['url'] ); ?>"
+								alt="<?php echo esc_attr( $logo_item['text'] ? '' : $logo_item['logo']['alt'] ); ?>"
+								loading="lazy"
+							>
+						<?php endif; ?>
+
+						<?php if ( $logo_item['text'] ) : ?>
+							<span class="obot-landing-logos__text"><?php echo esc_html( $logo_item['text'] ); ?></span>
+						<?php endif; ?>
 					</li>
 				<?php endforeach; ?>
 			</ul>
