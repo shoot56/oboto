@@ -28,10 +28,79 @@ $wrapper_attributes = get_block_wrapper_attributes(
 $heading             = trim( (string) get_field( 'heading' ) );
 $subheading_lead     = trim( (string) get_field( 'subheading_lead' ) );
 $description         = trim( (string) get_field( 'description' ) );
+$primary_button_type = (string) get_field( 'primary_button_type' );
 $primary_button      = get_field( 'primary_button' );
+$popup_embed         = trim( (string) get_field( 'primary_button_popup_embed' ) );
 $github_intro        = trim( (string) get_field( 'github_intro' ) );
 $github_link         = get_field( 'github_link' );
 $subheading_emphasis = get_field( 'subheading_emphasis' );
+
+if ( ! in_array( $primary_button_type, array( 'link', 'popup' ), true ) ) {
+	$primary_button_type = 'link';
+}
+
+$allowed_popup_embed_tags = array(
+	'div'    => array(
+		'class'                           => true,
+		'id'                              => true,
+		'data-fillout-id'                 => true,
+		'data-fillout-embed-type'         => true,
+		'data-fillout-button-text'        => true,
+		'data-fillout-dynamic-resize'     => true,
+		'data-fillout-inherit-parameters' => true,
+		'data-fillout-domain'             => true,
+		'data-fillout-popup-size'         => true,
+	),
+	'script' => array(
+		'async'   => true,
+		'charset' => true,
+		'defer'   => true,
+		'src'     => true,
+		'type'    => true,
+	),
+);
+
+$prepare_popup_embed = static function ( $embed ) {
+	if ( $embed === '' || ! class_exists( 'WP_HTML_Tag_Processor' ) ) {
+		return $embed;
+	}
+
+	$processor = new WP_HTML_Tag_Processor( $embed );
+
+	while ( $processor->next_tag( array( 'tag_name' => 'div' ) ) ) {
+		if ( ! $processor->get_attribute( 'data-fillout-id' ) ) {
+			continue;
+		}
+
+		$processor->add_class( 'obot-landing-hero__fillout-trigger' );
+		break;
+	}
+
+	return $processor->get_updated_html();
+};
+
+$get_popup_button_text = static function ( $embed ) {
+	if ( $embed !== '' && class_exists( 'WP_HTML_Tag_Processor' ) ) {
+		$processor = new WP_HTML_Tag_Processor( $embed );
+
+		while ( $processor->next_tag( array( 'tag_name' => 'div' ) ) ) {
+			if ( ! $processor->get_attribute( 'data-fillout-id' ) ) {
+				continue;
+			}
+
+			$button_text = trim( (string) $processor->get_attribute( 'data-fillout-button-text' ) );
+			if ( $button_text !== '' ) {
+				return $button_text;
+			}
+		}
+	}
+
+	return __( 'Popup form', 'oboto' );
+};
+
+$popup_button_text  = $get_popup_button_text( $popup_embed );
+$popup_embed        = $prepare_popup_embed( $popup_embed );
+$has_primary_button = ( $primary_button_type === 'popup' && $popup_embed !== '' ) || ( $primary_button_type === 'link' && is_array( $primary_button ) && ! empty( $primary_button['url'] ) );
 
 $normalize_emphasis_items = static function ( $value ) {
 	$items = array();
@@ -120,21 +189,34 @@ if ( $has_rotating_emphasis ) {
 				<p class="obot-landing-hero__description"<?php oboto_the_aos_attributes( 300 ); ?>><?php echo esc_html( $description ); ?></p>
 			<?php endif; ?>
 
-			<?php if ( is_array( $primary_button ) && ! empty( $primary_button['url'] ) ) : ?>
-				<?php
-				$primary_button_target = ! empty( $primary_button['target'] ) ? $primary_button['target'] : '';
-				$primary_button_title  = ! empty( $primary_button['title'] ) ? $primary_button['title'] : $primary_button['url'];
-				?>
+			<?php if ( $has_primary_button ) : ?>
 				<div class="obot-landing-hero__actions"<?php oboto_the_aos_attributes( 360 ); ?>>
-					<a
-						class="obot-landing-how__button obot-landing-how__button--primary"
-						href="<?php echo esc_url( $primary_button['url'] ); ?>"
-						<?php echo $primary_button_target ? 'target="' . esc_attr( $primary_button_target ) . '"' : ''; ?>
-						<?php echo $primary_button_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
-					>
-						<span><?php echo esc_html( $primary_button_title ); ?></span>
-						<span class="obot-landing-how__button-arrow obot-landing-how__button-arrow--right" aria-hidden="true"></span>
-					</a>
+					<?php if ( $primary_button_type === 'popup' ) : ?>
+						<div class="obot-landing-hero__popup-embed">
+							<?php if ( $is_preview ) : ?>
+								<button class="obot-landing-how__button obot-landing-how__button--primary" type="button">
+									<span><?php echo esc_html( $popup_button_text ); ?></span>
+									<span class="obot-landing-how__button-arrow obot-landing-how__button-arrow--right" aria-hidden="true"></span>
+								</button>
+							<?php else : ?>
+								<?php echo wp_kses( $popup_embed, $allowed_popup_embed_tags ); ?>
+							<?php endif; ?>
+						</div>
+					<?php else : ?>
+						<?php
+						$primary_button_target = ! empty( $primary_button['target'] ) ? $primary_button['target'] : '';
+						$primary_button_title  = ! empty( $primary_button['title'] ) ? $primary_button['title'] : $primary_button['url'];
+						?>
+						<a
+							class="obot-landing-how__button obot-landing-how__button--primary"
+							href="<?php echo esc_url( $primary_button['url'] ); ?>"
+							<?php echo $primary_button_target ? 'target="' . esc_attr( $primary_button_target ) . '"' : ''; ?>
+							<?php echo $primary_button_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
+						>
+							<span><?php echo esc_html( $primary_button_title ); ?></span>
+							<span class="obot-landing-how__button-arrow obot-landing-how__button-arrow--right" aria-hidden="true"></span>
+						</a>
+					<?php endif; ?>
 				</div>
 			<?php endif; ?>
 		</div>
