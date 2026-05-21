@@ -205,8 +205,13 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-final-cta.
     background: radial-gradient(circle at 50% 0%, rgba(79, 125, 243, 0.18), transparent 52%);
 }
 
+.obot-landing-final-cta__form-card--fillout {
+    padding: 0;
+}
+
 .obot-landing-final-cta__form-embed,
 .obot-landing-final-cta__hubspot-target,
+.obot-landing-final-cta__form-embed [data-fillout-id],
 .obot-landing-final-cta__form-embed .hbspt-form,
 .obot-landing-final-cta__form-embed form {
     position: relative;
@@ -240,6 +245,18 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-final-cta.
 
 .obot-landing-final-cta__form-embed .hbspt-form:not(:has(.hs-form-iframe)) {
     min-height: 0;
+}
+
+.obot-landing-final-cta__form-embed [data-fillout-id] {
+    min-height: 500px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+
+.obot-landing-final-cta__form-embed [data-fillout-id] iframe {
+    display: block;
+    width: 100% !important;
+    border: 0 !important;
 }
 
 .obot-landing-final-cta__form-embed [id^="hs-outer-captcha-target"] {
