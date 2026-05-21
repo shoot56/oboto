@@ -29,7 +29,7 @@ $eyebrow            = trim( (string) get_field( 'eyebrow' ) );
 $title              = trim( (string) get_field( 'title' ) );
 $text               = trim( (string) get_field( 'text' ) );
 $list               = get_field( 'list' );
-$hubspot_form_embed = trim( (string) get_field( 'hubspot_form_embed' ) );
+$form_embed         = trim( (string) get_field( 'hubspot_form_embed' ) );
 $buttons            = get_field( 'buttons' );
 
 $list_items = array();
@@ -47,7 +47,7 @@ if ( is_array( $list ) ) {
 }
 
 $has_list_column = ! empty( $list_items ) || $is_preview;
-$has_form_card   = $hubspot_form_embed !== '' || $is_preview;
+$has_form_card   = $form_embed !== '' || $is_preview;
 
 $button_items = array();
 if ( is_array( $buttons ) ) {
@@ -60,7 +60,7 @@ if ( is_array( $buttons ) ) {
 	}
 }
 
-$allowed_embed_tags = array(
+$allowed_form_embed_tags = array(
 	'script' => array(
 		'async'   => true,
 		'charset' => true,
@@ -71,12 +71,22 @@ $allowed_embed_tags = array(
 		'type'    => true,
 	),
 	'div'    => array(
-		'class' => true,
-		'id'    => true,
+		'class'                           => true,
+		'id'                              => true,
+		'style'                           => true,
+		'data-fillout-id'                 => true,
+		'data-fillout-embed-type'         => true,
+		'data-fillout-button-text'        => true,
+		'data-fillout-dynamic-resize'     => true,
+		'data-fillout-inherit-parameters' => true,
+		'data-fillout-domain'             => true,
+		'data-fillout-popup-size'         => true,
 	),
 );
 
 $hubspot_target_id = 'obot-' . sanitize_title( $id . '-hubspot-form' );
+$is_hubspot_embed  = strpos( $form_embed, 'hbspt.forms.create' ) !== false;
+$is_fillout_embed  = strpos( $form_embed, 'data-fillout-id' ) !== false;
 $hubspot_form_css  = '
 :root {
 	--hsf-global__font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -298,7 +308,7 @@ $enhance_hubspot_embed = static function ( $embed, $target_id, $form_css ) {
 	return preg_replace( '/hbspt\\.forms\\.create\\s*\\(\\s*\\{/', 'hbspt.forms.create({' . $options, $embed, 1 );
 };
 
-$hubspot_form_embed = $enhance_hubspot_embed( $hubspot_form_embed, $hubspot_target_id, $hubspot_form_css );
+$form_embed = $enhance_hubspot_embed( $form_embed, $hubspot_target_id, $hubspot_form_css );
 ?>
 
 <section id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?>>
@@ -348,18 +358,20 @@ $hubspot_form_embed = $enhance_hubspot_embed( $hubspot_form_embed, $hubspot_targ
 				<?php endif; ?>
 
 				<?php if ( $has_form_card ) : ?>
-					<div class="obot-landing-final-cta__form-card"<?php oboto_the_aos_attributes( 420 ); ?>>
-						<?php if ( $hubspot_form_embed !== '' ) : ?>
+					<div class="obot-landing-final-cta__form-card<?php echo $is_fillout_embed ? ' obot-landing-final-cta__form-card--fillout' : ''; ?>"<?php oboto_the_aos_attributes( 420 ); ?>>
+						<?php if ( $form_embed !== '' ) : ?>
 							<div class="obot-landing-final-cta__form-embed">
 								<?php if ( $is_preview ) : ?>
-									<div class="obot-landing-final-cta__form-preview"><?php esc_html_e( 'HubSpot form embed will render on the front end.', 'oboto' ); ?></div>
+									<div class="obot-landing-final-cta__form-preview"><?php esc_html_e( 'Form embed will render on the front end.', 'oboto' ); ?></div>
 								<?php else : ?>
-									<div id="<?php echo esc_attr( $hubspot_target_id ); ?>" class="obot-landing-final-cta__hubspot-target"></div>
-									<?php echo wp_kses( $hubspot_form_embed, $allowed_embed_tags ); ?>
+									<?php if ( $is_hubspot_embed ) : ?>
+										<div id="<?php echo esc_attr( $hubspot_target_id ); ?>" class="obot-landing-final-cta__hubspot-target"></div>
+									<?php endif; ?>
+									<?php echo wp_kses( $form_embed, $allowed_form_embed_tags ); ?>
 								<?php endif; ?>
 							</div>
 						<?php elseif ( $is_preview ) : ?>
-							<div class="obot-landing-final-cta__form-preview"><?php esc_html_e( 'Paste the HubSpot form embed code in the block fields.', 'oboto' ); ?></div>
+							<div class="obot-landing-final-cta__form-preview"><?php esc_html_e( 'Paste the HubSpot or Fillout form embed code in the block fields.', 'oboto' ); ?></div>
 						<?php endif; ?>
 					</div>
 				<?php endif; ?>
