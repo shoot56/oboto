@@ -10,7 +10,6 @@ main {
     position: fixed;
     top: 120px;
     left: 50%;
-    transform: translate(-50%);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -24,7 +23,9 @@ main {
     padding: 17px 19px 19px;
     border-radius: 6px;
     z-index: 9999;
-    animation: banner 1s ease-out;
+    transform: translateX(-50%);
+    animation: banner-slide-in 600ms ease-out;
+    will-change: transform;
 
     @include mobile {
         top: 100px;
@@ -61,12 +62,18 @@ main {
     }
 }
 
-@keyframes banner {
+@keyframes banner-slide-in {
     0% {
-        top: -200px;
+        transform: translate3d(-50%, -220px, 0);
     }
 
     100% {
-        top: 100px;
+        transform: translate3d(-50%, 0, 0);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .banner {
+        animation: none;
     }
 }
