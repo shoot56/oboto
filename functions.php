@@ -144,13 +144,6 @@ function theme_scripts()
 {
     wp_enqueue_style('theme-style', get_stylesheet_uri(), [], wp_get_theme()->get('Version'));
     wp_enqueue_style('style', get_template_directory_uri() . '/css/style.css', [], filemtime(get_template_directory() . '/css/style.css'));
-    wp_enqueue_style('swipper-style', get_template_directory_uri() . '/css/swiper-bundle.min.css', array(), wp_get_theme()->get('Version'));
-    wp_enqueue_style('aos-style', get_template_directory_uri() . '/css/aos.css', array(), wp_get_theme()->get('Version'));
-    wp_enqueue_style('obot-landing-aos', get_template_directory_uri() . '/css/obot-landing-aos.css', array('aos-style'), filemtime(get_template_directory() . '/css/obot-landing-aos.css'));
-
-    // Prims
-    wp_enqueue_style('prism', get_template_directory_uri() . '/css/prism-okaidia.css', array(), wp_get_theme()->get('Version'));
-
 
 
 
@@ -194,6 +187,20 @@ function theme_scripts()
 }
 
 add_action('wp_enqueue_scripts', 'theme_scripts');
+
+add_action('wp_footer', function () {
+    wp_enqueue_style('swipper-style', get_template_directory_uri() . '/css/swiper-bundle.min.css', array(), wp_get_theme()->get('Version'));
+    wp_enqueue_style('aos-style', get_template_directory_uri() . '/css/aos.css', array(), wp_get_theme()->get('Version'));
+    wp_enqueue_style('obot-landing-aos', get_template_directory_uri() . '/css/obot-landing-aos.css', array('aos-style'), filemtime(get_template_directory() . '/css/obot-landing-aos.css'));
+    wp_enqueue_style('prism', get_template_directory_uri() . '/css/prism-okaidia.css', array(), wp_get_theme()->get('Version'));
+
+    wp_print_styles(array(
+        'swipper-style',
+        'aos-style',
+        'obot-landing-aos',
+        'prism',
+    ));
+}, 1);
 
 // Setup  admin style
 function admin_style()
