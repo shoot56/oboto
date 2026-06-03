@@ -7,7 +7,16 @@ function banner_scripts()
 {
 	//  Rgeister blcok style for frontend 
 	wp_register_style('banner', get_template_directory_uri() . '/css/banner.css', array(), filemtime(get_template_directory() . '/css/banner.css'));
-	wp_register_script('banner-script', get_template_directory_uri() . '/blocks/banner/view-script.js', ['jquery'], wp_get_theme()->get('Version'));
+	wp_register_script(
+		'banner-script',
+		get_template_directory_uri() . '/blocks/banner/view-script.js',
+		array(),
+		filemtime(get_template_directory() . '/blocks/banner/view-script.js'),
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
 }
 add_action('wp_enqueue_scripts', 'banner_scripts');
 
