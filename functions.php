@@ -152,8 +152,6 @@ function theme_scripts()
     wp_enqueue_style('prism', get_template_directory_uri() . '/css/prism-okaidia.css', array(), wp_get_theme()->get('Version'));
 
 
-
-
     // JS
     wp_enqueue_script('custom', get_template_directory_uri() . '/js/script.js', array('jquery'), filemtime(get_template_directory() . '/js/script.js'), false, array("in_footer"));
 
@@ -194,6 +192,60 @@ function theme_scripts()
 }
 
 add_action('wp_enqueue_scripts', 'theme_scripts');
+
+function oboto_get_fallback_image_alt()
+{
+    $object_id = get_queried_object_id();
+    $title = $object_id ? get_the_title($object_id) : get_the_title();
+
+    if (!$title && is_archive()) {
+        $title = get_the_archive_title();
+    }
+
+    return $title ? wp_strip_all_tags($title) : '';
+}
+
+add_filter('wp_get_attachment_image_attributes', function ($attr) {
+    if (!empty(trim($attr['alt'] ?? ''))) {
+        return $attr;
+    }
+
+    $fallback_alt = oboto_get_fallback_image_alt();
+
+    if ($fallback_alt) {
+        $attr['alt'] = $fallback_alt;
+    }
+
+    return $attr;
+});
+
+add_filter('wp_content_img_tag', function ($filtered_image) {
+    if (!class_exists('WP_HTML_Tag_Processor')) {
+        return $filtered_image;
+    }
+
+    $processor = new WP_HTML_Tag_Processor($filtered_image);
+
+    if (!$processor->next_tag('img')) {
+        return $filtered_image;
+    }
+
+    $alt = $processor->get_attribute('alt');
+
+    if ($alt !== null && trim($alt) !== '') {
+        return $filtered_image;
+    }
+
+    $fallback_alt = oboto_get_fallback_image_alt();
+
+    if (!$fallback_alt) {
+        return $filtered_image;
+    }
+
+    $processor->set_attribute('alt', $fallback_alt);
+
+    return $processor->get_updated_html();
+});
 
 // Setup  admin style
 function admin_style()
