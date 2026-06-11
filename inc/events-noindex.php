@@ -213,29 +213,3 @@ function oboto_sync_events_yoast_indexing()
 	return $report;
 }
 add_action( OBOTO_EVENTS_CRON_HOOK, 'oboto_sync_events_yoast_indexing' );
-
-/**
- * Temporary manual trigger for testing:
- * /?oboto_events_noindex_run=1
- */
-function oboto_maybe_run_events_noindex_sync_from_get()
-{
-	if ( ! isset( $_GET['oboto_events_noindex_run'] ) ) {
-		return;
-	}
-
-	$report = oboto_sync_events_yoast_indexing();
-	$lines  = array(
-		'Events Yoast indexing sync complete.',
-		'Checked: ' . $report['checked'],
-		'Noindex: ' . $report['noindex'],
-		'Index: ' . $report['index'],
-		'Updated: ' . $report['updated'],
-	);
-
-	wp_die(
-		'<pre>' . esc_html( implode( "\n", $lines ) ) . '</pre>',
-		'Events Yoast indexing sync'
-	);
-}
-add_action( 'init', 'oboto_maybe_run_events_noindex_sync_from_get', 30 );
