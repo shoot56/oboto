@@ -136,6 +136,11 @@ require get_template_directory() . '/inc/class-alison-contact-forms.php';
  */
 require get_template_directory() . '/inc/disable-comments.php';
 
+/**
+ * Events Yoast noindex automation.
+ */
+require get_template_directory() . '/inc/events-noindex.php';
+
 
 /**
  * Enqueue theme scripts and styles.
