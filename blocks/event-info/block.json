@@ -1,0 +1,39 @@
+{
+  "name": "oboto/event-info",
+  "title": "Event Info",
+  "description": "Reusable event information details list.",
+  "category": "theme_block_category",
+  "icon": "info",
+  "keywords": ["event", "info", "workshop", "session"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true,
+      "text": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["event-info"]
+}
