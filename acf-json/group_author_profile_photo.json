@@ -1,0 +1,50 @@
+{
+    "key": "group_author_profile_photo",
+    "title": "Author Profile Photo",
+    "fields": [
+        {
+            "key": "field_author_profile_photo",
+            "label": "Author Photo",
+            "name": "author_photo",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Used on author archive pages. If empty, the default WordPress avatar will be shown.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "jpg,jpeg,png,webp",
+            "preview_size": "thumbnail"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "user_form",
+                "operator": "==",
+                "value": "edit"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1782470400
+}

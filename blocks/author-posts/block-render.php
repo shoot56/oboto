@@ -38,17 +38,25 @@ $taxonomy_slug = "category";
         $display_name = get_the_author_meta('display_name', $author_id);
         $author_bio = get_the_author_meta('description', $author_id);
 
-        // Get the author's avatar
-        $avatar = get_avatar($author_id, 500, '', $display_name, [
+        $author_photo_id = function_exists('get_field') ? get_field('author_photo', 'user_' . $author_id) : 0;
+        $avatar = $author_photo_id ? wp_get_attachment_image($author_photo_id, [500, 500], false, [
             'class' => 'author-avatar',
-            'default' => 'https://example.com/path/to/placeholder.jpg'
-        ]);
+            'alt'   => $display_name,
+        ]) : '';
+
+        if (!$avatar) {
+            // Get the author's avatar
+            $avatar = get_avatar($author_id, 500, '', $display_name, [
+                'class' => 'author-avatar',
+                'default' => 'https://example.com/path/to/placeholder.jpg'
+            ]);
+        }
         ?>
 
         <div class="bio">
             <figure>
 
-                <?php echo $avatar; ?>
+                <?php echo wp_kses_post($avatar); ?>
             </figure>
             <div class="content">
                 <h2><?= $display_name ?></h2>
