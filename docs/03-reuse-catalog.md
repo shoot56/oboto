@@ -71,6 +71,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/landing-hero`** — Landing Hero block.
   - **When to use**: Obot landing pages that need the MCP gateway hero from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for hero copy, rotating subheading text, and the optional GitHub meta link.
+- **`oboto/product-hero`** — Product Hero block.
+  - **When to use**: Product pages that need a two-column hero with eyebrow text, split heading with a gradient highlight line, CTA buttons, and the hardcoded MCP gateway animation.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, gradient title text, body text, and repeatable buttons.
 - **`oboto/landing-logos`** — Landing Logos block.
   - **When to use**: Obot landing pages that need the logo strip from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for the section title and a repeater of uploaded logo images.

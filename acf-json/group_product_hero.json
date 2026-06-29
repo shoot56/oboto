@@ -1,0 +1,158 @@
+{
+    "key": "group_product_hero",
+    "title": "Block: Product Hero",
+    "fields": [
+        {
+            "key": "field_product_hero_content_tab",
+            "label": "Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_product_hero_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Enterprise-Grade MCP Gateway",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_product_hero_title",
+            "label": "Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Main heading text before the gradient line.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Enterprise AI Infrastructure, Fully Governed.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_product_hero_title_highlight",
+            "label": "Gradient Title Text",
+            "name": "title_highlight",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Rendered as a gradient span inside the H1.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Complete Control.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_product_hero_text",
+            "label": "Text",
+            "name": "text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "Every agent, every tool, every server - governed end-to-end with the Obot MCP Gateway.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_product_hero_buttons",
+            "label": "Buttons",
+            "name": "buttons",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add one or more CTA buttons. The first button defaults to primary if no variant is selected.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_product_hero_button",
+            "button_label": "Add Button",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_product_hero_button",
+                    "label": "Button",
+                    "name": "button",
+                    "aria-label": "",
+                    "type": "link",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "70", "class": "", "id": "" },
+                    "return_format": "array",
+                    "parent_repeater": "field_product_hero_buttons"
+                },
+                {
+                    "key": "field_product_hero_button_variant",
+                    "label": "Variant",
+                    "name": "variant",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Leave empty to use automatic styling: first button primary, following buttons secondary.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "30", "class": "", "id": "" },
+                    "choices": {
+                        "primary": "Primary",
+                        "secondary": "Secondary"
+                    },
+                    "default_value": "",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 1,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "Auto",
+                    "parent_repeater": "field_product_hero_buttons"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "oboto\/product-hero"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1782730000
+}

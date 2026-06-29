@@ -1,0 +1,45 @@
+{
+  "name": "oboto/product-hero",
+  "title": "Product Hero",
+  "description": "Product hero section with copy, CTA buttons, and a hardcoded MCP gateway animation.",
+  "category": "obot_landing",
+  "icon": "cover-image",
+  "keywords": ["product", "hero", "mcp", "gateway"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["product-hero"],
+  "viewScript": ["product-hero-script"]
+}
