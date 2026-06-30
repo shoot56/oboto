@@ -72,8 +72,14 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **When to use**: Obot landing pages that need the MCP gateway hero from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for hero copy, rotating subheading text, and the optional GitHub meta link.
 - **`oboto/product-hero`** — Product Hero block.
-  - **When to use**: Product pages that need a two-column hero with eyebrow text, split heading with a gradient highlight line, CTA buttons, and the hardcoded MCP gateway animation.
-  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, gradient title text, body text, and repeatable buttons.
+  - **When to use**: Product pages that need a two-column hero with eyebrow text, a title field that supports a gradient `<span>`, CTA buttons, and the hardcoded MCP gateway animation.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title with allowed gradient `<span>` markup, body text, and repeatable buttons.
+- **`oboto/product-feature`** — Product Feature block.
+  - **When to use**: Product pages that need repeated feature sections matching the Claude product page reference: accent eyebrow, centered title/text, screenshot, bullet list, and CTA.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for accent color, eyebrow, title, text, image, list rows, and one button.
+- **`oboto/product-resources`** — Product Resources block.
+  - **When to use**: Product pages that need the `resources` anchor section with an eyebrow, title, and linked resource cards.
+  - **Note**: Defaults to `id="resources"` unless an anchor is provided, and includes ACF fields for eyebrow, title, and card rows with heading, title, text, and button link.
 - **`oboto/landing-logos`** — Landing Logos block.
   - **When to use**: Obot landing pages that need the logo strip from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for the section title and a repeater of uploaded logo images.

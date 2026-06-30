@@ -1,0 +1,275 @@
+.obot-product-feature {
+    --product-feature-accent: #5b9bff;
+    --product-feature-accent-rgb: 91, 155, 255;
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: 80px 28px;
+    overflow-x: clip;
+    background-color: #070b16;
+    color: #eef2f9;
+}
+
+.obot-product-feature.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-product-feature.obot-product-feature,
+body .is-layout-flow > .wp-block-oboto-product-feature.obot-product-feature,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.obot-product-feature {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-product-feature *,
+.obot-product-feature *::before,
+.obot-product-feature *::after {
+    box-sizing: border-box;
+}
+
+.obot-product-feature__inner {
+    width: 100%;
+    max-width: 1240px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-product-feature__header {
+    max-width: 1120px;
+    margin-right: auto;
+    margin-bottom: 40px;
+    margin-left: auto;
+    text-align: center;
+}
+
+.obot-product-feature__eyebrow {
+    display: inline-flex;
+    max-width: 100%;
+    margin-bottom: 32px;
+    padding: 6px 12px;
+    border: 1px solid rgba(var(--product-feature-accent-rgb), 0.4);
+    border-radius: 6px;
+    background-color: rgba(var(--product-feature-accent-rgb), 0.15);
+    color: var(--product-feature-accent);
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 1.3;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.obot-product-feature__title {
+    margin: 0;
+    color: #eef2f9;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1.4;
+    letter-spacing: 0;
+    white-space: pre-line;
+    overflow-wrap: anywhere;
+}
+
+.obot-product-feature__text {
+    max-width: 1120px;
+    margin: 24px auto 0;
+    color: #c3ccdd;
+    font-size: 20px;
+    line-height: 1.65;
+}
+
+.obot-product-feature__body {
+    display: grid;
+    grid-template-columns: minmax(0, 1.3fr) minmax(320px, 0.7fr);
+    gap: 60px;
+    align-items: center;
+}
+
+.obot-product-feature__media {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 16px;
+    background: linear-gradient(135deg, rgba(var(--product-feature-accent-rgb), 0.1), rgba(var(--product-feature-accent-rgb), 0.05));
+    box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.obot-product-feature__image {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.obot-product-feature__image-placeholder,
+.obot-product-feature__placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    padding: 32px;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 16px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+.obot-product-feature__content {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.obot-product-feature__list {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.obot-product-feature__list-item {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+    color: #c3ccdd;
+    font-size: 18px;
+    line-height: 1.65;
+    overflow-wrap: anywhere;
+}
+
+.obot-product-feature__list-dot {
+    flex: 0 0 auto;
+    width: 0.52em;
+    height: 0.52em;
+    margin-top: 0.62em;
+    border-radius: 999px;
+    background-color: var(--product-feature-accent);
+    box-shadow: 0 0 16px rgba(var(--product-feature-accent-rgb), 0.42);
+}
+
+.obot-product-feature__button {
+    display: inline-flex;
+    align-self: center;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    max-width: 100%;
+    margin-top: 20px;
+    padding: 12px 24px;
+    border-radius: 8px;
+    background-color: #3b82f6;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.25;
+    text-decoration: none;
+    transition: opacity 200ms ease, transform 200ms ease;
+}
+
+.obot-product-feature__button:hover,
+.obot-product-feature__button:focus-visible {
+    opacity: 0.86;
+    transform: translateY(-2px);
+}
+
+.obot-product-feature__button-icon {
+    width: 16px;
+    height: 16px;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 960px) {
+    .obot-product-feature {
+        padding-top: 68px;
+        padding-bottom: 68px;
+    }
+
+    .obot-product-feature__header {
+        margin-bottom: 34px;
+    }
+
+    .obot-product-feature__title {
+        font-size: 34px;
+        line-height: 1.25;
+    }
+
+    .obot-product-feature__text {
+        font-size: 18px;
+    }
+
+    .obot-product-feature__body {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 34px;
+    }
+
+    .obot-product-feature__content {
+        max-width: 720px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+}
+
+@media (max-width: 680px) {
+    .obot-product-feature {
+        padding: 56px 18px;
+    }
+
+    .obot-product-feature__eyebrow {
+        margin-bottom: 22px;
+        font-size: 11px;
+    }
+
+    .obot-product-feature__title {
+        font-size: 28px;
+    }
+
+    .obot-product-feature__text {
+        margin-top: 18px;
+        font-size: 16px;
+        line-height: 1.58;
+    }
+
+    .obot-product-feature__body {
+        gap: 28px;
+    }
+
+    .obot-product-feature__media {
+        border-radius: 12px;
+    }
+
+    .obot-product-feature__list {
+        gap: 18px;
+    }
+
+    .obot-product-feature__list-item {
+        gap: 12px;
+        font-size: 16px;
+        line-height: 1.55;
+    }
+
+    .obot-product-feature__button {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 420px) {
+    .obot-product-feature {
+        padding-right: 14px;
+        padding-left: 14px;
+    }
+
+    .obot-product-feature__title {
+        font-size: 25px;
+    }
+}

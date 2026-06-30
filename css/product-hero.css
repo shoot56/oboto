@@ -110,9 +110,6 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
 }
 
 .obot-product-hero__title {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;
     max-width: 720px;
     margin: 0;
     color: var(--product-hero-text);
@@ -123,7 +120,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     overflow-wrap: anywhere;
 }
 
-.obot-product-hero__title-highlight {
+.obot-product-hero__title span {
     display: block;
     background: linear-gradient(110deg, #5b9bff, #8ab6ff 58%, #5468f5);
     -webkit-background-clip: text;
@@ -286,11 +283,15 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     }
 
     .obot-product-hero__visual {
-        justify-content: flex-start;
+        width: 100vw;
+        margin-right: calc(50% - 50vw);
+        margin-left: calc(50% - 50vw);
+        justify-content: center;
     }
 
     .obot-product-hero__diagram {
-        max-width: 720px;
+        width: 100vw;
+        max-width: none;
         min-height: 330px;
     }
 }
@@ -331,7 +332,14 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
         padding-left: 18px;
     }
 
+    .obot-product-hero__visual {
+        width: 100vw;
+        margin-right: calc(50% - 50vw);
+        margin-left: calc(50% - 50vw);
+    }
+
     .obot-product-hero__diagram {
+        width: 100vw;
         min-height: 280px;
     }
 }
@@ -350,7 +358,14 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
         font-size: 16px;
     }
 
+    .obot-product-hero__visual {
+        width: 100vw;
+        margin-right: calc(50% - 50vw);
+        margin-left: calc(50% - 50vw);
+    }
+
     .obot-product-hero__diagram {
+        width: 100vw;
         min-height: 238px;
     }
 }

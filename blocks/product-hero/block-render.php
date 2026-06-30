@@ -25,11 +25,17 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	)
 );
 
-$eyebrow         = trim( (string) get_field( 'eyebrow' ) );
-$title           = trim( (string) get_field( 'title' ) );
-$title_highlight = trim( (string) get_field( 'title_highlight' ) );
-$text            = trim( (string) get_field( 'text' ) );
-$buttons         = get_field( 'buttons' );
+$eyebrow = trim( (string) get_field( 'eyebrow' ) );
+$title   = trim( (string) get_field( 'title' ) );
+$text    = trim( (string) get_field( 'text' ) );
+$buttons = get_field( 'buttons' );
+
+$allowed_title_tags = array(
+	'br'   => array(),
+	'span' => array(
+		'class' => true,
+	),
+);
 
 $button_items = array();
 if ( is_array( $buttons ) ) {
@@ -50,7 +56,7 @@ if ( is_array( $buttons ) ) {
 	}
 }
 
-$has_heading = $title !== '' || $title_highlight !== '';
+$has_heading = trim( wp_strip_all_tags( $title ) ) !== '';
 
 ?>
 <section id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?> data-product-hero>
@@ -70,12 +76,7 @@ $has_heading = $title !== '' || $title_highlight !== '';
 
 			<?php if ( $has_heading ) : ?>
 				<h1 class="obot-product-hero__title"<?php oboto_the_aos_attributes( 180 ); ?>>
-					<?php if ( $title ) : ?>
-						<span><?php echo esc_html( $title ); ?></span>
-					<?php endif; ?>
-					<?php if ( $title_highlight ) : ?>
-						<span class="obot-product-hero__title-highlight"><?php echo esc_html( $title_highlight ); ?></span>
-					<?php endif; ?>
+					<?php echo wp_kses( $title, $allowed_title_tags ); ?>
 				</h1>
 			<?php endif; ?>
 
@@ -98,7 +99,9 @@ $has_heading = $title !== '' || $title_highlight !== '';
 							<?php echo $link_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
 						>
 							<span><?php echo esc_html( $link_title ); ?></span>
-							<span class="obot-product-hero__button-arrow" aria-hidden="true"></span>
+							<?php if ( $item['variant'] === 'primary' ) : ?>
+								<span class="obot-product-hero__button-arrow" aria-hidden="true"></span>
+							<?php endif; ?>
 						</a>
 					<?php endforeach; ?>
 				</div>

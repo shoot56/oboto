@@ -37,31 +37,15 @@
             "name": "title",
             "aria-label": "",
             "type": "textarea",
-            "instructions": "Main heading text before the gradient line.",
+            "instructions": "Use <span>...</span> inside the title to render gradient text.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
             "default_value": "",
             "maxlength": "",
             "rows": 2,
-            "placeholder": "Enterprise AI Infrastructure, Fully Governed.",
+            "placeholder": "Enterprise AI Infrastructure, Fully Governed.\n<span>Complete Control.</span>",
             "new_lines": ""
-        },
-        {
-            "key": "field_product_hero_title_highlight",
-            "label": "Gradient Title Text",
-            "name": "title_highlight",
-            "aria-label": "",
-            "type": "text",
-            "instructions": "Rendered as a gradient span inside the H1.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": { "width": "", "class": "", "id": "" },
-            "default_value": "",
-            "maxlength": "",
-            "placeholder": "Complete Control.",
-            "prepend": "",
-            "append": ""
         },
         {
             "key": "field_product_hero_text",
@@ -106,7 +90,7 @@
                     "instructions": "",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "70", "class": "", "id": "" },
+                    "wrapper": { "width": "", "class": "", "id": "" },
                     "return_format": "array",
                     "parent_repeater": "field_product_hero_buttons"
                 },
@@ -119,7 +103,7 @@
                     "instructions": "Leave empty to use automatic styling: first button primary, following buttons secondary.",
                     "required": 0,
                     "conditional_logic": 0,
-                    "wrapper": { "width": "30", "class": "", "id": "" },
+                    "wrapper": { "width": "", "class": "", "id": "" },
                     "choices": {
                         "primary": "Primary",
                         "secondary": "Secondary"
