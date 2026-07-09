@@ -21,6 +21,28 @@
             "toolbar": "full",
             "media_upload": 1,
             "delay": 0
+        },
+        {
+            "key": "field_68cc35ae6f800",
+            "label": "Delay",
+            "name": "delay",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "Seconds after page load before showing the banner.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": 0,
+            "min": 0,
+            "max": "",
+            "placeholder": "0",
+            "step": 1,
+            "prepend": "",
+            "append": "seconds"
         }
     ],
     "location": [
@@ -41,5 +63,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758213579
+    "modified": 1783605600
 }

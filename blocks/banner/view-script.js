@@ -1,17 +1,27 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const banner = document.querySelector(".banner");
+window.addEventListener("load", function () {
+  const banners = document.querySelectorAll(".banner");
+  const MILLISECONDS_PER_SECOND = 1000;
+  const DEFAULT_VISIBLE_DURATION_SECONDS = 10;
 
-  if (banner) {
+  banners.forEach((banner) => {
     const closeBanner = banner.querySelector("button");
+    const bannerDelay = Number.parseInt(banner.dataset.bannerDelay, 10);
+    const delay = Number.isFinite(bannerDelay) ? Math.max(0, bannerDelay) : 0;
+    const removeBanner = () => banner.remove();
 
     if (closeBanner) {
-      closeBanner.addEventListener("click", () => {
-        banner.remove();
-      });
+      closeBanner.addEventListener("click", removeBanner);
     }
 
-    setTimeout(() => {
-      banner.remove();
-    }, 10000);
-  }
-});
+    if (delay > 0) {
+      window.setTimeout(() => {
+        banner.classList.remove("banner--pending");
+      }, delay * MILLISECONDS_PER_SECOND);
+    }
+
+    window.setTimeout(
+      removeBanner,
+      (delay + DEFAULT_VISIBLE_DURATION_SECONDS) * MILLISECONDS_PER_SECOND
+    );
+  });
+}, { once: true });
