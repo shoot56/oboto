@@ -16,7 +16,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **Provides**: `learning-center` CPT and `learning-center-category` taxonomy.
 - **`inc/navigations-functions.php`**
   - **When to use**: Rendering navigation menus with ACF-enhanced menu items.
-  - **Provides**: `Header_Menu_Walker` (custom `Walker_Nav_Menu`) supporting ACF fields like `icon`, `submenu_type`, `item_type`, `open_in_new_tab`.
+  - **Provides**: `Header_Menu_Walker` (custom `Walker_Nav_Menu`) supporting ACF fields like `icon`, `item_type`, `open_in_new_tab`.
 - **`inc/class-alison-contact-forms.php`**
   - **When to use**: Enforcing corporate email-only submissions on Contact Form 7 forms.
   - **Provides**: `Alison_Contact_Forms_Handler` (blocked domains list + typo detection with Levenshtein).

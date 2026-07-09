@@ -40,7 +40,7 @@
 - **Navigation**
   - `oboto/navigation` block (`blocks/navigation/*`)
   - Custom walker: `Header_Menu_Walker` (`inc/navigations-functions.php`)
-  - Depends on ACF fields on menu items (e.g. `icon`, `submenu_type`, `open_in_new_tab`).
+  - Depends on ACF fields on menu items (e.g. `icon`, `item_type`, `open_in_new_tab`).
 - **Blog URL shaping**
   - Permalink override for posts in category `blog` and redirect/canonical alignment (`functions.php`)
 - **Forms**
