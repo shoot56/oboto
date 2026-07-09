@@ -27,6 +27,10 @@ main {
     animation: banner-slide-in 600ms ease-out;
     will-change: transform;
 
+    &.banner--pending {
+        display: none !important;
+    }
+
     @include mobile {
         top: 100px;
     }

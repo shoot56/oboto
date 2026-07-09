@@ -16,10 +16,12 @@ if (!empty($block['anchor'])) {
 }
 
 // Create class attribute allowing for custom "className" and "align" values.
-$classes = 'banner';
+$banner_delay_seconds = absint($block['data']['delay'] ?? 0);
+$classes = 'banner' . ($banner_delay_seconds > 0 ? ' banner--pending' : '');
 
 $wrapper_attributes = get_block_wrapper_attributes([
-    'class' => $classes
+    'class' => $classes,
+    'data-banner-delay' => $banner_delay_seconds,
 ]);
 
 if (get_field('add_animation') == 1) {
@@ -40,8 +42,8 @@ if (get_field('add_animation') == 1) {
         <div class="banner__content">
             <?= get_field("content") ?>
         </div>
-        <button>
-            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none">
+        <button type="button" aria-label="<?php esc_attr_e('Close banner', 'oboto'); ?>">
+            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="24" viewBox="0 0 25 24" fill="none" aria-hidden="true" focusable="false">
                 <path d="M18.293 6L6.29297 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
                 <path d="M6.29297 6L18.293 18" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
             </svg>
