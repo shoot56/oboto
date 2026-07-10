@@ -91,27 +91,6 @@ a.obot-product-resources__card:focus-visible {
     background-color: #101a2e;
 }
 
-.obot-product-resources__card-heading-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 120px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
-    background-color: #0a1020;
-    background-image: repeating-linear-gradient(135deg, rgba(91, 155, 255, 0.1) 0, rgba(91, 155, 255, 0.1) 10px, transparent 10px, transparent 20px);
-    padding: 20px;
-}
-
-.obot-product-resources__card-heading {
-    color: #5b9bff;
-    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: 12px;
-    line-height: 1.4;
-    letter-spacing: 0.08em;
-    text-align: center;
-    overflow-wrap: anywhere;
-}
-
 .obot-product-resources__card-body {
     display: flex;
     flex: 1;
@@ -142,7 +121,7 @@ a.obot-product-resources__card:focus-visible {
     align-items: center;
     gap: 7px;
     margin-top: auto;
-    color: #f0467f;
+    color: #4f7ef3;
     font-size: 14px;
     font-weight: 600;
     line-height: 1.25;
@@ -202,9 +181,6 @@ a.obot-product-resources__card:focus-visible .obot-product-resources__card-arrow
         min-height: 0;
     }
 
-    .obot-product-resources__card-heading-wrap {
-        min-height: 96px;
-    }
 }
 
 @media (max-width: 420px) {

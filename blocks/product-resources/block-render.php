@@ -36,20 +36,18 @@ if ( is_array( $cards ) ) {
 			continue;
 		}
 
-		$heading    = isset( $row['heading'] ) ? trim( (string) $row['heading'] ) : '';
 		$card_title = isset( $row['title'] ) ? trim( (string) $row['title'] ) : '';
 		$text       = isset( $row['text'] ) ? trim( (string) $row['text'] ) : '';
 		$button     = isset( $row['button'] ) && is_array( $row['button'] ) ? $row['button'] : null;
 
-		if ( $heading === '' && $card_title === '' && $text === '' && ( ! $button || empty( $button['url'] ) ) ) {
+		if ( $card_title === '' && $text === '' && ( ! $button || empty( $button['url'] ) ) ) {
 			continue;
 		}
 
 		$card_items[] = array(
-			'heading' => $heading,
-			'title'   => $card_title,
-			'text'    => $text,
-			'button'  => $button,
+			'title'  => $card_title,
+			'text'   => $text,
+			'button' => $button,
 		);
 	}
 }
@@ -86,12 +84,6 @@ if ( is_array( $cards ) ) {
 						<?php endif; ?>
 						<?php oboto_the_aos_attributes( 240 + ( $index * 70 ) ); ?>
 					>
-						<div class="obot-product-resources__card-heading-wrap">
-							<?php if ( $card['heading'] ) : ?>
-								<span class="obot-product-resources__card-heading"><?php echo esc_html( $card['heading'] ); ?></span>
-							<?php endif; ?>
-						</div>
-
 						<div class="obot-product-resources__card-body">
 							<?php if ( $card['title'] ) : ?>
 								<h3 class="obot-product-resources__card-title"><?php echo esc_html( $card['title'] ); ?></h3>
