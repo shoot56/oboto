@@ -26,29 +26,6 @@
             "layout": "horizontal"
         },
         {
-            "key": "field_692398dc0cc59",
-            "label": "Submenu type",
-            "name": "submenu_type",
-            "aria-label": "",
-            "type": "button_group",
-            "instructions": "",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "choices": {
-                "deafult": "Default",
-                "learning-center": "Learning Center"
-            },
-            "default_value": "deafult",
-            "return_format": "value",
-            "allow_null": 0,
-            "layout": "horizontal"
-        },
-        {
             "key": "field_6892695b7f05c",
             "label": "Icon",
             "name": "icon",
@@ -119,5 +96,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1763940624
+    "modified": 1783605600
 }
