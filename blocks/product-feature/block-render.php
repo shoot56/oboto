@@ -50,32 +50,82 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	)
 );
 
-$eyebrow = trim( (string) get_field( 'eyebrow' ) );
-$title   = trim( (string) get_field( 'title' ) );
-$text    = trim( (string) get_field( 'text' ) );
-$image   = get_field( 'image' );
-$list    = get_field( 'list' );
-$button  = get_field( 'button' );
+$eyebrow      = trim( (string) get_field( 'eyebrow' ) );
+$title        = trim( (string) get_field( 'title' ) );
+$text         = trim( (string) get_field( 'text' ) );
+$media_type   = sanitize_key( (string) get_field( 'media_type' ) );
+$image        = get_field( 'image' );
+$video        = get_field( 'video' );
+$video_poster = get_field( 'video_poster' );
+$list         = get_field( 'list' );
+$button       = get_field( 'button' );
 
-$image_data = null;
-if ( is_array( $image ) && ! empty( $image['url'] ) ) {
-	$image_data = array(
-		'url' => $image['url'],
-		'alt' => ! empty( $image['alt'] ) ? $image['alt'] : '',
-	);
-} elseif ( is_numeric( $image ) ) {
-	$image_src = wp_get_attachment_image_url( (int) $image, 'large' );
-	if ( $image_src ) {
-		$image_data = array(
-			'url' => $image_src,
-			'alt' => get_post_meta( (int) $image, '_wp_attachment_image_alt', true ),
+if ( ! in_array( $media_type, array( 'image', 'video' ), true ) ) {
+	$media_type = 'image';
+}
+
+$resolve_image_data = static function ( $image_value ) {
+	if ( is_array( $image_value ) && ! empty( $image_value['url'] ) ) {
+		return array(
+			'url' => $image_value['url'],
+			'alt' => ! empty( $image_value['alt'] ) ? $image_value['alt'] : '',
 		);
 	}
-} elseif ( is_string( $image ) && $image !== '' ) {
-	$image_data = array(
-		'url' => $image,
-		'alt' => '',
-	);
+
+	if ( is_numeric( $image_value ) ) {
+		$image_src = wp_get_attachment_image_url( (int) $image_value, 'large' );
+		if ( $image_src ) {
+			return array(
+				'url' => $image_src,
+				'alt' => get_post_meta( (int) $image_value, '_wp_attachment_image_alt', true ),
+			);
+		}
+	}
+
+	if ( is_string( $image_value ) && $image_value !== '' ) {
+		return array(
+			'url' => $image_value,
+			'alt' => '',
+		);
+	}
+
+	return null;
+};
+
+$resolve_video_data = static function ( $video_value ) {
+	if ( is_array( $video_value ) && ! empty( $video_value['url'] ) ) {
+		return array(
+			'url'  => $video_value['url'],
+			'mime' => ! empty( $video_value['mime_type'] ) ? $video_value['mime_type'] : '',
+		);
+	}
+
+	if ( is_numeric( $video_value ) ) {
+		$video_src = wp_get_attachment_url( (int) $video_value );
+		if ( $video_src ) {
+			return array(
+				'url'  => $video_src,
+				'mime' => get_post_mime_type( (int) $video_value ),
+			);
+		}
+	}
+
+	if ( is_string( $video_value ) && $video_value !== '' ) {
+		return array(
+			'url'  => $video_value,
+			'mime' => '',
+		);
+	}
+
+	return null;
+};
+
+$image_data        = $resolve_image_data( $image );
+$video_data        = $resolve_video_data( $video );
+$video_poster_data = $resolve_image_data( $video_poster );
+$media_classes     = 'obot-product-feature__media';
+if ( $media_type === 'video' ) {
+	$media_classes .= ' obot-product-feature__media--video';
 }
 
 $list_items = array();
@@ -112,8 +162,23 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 		</div>
 
 		<div class="obot-product-feature__body">
-			<div class="obot-product-feature__media"<?php oboto_the_aos_attributes( 320 ); ?>>
-				<?php if ( $image_data ) : ?>
+			<div class="<?php echo esc_attr( $media_classes ); ?>"<?php oboto_the_aos_attributes( 320 ); ?>>
+				<?php if ( $media_type === 'video' && $video_data ) : ?>
+					<video
+						class="obot-product-feature__video"
+						autoplay
+						muted
+						loop
+						playsinline
+						preload="metadata"
+						<?php echo $video_poster_data ? 'poster="' . esc_url( $video_poster_data['url'] ) . '"' : ''; ?>
+					>
+						<source
+							src="<?php echo esc_url( $video_data['url'] ); ?>"
+							<?php echo ! empty( $video_data['mime'] ) ? 'type="' . esc_attr( $video_data['mime'] ) . '"' : ''; ?>
+						>
+					</video>
+				<?php elseif ( $media_type === 'image' && $image_data ) : ?>
 					<img
 						class="obot-product-feature__image"
 						src="<?php echo esc_url( $image_data['url'] ); ?>"
@@ -122,7 +187,13 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 					>
 				<?php elseif ( $is_preview ) : ?>
 					<div class="obot-product-feature__image-placeholder">
-						<?php esc_html_e( 'Add an image in the block fields.', 'oboto' ); ?>
+						<?php
+						echo esc_html(
+							$media_type === 'video'
+								? __( 'Add a video in the block fields.', 'oboto' )
+								: __( 'Add an image in the block fields.', 'oboto' )
+						);
+						?>
 					</div>
 				<?php endif; ?>
 			</div>

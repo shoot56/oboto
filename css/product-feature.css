@@ -102,10 +102,19 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
-.obot-product-feature__image {
+.obot-product-feature__media--video {
+    background: #070b16;
+}
+
+.obot-product-feature__image,
+.obot-product-feature__video {
     display: block;
     width: 100%;
     height: auto;
+}
+
+.obot-product-feature__video {
+    background: #070b16;
 }
 
 .obot-product-feature__image-placeholder,
