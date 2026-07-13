@@ -4,9 +4,11 @@
     max-width: none !important;
     margin-right: calc(50% - 50vw) !important;
     margin-left: calc(50% - 50vw) !important;
-    padding: 80px 56px 56px;
+    padding: 0 56px;
     overflow-x: clip;
-    background: #050810;
+    background:
+        radial-gradient(circle at 50% 0%, rgba(79, 125, 243, 0.28) 0%, rgba(79, 125, 243, 0.12) 28%, rgba(5, 8, 16, 0) 58%),
+        linear-gradient(180deg, #080c18 0%, #050810 100%);
     color: #ffffff;
 }
 
@@ -37,6 +39,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison-hero.ob
     max-width: 1100px;
     margin-right: auto;
     margin-left: auto;
+    text-align: center;
 }
 
 .obot-comparison-hero__eyebrow {
@@ -59,7 +62,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison-hero.ob
 
 .obot-comparison-hero__title {
     max-width: 940px;
-    margin: 0;
+    margin: 0 auto;
     color: #ffffff;
     font-family: "Sora", sans-serif;
     font-size: 56px;
@@ -84,7 +87,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison-hero.ob
 
 @media (max-width: 960px) {
     .obot-comparison-hero {
-        padding: 72px 28px 48px;
+        padding-right: 28px;
+        padding-left: 28px;
     }
 
     .obot-comparison-hero__title {
@@ -94,7 +98,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison-hero.ob
 
 @media (max-width: 767px) {
     .obot-comparison-hero {
-        padding: 56px 16px 40px;
+        padding-right: 16px;
+        padding-left: 16px;
     }
 
     .obot-comparison-hero__eyebrow {
