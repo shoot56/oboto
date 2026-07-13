@@ -80,6 +80,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/product-resources`** — Product Resources block.
   - **When to use**: Product pages that need the `resources` anchor section with an eyebrow, title, and linked resource cards.
   - **Note**: Defaults to `id="resources"` unless an anchor is provided, and includes ACF fields for eyebrow, title, and card rows with title, text, and button link.
+- **`oboto/comparison-hero`** — Comparison Hero block.
+  - **When to use**: Comparison pages that need a simple top hero with an eyebrow and large title.
+  - **Note**: Uses ACF fields for eyebrow and title only; visual styles are currently hardcoded to match the archived comparison reference.
 - **`oboto/comparison`** — Comparison block.
   - **When to use**: Product or landing pages that need a responsive feature comparison table with configurable column headings and comparison rows.
   - **Note**: Uses ACF fields for title, feature/column headings, and comparison rows; the first comparison column is visually highlighted on desktop and mobile.

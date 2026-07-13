@@ -1,0 +1,109 @@
+.obot-comparison-hero {
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: 80px 56px 56px;
+    overflow-x: clip;
+    background: #050810;
+    color: #ffffff;
+}
+
+.obot-comparison-hero.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-comparison-hero.obot-comparison-hero,
+body .is-layout-flow > .wp-block-oboto-comparison-hero.obot-comparison-hero,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison-hero.obot-comparison-hero {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-comparison-hero *,
+.obot-comparison-hero *::before,
+.obot-comparison-hero *::after {
+    box-sizing: border-box;
+}
+
+.obot-comparison-hero__inner {
+    width: 100%;
+    max-width: 1100px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-comparison-hero__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    max-width: 100%;
+    margin-bottom: 24px;
+    padding: 8px 14px;
+    border: 1px solid rgba(79, 125, 243, 0.4);
+    border-radius: 999px;
+    background: rgba(79, 125, 243, 0.1);
+    color: #8fabf7;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    overflow-wrap: anywhere;
+}
+
+.obot-comparison-hero__title {
+    max-width: 940px;
+    margin: 0;
+    color: #ffffff;
+    font-family: "Sora", sans-serif;
+    font-size: 56px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: 0;
+    overflow-wrap: anywhere;
+}
+
+.obot-comparison-hero__placeholder {
+    display: flex;
+    min-height: 140px;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(255, 255, 255, 0.24);
+    border-radius: 8px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+@media (max-width: 960px) {
+    .obot-comparison-hero {
+        padding: 72px 28px 48px;
+    }
+
+    .obot-comparison-hero__title {
+        font-size: 46px;
+    }
+}
+
+@media (max-width: 767px) {
+    .obot-comparison-hero {
+        padding: 56px 16px 40px;
+    }
+
+    .obot-comparison-hero__eyebrow {
+        margin-bottom: 20px;
+        font-size: 12px;
+    }
+
+    .obot-comparison-hero__title {
+        font-size: 36px;
+        line-height: 1.15;
+    }
+}

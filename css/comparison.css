@@ -4,7 +4,7 @@
     max-width: none !important;
     margin-right: calc(50% - 50vw) !important;
     margin-left: calc(50% - 50vw) !important;
-    padding: 80px 56px;
+    padding: 0 56px;
     overflow-x: clip;
     background: #050810;
     color: #ffffff;
@@ -154,7 +154,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison.obot-co
 
 @media (max-width: 960px) {
     .obot-comparison {
-        padding: 72px 28px;
+        padding-right: 28px;
+        padding-left: 28px;
     }
 
     .obot-comparison__title {
@@ -164,7 +165,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison.obot-co
 
 @media (max-width: 767px) {
     .obot-comparison {
-        padding: 64px 16px;
+        padding-right: 16px;
+        padding-left: 16px;
     }
 
     .obot-comparison__header {
