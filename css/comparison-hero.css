@@ -6,9 +6,7 @@
     margin-left: calc(50% - 50vw) !important;
     padding: 0 56px;
     overflow-x: clip;
-    background:
-        radial-gradient(circle at 50% 0%, rgba(79, 125, 243, 0.28) 0%, rgba(79, 125, 243, 0.12) 28%, rgba(5, 8, 16, 0) 58%),
-        linear-gradient(180deg, #080c18 0%, #050810 100%);
+    background: radial-gradient(900px 500px at 50% 0%, rgb(12, 24, 48) 0%, rgb(5, 8, 16) 60%);
     color: #ffffff;
 }
 
