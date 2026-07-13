@@ -234,9 +234,18 @@
     }
 
     .menu-item--depth-0 {
-      &:hover,
-      &:focus-within,
-      &.submenu-opened {
+      &:hover {
+        >.menu-item__link {
+          background: rgba(255, 255, 255, 0.08);
+          color: #fff;
+
+          svg {
+            transform: rotate(180deg);
+          }
+        }
+      }
+
+      &:focus-within {
         >.menu-item__link {
           background: rgba(255, 255, 255, 0.08);
           color: #fff;
@@ -247,6 +256,7 @@
         }
 
         >.submenu__container {
+          display: block;
           z-index: 20;
           opacity: 1;
           visibility: visible;
@@ -255,9 +265,19 @@
         }
       }
 
+      >.menu-item__link:hover + .submenu__container,
+      >.submenu__container:hover {
+        display: block;
+        z-index: 20;
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transform: translateY(0);
+      }
+
       >.submenu__container {
         position: absolute;
-        display: block;
+        display: none;
         top: 100%;
         left: 0;
         z-index: -1;
