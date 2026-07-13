@@ -247,6 +247,7 @@
         }
 
         >.submenu__container {
+          z-index: 20;
           opacity: 1;
           visibility: visible;
           pointer-events: auto;
@@ -259,7 +260,7 @@
         display: block;
         top: 100%;
         left: 0;
-        z-index: 20;
+        z-index: -1;
         width: max-content;
         min-width: 0;
         max-width: calc(100vw - 32px);

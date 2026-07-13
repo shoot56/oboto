@@ -33,7 +33,7 @@ $title   = trim( (string) get_field( 'title' ) );
 	<div class="obot-comparison-hero__inner">
 		<?php if ( $eyebrow ) : ?>
 			<div class="obot-comparison-hero__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>>
-				<?php echo esc_html( $eyebrow ); ?>
+				<span><?php echo esc_html( $eyebrow ); ?></span>
 			</div>
 		<?php endif; ?>
 
