@@ -1,0 +1,44 @@
+{
+  "name": "oboto/comparison",
+  "title": "Comparison",
+  "description": "Responsive comparison table with editable column headings and comparison rows.",
+  "category": "obot_landing",
+  "icon": "columns",
+  "keywords": ["comparison", "table", "features", "product"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["comparison"]
+}
