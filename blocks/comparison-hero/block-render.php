@@ -19,6 +19,11 @@ if ( empty( $block['align'] ) ) {
 	$wrapper_classes .= ' alignfull';
 }
 
+$enable_gradient_background = (bool) get_field( 'enable_gradient_background' );
+if ( $enable_gradient_background ) {
+	$wrapper_classes .= ' obot-comparison-hero--has-gradient';
+}
+
 $wrapper_attributes = get_block_wrapper_attributes(
 	array(
 		'class' => $wrapper_classes,

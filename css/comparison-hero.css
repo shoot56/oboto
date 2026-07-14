@@ -6,8 +6,12 @@
     margin-left: calc(50% - 50vw) !important;
     padding: 0 56px;
     overflow-x: clip;
-    background: radial-gradient(900px 500px at 50% 0%, rgb(12, 24, 48) 0%, rgb(5, 8, 16) 60%);
+    background: #050810;
     color: #ffffff;
+}
+
+.obot-comparison-hero--has-gradient {
+    background: radial-gradient(900px 500px at 50% 0%, rgb(12, 24, 48) 0%, rgb(5, 8, 16) 60%);
 }
 
 .obot-comparison-hero.alignfull {

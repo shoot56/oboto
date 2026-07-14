@@ -33,6 +33,22 @@
             "rows": 2,
             "placeholder": "Difference between Obot and Lunar.dev",
             "new_lines": ""
+        },
+        {
+            "key": "field_comparison_hero_enable_gradient_background",
+            "label": "Gradient Background",
+            "name": "enable_gradient_background",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "Enable gradient background",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "On",
+            "ui_off_text": "Off"
         }
     ],
     "location": [
@@ -53,5 +69,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1783900800
+    "modified": 1783987200
 }
