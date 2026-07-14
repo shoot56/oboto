@@ -120,6 +120,51 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison.obot-co
     overflow-wrap: anywhere;
 }
 
+.obot-comparison__cell-content {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 8px;
+}
+
+.obot-comparison__cell-text {
+    min-width: 0;
+}
+
+.obot-comparison__status {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.obot-comparison__status--check {
+    color: #3ecf8e;
+}
+
+.obot-comparison__status--check::before {
+    content: "\2713";
+}
+
+.obot-comparison__status--cross {
+    color: #ef5350;
+}
+
+.obot-comparison__status--cross::before {
+    content: "\2717";
+}
+
+.obot-comparison__status--semicircle {
+    color: #f2b84f;
+}
+
+.obot-comparison__status--semicircle::before {
+    content: "\25d0";
+}
+
 .obot-comparison__table td p {
     margin: 0;
 }

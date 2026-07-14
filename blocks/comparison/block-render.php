@@ -35,6 +35,35 @@ if ( $feature_column_heading === '' ) {
 	$feature_column_heading = __( 'Feature', 'oboto' );
 }
 
+$status_icons = array(
+	'none'       => '',
+	'check'      => __( 'Check', 'oboto' ),
+	'cross'      => __( 'Cross', 'oboto' ),
+	'semicircle' => __( 'Partial', 'oboto' ),
+);
+
+$normalize_status_icon = static function ( $value ) use ( $status_icons ) {
+	$value = sanitize_key( (string) $value );
+
+	if ( ! array_key_exists( $value, $status_icons ) || $value === 'none' ) {
+		return 'none';
+	}
+
+	return $value;
+};
+
+$render_status_icon = static function ( $icon ) use ( $status_icons ) {
+	if ( $icon === 'none' ) {
+		return '';
+	}
+
+	return sprintf(
+		'<span class="obot-comparison__status obot-comparison__status--%1$s" role="img" aria-label="%2$s"></span>',
+		esc_attr( $icon ),
+		esc_attr( $status_icons[ $icon ] )
+	);
+};
+
 $comparison_items = array();
 if ( is_array( $comparisons ) ) {
 	foreach ( $comparisons as $row ) {
@@ -45,8 +74,10 @@ if ( is_array( $comparisons ) ) {
 		$feature            = isset( $row['feature'] ) ? trim( (string) $row['feature'] ) : '';
 		$first_column_text  = isset( $row['first_column_text'] ) ? trim( (string) $row['first_column_text'] ) : '';
 		$second_column_text = isset( $row['second_column_text'] ) ? trim( (string) $row['second_column_text'] ) : '';
+		$first_column_icon  = $normalize_status_icon( $row['first_column_icon'] ?? 'none' );
+		$second_column_icon = $normalize_status_icon( $row['second_column_icon'] ?? 'none' );
 
-		if ( $feature === '' && $first_column_text === '' && $second_column_text === '' ) {
+		if ( $feature === '' && $first_column_text === '' && $second_column_text === '' && $first_column_icon === 'none' && $second_column_icon === 'none' ) {
 			continue;
 		}
 
@@ -54,6 +85,8 @@ if ( is_array( $comparisons ) ) {
 			'feature'            => $feature,
 			'first_column_text'  => $first_column_text,
 			'second_column_text' => $second_column_text,
+			'first_column_icon'  => $first_column_icon,
+			'second_column_icon' => $second_column_icon,
 		);
 	}
 }
@@ -89,10 +122,20 @@ if ( is_array( $comparisons ) ) {
 									<?php echo esc_html( $item['feature'] ); ?>
 								</th>
 								<td class="obot-comparison__primary" data-label="<?php echo esc_attr( $first_column_heading ); ?>">
-									<?php echo wp_kses_post( wpautop( $item['first_column_text'] ) ); ?>
+									<div class="obot-comparison__cell-content">
+										<?php echo $render_status_icon( $item['first_column_icon'] ); ?>
+										<div class="obot-comparison__cell-text">
+											<?php echo wp_kses_post( wpautop( $item['first_column_text'] ) ); ?>
+										</div>
+									</div>
 								</td>
 								<td data-label="<?php echo esc_attr( $second_column_heading ); ?>">
-									<?php echo wp_kses_post( wpautop( $item['second_column_text'] ) ); ?>
+									<div class="obot-comparison__cell-content">
+										<?php echo $render_status_icon( $item['second_column_icon'] ); ?>
+										<div class="obot-comparison__cell-text">
+											<?php echo wp_kses_post( wpautop( $item['second_column_text'] ) ); ?>
+										</div>
+									</div>
 								</td>
 							</tr>
 						<?php endforeach; ?>
