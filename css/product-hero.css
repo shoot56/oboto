@@ -50,7 +50,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
 
 .obot-product-hero__inner {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(420px, 1fr);
+    grid-template-columns: 400px minmax(0, 1fr);
     align-items: center;
     gap: 40px;
     width: 100%;
@@ -231,23 +231,18 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
 .obot-product-hero__visual {
     display: flex;
     justify-content: center;
+    width: 100%;
     min-width: 0;
 }
 
 .obot-product-hero__animation-viewport {
     position: relative;
-    width: 750px;
-    max-width: 100%;
+    width: 100%;
+    max-width: 750px;
+    flex: 0 1 750px;
     aspect-ratio: 5 / 3;
     overflow: hidden;
     border-radius: 16px;
-}
-
-@media (min-width: 1400px) {
-    .obot-product-hero__animation-viewport {
-        max-width: none;
-        flex: 0 0 750px;
-    }
 }
 
 .obot-product-hero__animation {
@@ -260,15 +255,6 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     transform-origin: top left;
 }
 
-.obot-product-hero__animation::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-        radial-gradient(560px 350px at 50% 40%, rgba(43, 86, 185, 0.2), transparent 70%),
-        linear-gradient(155deg, rgba(20, 32, 65, 0.94), rgba(5, 9, 20, 0.98));
-}
-
 .obot-product-hero__app-window {
     position: absolute;
     top: 24px;
@@ -279,7 +265,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     border: 1px solid rgba(255, 255, 255, 0.16);
     border-radius: 12px;
     background: #0a0f1d;
-    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5), 0 0 60px rgba(74, 143, 231, 0.12);
+    box-shadow: 0 28px 80px rgba(0, 0, 0, 0.5);
     animation: obotProductHeroWindowFloat 6s ease-in-out infinite;
 }
 
@@ -1343,8 +1329,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     }
 
     .obot-product-hero__inner {
-        grid-template-columns: minmax(0, 0.9fr) minmax(390px, 1.1fr);
-        gap: 28px;
+        grid-template-columns: 400px minmax(0, 1fr);
+        gap: 40px;
     }
 
     .obot-product-hero__title {
