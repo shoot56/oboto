@@ -59,11 +59,12 @@ $add_browser_header = (bool) get_field( 'add_browser_header' );
 $browser_address    = trim( (string) get_field( 'browser_address' ) );
 $video              = get_field( 'video' );
 $video_poster       = get_field( 'video_poster' );
+$raw_html           = trim( (string) get_field( 'raw_html' ) );
 $list               = get_field( 'list' );
 $button             = get_field( 'button' );
 $button_icon        = get_field( 'button_icon' );
 
-if ( ! in_array( $media_type, array( 'image', 'video' ), true ) ) {
+if ( ! in_array( $media_type, array( 'image', 'video', 'html' ), true ) ) {
 	$media_type = 'image';
 }
 
@@ -133,6 +134,9 @@ $media_classes     = 'obot-product-feature__media';
 if ( $media_type === 'video' ) {
 	$media_classes .= ' obot-product-feature__media--video';
 }
+if ( $media_type === 'html' ) {
+	$media_classes .= ' obot-product-feature__media--html';
+}
 if ( $show_browser_header ) {
 	$media_classes .= ' obot-product-feature__media--browser';
 }
@@ -152,6 +156,11 @@ if ( is_array( $list ) ) {
 }
 
 $has_button = is_array( $button ) && ! empty( $button['url'] );
+$media_placeholder = array(
+	'image' => __( 'Add an image in the block fields.', 'oboto' ),
+	'video' => __( 'Add a video in the block fields.', 'oboto' ),
+	'html'  => __( 'Add HTML code in the block fields.', 'oboto' ),
+);
 
 ?>
 <section id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?>>
@@ -175,7 +184,17 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 
 		<div class="obot-product-feature__body">
 			<div class="<?php echo esc_attr( $media_classes ); ?>"<?php oboto_the_aos_attributes( 320 ); ?>>
-				<?php if ( $media_type === 'video' && $video_data ) : ?>
+				<?php if ( $media_type === 'html' && $raw_html ) : ?>
+					<iframe
+						class="obot-product-feature__html"
+						title="<?php echo esc_attr( $title ? $title : __( 'Interactive feature preview', 'oboto' ) ); ?>"
+						srcdoc="<?php echo esc_attr( $raw_html ); ?>"
+						sandbox="allow-scripts"
+						loading="lazy"
+						referrerpolicy="no-referrer"
+						scrolling="no"
+					></iframe>
+				<?php elseif ( $media_type === 'video' && $video_data ) : ?>
 					<video
 						class="obot-product-feature__video"
 						autoplay
@@ -209,13 +228,7 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 					>
 				<?php elseif ( $is_preview ) : ?>
 					<div class="obot-product-feature__image-placeholder">
-						<?php
-						echo esc_html(
-							$media_type === 'video'
-								? __( 'Add a video in the block fields.', 'oboto' )
-								: __( 'Add an image in the block fields.', 'oboto' )
-						);
-						?>
+						<?php echo esc_html( $media_placeholder[ $media_type ] ); ?>
 					</div>
 				<?php endif; ?>
 			</div>

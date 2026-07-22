@@ -122,12 +122,28 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     background: #070b16;
 }
 
+.obot-product-feature__media--html {
+    aspect-ratio: 970 / 516;
+    overflow: hidden;
+    border-radius: 0;
+    background: transparent;
+    box-shadow: none;
+}
+
 .obot-product-feature__image,
 .obot-product-feature__video {
     display: block;
     width: 100%;
     height: auto;
     border: 0;
+}
+
+.obot-product-feature__html {
+    display: block;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background: transparent;
 }
 
 .obot-product-feature__browser-header {

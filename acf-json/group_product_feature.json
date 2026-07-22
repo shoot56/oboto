@@ -89,7 +89,8 @@
             "wrapper": { "width": "", "class": "", "id": "" },
             "choices": {
                 "image": "Image",
-                "video": "Video"
+                "video": "Video",
+                "html": "HTML"
             },
             "default_value": "image",
             "return_format": "value",
@@ -232,6 +233,30 @@
             "preview_size": "medium"
         },
         {
+            "key": "field_product_feature_raw_html",
+            "label": "HTML Code",
+            "name": "raw_html",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Paste a complete HTML document or an HTML fragment. Inline CSS and JavaScript are supported and rendered in a sandboxed iframe.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 18,
+            "placeholder": "<div>...</div>",
+            "new_lines": ""
+        },
+        {
             "key": "field_product_feature_list",
             "label": "List",
             "name": "list",
@@ -320,5 +345,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784718060
+    "modified": 1784726324
 }

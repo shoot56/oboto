@@ -1,10 +1,10 @@
 {
   "name": "oboto/product-feature",
   "title": "Product Feature",
-  "description": "Product feature section with accent eyebrow, centered copy, optional browser-framed media, bullet list, and icon CTA.",
+  "description": "Product feature section with accent eyebrow, centered copy, image, video or custom HTML media, bullet list, and icon CTA.",
   "category": "obot_landing",
   "icon": "columns",
-  "keywords": ["product", "feature", "mcp", "image", "list"],
+  "keywords": ["product", "feature", "mcp", "image", "video", "html"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
