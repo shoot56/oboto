@@ -134,13 +134,14 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     margin: 22px 0 0;
     color: #9aa7bd;
     font-size: 19px;
+    font-weight: 400;
     line-height: 1.55;
 }
 
 .obot-product-hero__actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 14px;
+    gap: 10px;
     margin-top: 36px;
 }
 
@@ -150,8 +151,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     justify-content: center;
     min-height: 52px;
     max-width: 100%;
-    gap: 10px;
-    padding: 15px 24px;
+    gap: 8px;
+    padding: 15px 18px;
     border-radius: 11px;
     color: #fff;
     font-size: 16px;
@@ -164,8 +165,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
 }
 
 .obot-product-hero__button--primary {
-    padding-right: 26px;
-    padding-left: 26px;
+    padding-right: 20px;
+    padding-left: 20px;
     border: 1px solid rgba(91, 155, 255, 0.26);
     background: linear-gradient(135deg, #3b82f6, #5468f5);
     box-shadow: 0 10px 30px rgba(59, 130, 246, 0.36);
