@@ -301,9 +301,9 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     }
 
     .obot-product-feature__content {
-        max-width: 720px;
-        margin-right: auto;
-        margin-left: auto;
+        max-width: none;
+        margin-right: 0;
+        margin-left: 0;
     }
 }
 
