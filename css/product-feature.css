@@ -94,6 +94,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     margin: 24px auto 0;
     color: #c3ccdd;
     font-size: 20.5px;
+    font-weight: 400;
     line-height: 1.65;
 }
 
@@ -107,10 +108,14 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
 .obot-product-feature__media {
     min-width: 0;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    border: 0;
     border-radius: 16px;
     background: linear-gradient(135deg, rgba(var(--product-feature-accent-rgb), 0.1), rgba(var(--product-feature-accent-rgb), 0.05));
     box-shadow: 0 8px 40px rgba(0, 0, 0, 0.4), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.obot-product-feature__media--browser {
+    border-radius: 12px;
 }
 
 .obot-product-feature__media--video {
@@ -122,6 +127,61 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     display: block;
     width: 100%;
     height: auto;
+    border: 0;
+}
+
+.obot-product-feature__browser-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+    background-color: #1a1f2e;
+}
+
+.obot-product-feature__browser-controls {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    gap: 8px;
+}
+
+.obot-product-feature__browser-dot {
+    display: block;
+    width: 10px;
+    height: 10px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+}
+
+.obot-product-feature__browser-dot--close {
+    background-color: #ff5f57;
+}
+
+.obot-product-feature__browser-dot--minimize {
+    background-color: #febc2e;
+}
+
+.obot-product-feature__browser-dot--maximize {
+    background-color: #28c840;
+}
+
+.obot-product-feature__browser-address {
+    min-width: 0;
+    flex: 1 1 auto;
+    margin-right: 12px;
+    margin-left: 12px;
+    overflow: hidden;
+    padding: 4px 10px;
+    border-radius: 4px;
+    background-color: #0d1117;
+    color: #4a5568;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.2;
+    text-align: left;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .obot-product-feature__video {
@@ -146,6 +206,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     min-width: 0;
     flex-direction: column;
     gap: 24px;
+    text-align: left;
 }
 
 .obot-product-feature__list {
@@ -163,6 +224,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     align-items: flex-start;
     color: #c3ccdd;
     font-size: 18px;
+    font-weight: 400;
     line-height: 1.65;
     overflow-wrap: anywhere;
 }
@@ -184,6 +246,8 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     justify-content: center;
     gap: 10px;
     max-width: 100%;
+    margin-right: auto;
+    margin-left: 0;
     margin-top: 8px;
     padding: 12px 22px;
     border: 1px solid rgba(255, 255, 255, 0.14);

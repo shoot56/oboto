@@ -50,20 +50,24 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	)
 );
 
-$eyebrow      = trim( (string) get_field( 'eyebrow' ) );
-$title        = trim( (string) get_field( 'title' ) );
-$text         = trim( (string) get_field( 'text' ) );
-$media_type   = sanitize_key( (string) get_field( 'media_type' ) );
-$image        = get_field( 'image' );
-$video        = get_field( 'video' );
-$video_poster = get_field( 'video_poster' );
-$list         = get_field( 'list' );
-$button       = get_field( 'button' );
-$button_icon  = get_field( 'button_icon' );
+$eyebrow            = trim( (string) get_field( 'eyebrow' ) );
+$title              = trim( (string) get_field( 'title' ) );
+$text               = trim( (string) get_field( 'text' ) );
+$media_type         = sanitize_key( (string) get_field( 'media_type' ) );
+$image              = get_field( 'image' );
+$add_browser_header = (bool) get_field( 'add_browser_header' );
+$browser_address    = trim( (string) get_field( 'browser_address' ) );
+$video              = get_field( 'video' );
+$video_poster       = get_field( 'video_poster' );
+$list               = get_field( 'list' );
+$button             = get_field( 'button' );
+$button_icon        = get_field( 'button_icon' );
 
 if ( ! in_array( $media_type, array( 'image', 'video' ), true ) ) {
 	$media_type = 'image';
 }
+
+$show_browser_header = $media_type === 'image' && $add_browser_header;
 
 $resolve_image_data = static function ( $image_value ) {
 	if ( is_array( $image_value ) && ! empty( $image_value['url'] ) ) {
@@ -129,6 +133,9 @@ $media_classes     = 'obot-product-feature__media';
 if ( $media_type === 'video' ) {
 	$media_classes .= ' obot-product-feature__media--video';
 }
+if ( $show_browser_header ) {
+	$media_classes .= ' obot-product-feature__media--browser';
+}
 
 $list_items = array();
 if ( is_array( $list ) ) {
@@ -184,6 +191,16 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 						>
 					</video>
 				<?php elseif ( $media_type === 'image' && $image_data ) : ?>
+					<?php if ( $show_browser_header ) : ?>
+						<div class="obot-product-feature__browser-header" aria-hidden="true">
+							<span class="obot-product-feature__browser-controls">
+								<span class="obot-product-feature__browser-dot obot-product-feature__browser-dot--close"></span>
+								<span class="obot-product-feature__browser-dot obot-product-feature__browser-dot--minimize"></span>
+								<span class="obot-product-feature__browser-dot obot-product-feature__browser-dot--maximize"></span>
+							</span>
+							<span class="obot-product-feature__browser-address"><?php echo esc_html( $browser_address ); ?></span>
+						</div>
+					<?php endif; ?>
 					<img
 						class="obot-product-feature__image"
 						src="<?php echo esc_url( $image_data['url'] ); ?>"

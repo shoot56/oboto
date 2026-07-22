@@ -126,6 +126,59 @@
             "preview_size": "medium"
         },
         {
+            "key": "field_product_feature_add_browser_header",
+            "label": "Browser Header",
+            "name": "add_browser_header",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Add browser controls and an address bar above the image.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_media_type",
+                        "operator": "==",
+                        "value": "image"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "Add browser header",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "On",
+            "ui_off_text": "Off"
+        },
+        {
+            "key": "field_product_feature_browser_address",
+            "label": "Browser Address",
+            "name": "browser_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Text displayed in the browser address bar.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_media_type",
+                        "operator": "==",
+                        "value": "image"
+                    },
+                    {
+                        "field": "field_product_feature_add_browser_header",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "app.obot.ai/admin/dashboard",
+            "maxlength": "",
+            "placeholder": "app.obot.ai/admin/dashboard",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_product_feature_video",
             "label": "Video",
             "name": "video",
@@ -267,5 +320,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784712825
+    "modified": 1784718060
 }

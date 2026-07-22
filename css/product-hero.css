@@ -63,7 +63,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     position: relative;
     z-index: 2;
     width: 100%;
-    max-width: 520px;
+    max-width: 400px;
     min-width: 0;
 }
 
@@ -110,7 +110,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
 }
 
 .obot-product-hero__title {
-    max-width: 520px;
+    max-width: 400px;
     margin: 0;
     color: #f4f7fc;
     font-size: 46px;
@@ -130,7 +130,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
 }
 
 .obot-product-hero__text {
-    max-width: 520px;
+    max-width: 400px;
     margin: 22px 0 0;
     color: #9aa7bd;
     font-size: 19px;
@@ -1364,16 +1364,16 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     }
 
     .obot-product-hero__copy {
-        max-width: 720px;
+        max-width: 400px;
     }
 
     .obot-product-hero__title {
-        max-width: 660px;
+        max-width: 400px;
         font-size: 46px;
     }
 
     .obot-product-hero__text {
-        max-width: 620px;
+        max-width: 400px;
     }
 
     .obot-product-hero__visual {
