@@ -1,332 +1,225 @@
 (function () {
-    var SELECTOR = '[data-product-hero-diagram]';
-    var LOGICAL_WIDTH = 680;
-    var LOGICAL_HEIGHT = 540;
-    var FOV = 820;
+    var SELECTOR = '[data-product-hero-animation]';
+    var STAGE_WIDTH = 900;
+    var STAGE_HEIGHT = 560;
+    var CYCLE_MS = 40000;
 
-    var NODES = [
-        { label: 'Claude', x: -255, y: -170, z: 0.4, cat: 'client' },
-        { label: 'Cursor', x: -285, y: -92, z: -0.2, cat: 'client' },
-        { label: 'ChatGPT', x: -270, y: -18, z: 0.2, cat: 'client' },
-        { label: 'Agent', x: -292, y: 58, z: 0.1, cat: 'client' },
-        { label: 'VS Code', x: -260, y: 132, z: 0.3, cat: 'client' },
-        { label: 'Workflow', x: -300, y: 210, z: -0.1, cat: 'client' },
-        { label: 'Filesystem', x: -78, y: -152, z: 0.2, cat: 'local' },
-        { label: 'Git', x: 82, y: -130, z: -0.2, cat: 'local' },
-        { label: 'Shell', x: -94, y: 146, z: 0.1, cat: 'local' },
-        { label: 'Docker', x: 90, y: 164, z: 0.35, cat: 'local' },
-        { label: 'Slack', x: 258, y: -178, z: 0.3, cat: 'remote' },
-        { label: 'GitHub', x: 308, y: -100, z: -0.1, cat: 'remote' },
-        { label: 'Notion', x: 292, y: -18, z: 0.45, cat: 'remote' },
-        { label: 'Outlook', x: 306, y: 62, z: 0.1, cat: 'remote' },
-        { label: 'Postgres', x: 270, y: 140, z: 0.25, cat: 'remote' },
-        { label: 'Salesforce', x: 314, y: 218, z: -0.25, cat: 'remote' }
-    ];
-
-    var COLORS = {
-        client: { r: 91, g: 155, b: 255, hex: '#5b9bff', text: '#a9c4ff' },
-        local: { r: 16, g: 185, b: 129, hex: '#10b981', text: '#8df2c8' },
-        remote: { r: 143, g: 143, b: 247, hex: '#8f8ff7', text: '#c9c9ff' }
-    };
-
-    function rgba(color, alpha) {
-        return 'rgba(' + color.r + ',' + color.g + ',' + color.b + ',' + alpha + ')';
-    }
-
-    function project(x, y, z) {
-        var scale = FOV / (FOV + z * 90);
-        return {
-            x: LOGICAL_WIDTH / 2 + x * scale,
-            y: LOGICAL_HEIGHT / 2 + y * scale,
-            scale: scale
-        };
-    }
-
-    function bezierPoint(t, p0, p1, p2, p3) {
-        var u = 1 - t;
-
-        return {
-            x: u * u * u * p0.x + 3 * u * u * t * p1.x + 3 * u * t * t * p2.x + t * t * t * p3.x,
-            y: u * u * u * p0.y + 3 * u * u * t * p1.y + 3 * u * t * t * p2.y + t * t * t * p3.y
-        };
-    }
-
-    function hexPoints(cx, cy, radius, rotation) {
-        var points = [];
-
-        for (var index = 0; index < 6; index += 1) {
-            var angle = Math.PI / 3 * index + rotation;
-            points.push({
-                x: cx + radius * Math.cos(angle),
-                y: cy + radius * Math.sin(angle)
-            });
-        }
-
-        return points;
-    }
-
-    function drawHex(ctx, cx, cy, radius, rotation) {
-        var points = hexPoints(cx, cy, radius, rotation);
-
-        ctx.beginPath();
-        points.forEach(function (point, index) {
-            if (index === 0) {
-                ctx.moveTo(point.x, point.y);
-            } else {
-                ctx.lineTo(point.x, point.y);
-            }
+    function setActive(elements, activeIndex) {
+        Array.prototype.forEach.call(elements, function (element, index) {
+            element.classList.toggle('is-active', index === activeIndex);
         });
-        ctx.closePath();
     }
 
-    function initDiagram(canvas) {
-        if (!canvas || canvas.dataset.productHeroInitialized === 'true') {
+    function initAnimation(animation) {
+        if (!animation || animation.dataset.productHeroInitialized === 'true') {
             return;
         }
 
-        var ctx = canvas.getContext('2d');
-        if (!ctx) {
+        var viewport = animation.closest('[data-product-hero-animation-viewport]');
+        if (!viewport) {
             return;
         }
 
-        canvas.dataset.productHeroInitialized = 'true';
+        animation.dataset.productHeroInitialized = 'true';
 
+        var codeScene = animation.querySelector('[data-product-hero-scene="code"]');
+        var dashboardScene = animation.querySelector('[data-product-hero-scene="dashboard"]');
+        var tabs = animation.querySelectorAll('[data-product-hero-tab]');
+        var panels = animation.querySelectorAll('[data-product-hero-panel]');
+        var address = animation.querySelector('[data-product-hero-address]');
+        var status = animation.querySelector('[data-product-hero-status]');
+        var scanBar = animation.querySelector('[data-product-hero-scan-bar]');
+        var scanValue = animation.querySelector('[data-product-hero-scan-value]');
+        var dashboardProgress = animation.querySelector('[data-product-hero-dashboard-progress]');
+        var cliProgress = animation.querySelector('[data-product-hero-cli-progress]');
+        var cliValue = animation.querySelector('[data-product-hero-cli-value]');
         var reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+        var startTime = performance.now();
         var frameId = null;
-        var dpr = 1;
-        var cssWidth = 0;
-        var cssHeight = 0;
-        var particles = NODES.map(function (node, index) {
-            return {
-                index: index,
-                progress: (index * 0.071) % 1,
-                speed: 0.08 + (index % 5) * 0.015,
-                outbound: node.cat !== 'remote'
-            };
-        });
+        var isVisible = true;
 
-        function resize() {
-            var rect = canvas.getBoundingClientRect();
-            cssWidth = Math.max(1, Math.round(rect.width));
-            cssHeight = Math.max(1, Math.round(rect.height));
-            dpr = Math.min(window.devicePixelRatio || 1, 2);
+        function fitStage() {
+            var width = viewport.clientWidth;
+            var height = viewport.clientHeight;
+            var scale;
 
-            canvas.width = Math.round(cssWidth * dpr);
-            canvas.height = Math.round(cssHeight * dpr);
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            draw(performance.now());
-        }
-
-        function getScreenNodes(time) {
-            var center = { x: LOGICAL_WIDTH / 2, y: LOGICAL_HEIGHT / 2 };
-
-            return NODES.map(function (node, index) {
-                var driftX = reduceMotionQuery.matches ? 0 : Math.sin(time * 0.00045 + index * 1.8) * 7;
-                var driftY = reduceMotionQuery.matches ? 0 : Math.cos(time * 0.00055 + index * 1.2) * 6;
-                var position = project(node.x + driftX, node.y + driftY, node.z);
-                var controlA = {
-                    x: position.x + (center.x - position.x) * 0.38 + Math.sin(index * 1.7) * 36,
-                    y: position.y + (center.y - position.y) * 0.38 + Math.cos(index * 1.2) * 32
-                };
-                var controlB = {
-                    x: center.x + Math.cos(index * 1.4) * 42,
-                    y: center.y + Math.sin(index * 1.1) * 34
-                };
-
-                return {
-                    node: node,
-                    position: position,
-                    controlA: controlA,
-                    controlB: controlB
-                };
-            });
-        }
-
-        function draw(time) {
-            var scale = Math.min(cssWidth / LOGICAL_WIDTH, cssHeight / LOGICAL_HEIGHT);
-            var offsetX = (cssWidth - LOGICAL_WIDTH * scale) / 2;
-            var offsetY = (cssHeight - LOGICAL_HEIGHT * scale) / 2;
-            var center = { x: LOGICAL_WIDTH / 2, y: LOGICAL_HEIGHT / 2 };
-            var screenNodes = getScreenNodes(time);
-
-            ctx.clearRect(0, 0, cssWidth, cssHeight);
-            ctx.save();
-            ctx.translate(offsetX, offsetY);
-            ctx.scale(scale, scale);
-
-            var background = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, 260);
-            background.addColorStop(0, 'rgba(59, 130, 246, 0.18)');
-            background.addColorStop(1, 'rgba(59, 130, 246, 0)');
-            ctx.fillStyle = background;
-            ctx.fillRect(0, 0, LOGICAL_WIDTH, LOGICAL_HEIGHT);
-
-            screenNodes.forEach(function (item) {
-                var color = COLORS[item.node.cat];
-                ctx.setLineDash([3, 9]);
-                ctx.strokeStyle = rgba(color, 0.12);
-                ctx.lineWidth = 1;
-                ctx.beginPath();
-                ctx.moveTo(item.position.x, item.position.y);
-                ctx.bezierCurveTo(item.controlA.x, item.controlA.y, item.controlB.x, item.controlB.y, center.x, center.y);
-                ctx.stroke();
-            });
-            ctx.setLineDash([]);
-
-            if (!reduceMotionQuery.matches) {
-                particles.forEach(function (particle) {
-                    var item = screenNodes[particle.index];
-                    var color = COLORS[item.node.cat];
-                    var progress = (particle.progress + time * 0.001 * particle.speed) % 1;
-                    var t = particle.outbound ? progress : 1 - progress;
-                    var point = bezierPoint(
-                        t,
-                        item.position,
-                        item.controlA,
-                        item.controlB,
-                        center
-                    );
-                    var glow = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, 12);
-                    glow.addColorStop(0, rgba(color, 0.72));
-                    glow.addColorStop(1, rgba(color, 0));
-                    ctx.fillStyle = glow;
-                    ctx.beginPath();
-                    ctx.arc(point.x, point.y, 12, 0, Math.PI * 2);
-                    ctx.fill();
-                    ctx.fillStyle = color.hex;
-                    ctx.beginPath();
-                    ctx.arc(point.x, point.y, 2.4, 0, Math.PI * 2);
-                    ctx.fill();
-                });
+            if (!width || !height) {
+                return;
             }
 
-            screenNodes
-                .slice()
-                .sort(function (a, b) {
-                    return a.node.z - b.node.z;
-                })
-                .forEach(function (item) {
-                    var color = COLORS[item.node.cat];
-                    var radius = Math.max(18, (24 + item.node.z * 4) * item.position.scale);
-                    var nodeGlow = ctx.createRadialGradient(item.position.x, item.position.y, 0, item.position.x, item.position.y, radius * 2.4);
-
-                    nodeGlow.addColorStop(0, rgba(color, 0.15));
-                    nodeGlow.addColorStop(1, rgba(color, 0));
-                    ctx.fillStyle = nodeGlow;
-                    ctx.beginPath();
-                    ctx.arc(item.position.x, item.position.y, radius * 2.4, 0, Math.PI * 2);
-                    ctx.fill();
-
-                    ctx.beginPath();
-                    ctx.arc(item.position.x, item.position.y, radius, 0, Math.PI * 2);
-                    ctx.fillStyle = 'rgba(8, 14, 32, 0.92)';
-                    ctx.fill();
-                    ctx.strokeStyle = rgba(color, 0.44);
-                    ctx.lineWidth = 1.2;
-                    ctx.stroke();
-
-                    ctx.fillStyle = color.text;
-                    ctx.font = '500 10px monospace';
-                    ctx.textAlign = 'center';
-                    ctx.textBaseline = 'middle';
-                    ctx.fillText(item.node.label, item.position.x, item.position.y);
-                });
-
-            var pulse = reduceMotionQuery.matches ? 0 : Math.sin(time * 0.002) * 0.12;
-            var outerRadius = 82 + pulse * 16;
-            var outerGlow = ctx.createRadialGradient(center.x, center.y, 0, center.x, center.y, outerRadius * 1.7);
-            outerGlow.addColorStop(0, 'rgba(59, 130, 246, 0.38)');
-            outerGlow.addColorStop(1, 'rgba(59, 130, 246, 0)');
-            ctx.fillStyle = outerGlow;
-            ctx.beginPath();
-            ctx.arc(center.x, center.y, outerRadius * 1.7, 0, Math.PI * 2);
-            ctx.fill();
-
-            drawHex(ctx, center.x, center.y, 58, time * 0.00015);
-            var fill = ctx.createLinearGradient(center.x - 58, center.y - 58, center.x + 58, center.y + 58);
-            fill.addColorStop(0, 'rgba(35, 93, 208, 0.98)');
-            fill.addColorStop(1, 'rgba(12, 30, 82, 0.98)');
-            ctx.fillStyle = fill;
-            ctx.fill();
-            ctx.strokeStyle = 'rgba(124, 196, 255, 0.82)';
-            ctx.lineWidth = 2;
-            ctx.stroke();
-
-            ctx.fillStyle = '#fff';
-            ctx.font = '700 17px sans-serif';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.shadowColor = 'rgba(91, 155, 255, 0.65)';
-            ctx.shadowBlur = 12;
-            ctx.fillText('OBOT', center.x, center.y - 8);
-            ctx.shadowBlur = 0;
-            ctx.fillStyle = 'rgba(204, 224, 255, 0.9)';
-            ctx.font = '500 9px monospace';
-            ctx.fillText('GATEWAY', center.x, center.y + 11);
-
-            ctx.save();
-            ctx.fillStyle = 'rgba(154, 167, 189, 0.48)';
-            ctx.font = '500 10px monospace';
-            ctx.textAlign = 'center';
-            ctx.translate(30, center.y);
-            ctx.rotate(-Math.PI / 2);
-            ctx.fillText('AI CLIENTS', 0, 0);
-            ctx.restore();
-
-            ctx.save();
-            ctx.fillStyle = 'rgba(154, 167, 189, 0.48)';
-            ctx.font = '500 10px monospace';
-            ctx.textAlign = 'center';
-            ctx.translate(LOGICAL_WIDTH - 30, center.y);
-            ctx.rotate(Math.PI / 2);
-            ctx.fillText('MCP SERVERS', 0, 0);
-            ctx.restore();
-
-            ctx.restore();
+            scale = Math.min(width / STAGE_WIDTH, height / STAGE_HEIGHT);
+            animation.style.left = ((width - STAGE_WIDTH * scale) / 2) + 'px';
+            animation.style.top = ((height - STAGE_HEIGHT * scale) / 2) + 'px';
+            animation.style.transform = 'scale(' + scale + ')';
         }
 
-        function tick(time) {
-            draw(time);
+        function renderStaticDashboard() {
+            animation.dataset.scene = 'dashboard';
+            codeScene.classList.remove('is-active');
+            dashboardScene.classList.add('is-active');
+            setActive(tabs, 0);
+            setActive(panels, 0);
+            address.textContent = 'control.obot.ai / admin';
+            status.textContent = 'Protected';
+            dashboardProgress.style.width = '100%';
+            cliProgress.style.width = '78%';
+            cliValue.textContent = '78';
+            scanBar.style.width = '100%';
+            scanValue.textContent = '100';
+        }
 
-            if (!reduceMotionQuery.matches) {
-                frameId = window.requestAnimationFrame(tick);
+        function renderFrame(now) {
+            var elapsed;
+            var cycleTime;
+            var scene;
+            var tabIndex = 0;
+            var scanPercent = 0;
+            var dashboardPercent = 0;
+            var cliPercent = 42;
+            var tabElapsed;
+
+            if (!document.documentElement.contains(animation)) {
+                frameId = null;
+                return;
+            }
+
+            if (reduceMotionQuery.matches) {
+                renderStaticDashboard();
+                frameId = null;
+                return;
+            }
+
+            elapsed = now - startTime;
+            cycleTime = ((elapsed % CYCLE_MS) + CYCLE_MS) % CYCLE_MS;
+
+            if (cycleTime < 5000) {
+                scene = 'code';
+            } else if (cycleTime < 10000) {
+                scene = 'scan';
+                scanPercent = Math.min(Math.floor((cycleTime - 5000) / 60) * 2, 100);
+            } else {
+                scene = 'dashboard';
+                tabElapsed = cycleTime - 10000;
+                tabIndex = Math.min(Math.floor(tabElapsed / 3500), 7);
+                dashboardPercent = Math.min((tabElapsed / 30000) * 100, 100);
+
+                if (tabIndex === 3) {
+                    cliPercent = Math.min(42 + Math.floor((tabElapsed - 10500) / 700) * 2, 78);
+                } else if (tabIndex > 3) {
+                    cliPercent = 78;
+                }
+            }
+
+            animation.dataset.scene = scene;
+            codeScene.classList.toggle('is-active', scene !== 'dashboard');
+            dashboardScene.classList.toggle('is-active', scene === 'dashboard');
+
+            if (scene === 'dashboard') {
+                address.textContent = 'control.obot.ai / admin';
+                status.textContent = 'Protected';
+                setActive(tabs, tabIndex);
+                setActive(panels, tabIndex);
+            } else {
+                address.textContent = 'Claude Code / acme-platform';
+                status.textContent = scene === 'scan' ? 'Analyzing' : 'Connected';
+            }
+
+            scanBar.style.width = scanPercent + '%';
+            scanValue.textContent = scanPercent;
+            dashboardProgress.style.width = dashboardPercent + '%';
+            cliProgress.style.width = cliPercent + '%';
+            cliValue.textContent = cliPercent;
+
+            if (isVisible) {
+                frameId = window.requestAnimationFrame(renderFrame);
+            } else {
+                frameId = null;
             }
         }
 
         function start() {
-            if (frameId) {
+            if (frameId === null && isVisible) {
+                frameId = window.requestAnimationFrame(renderFrame);
+            }
+        }
+
+        function handleMotionChange() {
+            if (frameId !== null) {
                 window.cancelAnimationFrame(frameId);
+                frameId = null;
             }
 
             if (reduceMotionQuery.matches) {
-                draw(performance.now());
-                return;
+                renderStaticDashboard();
+            } else {
+                startTime = performance.now();
+                start();
             }
-
-            frameId = window.requestAnimationFrame(tick);
         }
 
+        fitStage();
+
         if (window.ResizeObserver) {
-            new ResizeObserver(resize).observe(canvas);
+            new ResizeObserver(fitStage).observe(viewport);
         } else {
-            window.addEventListener('resize', resize);
+            window.addEventListener('resize', fitStage);
+        }
+
+        if (window.IntersectionObserver) {
+            new IntersectionObserver(function (entries) {
+                entries.forEach(function (entry) {
+                    isVisible = entry.isIntersecting;
+                    if (isVisible) {
+                        start();
+                    } else if (frameId !== null) {
+                        window.cancelAnimationFrame(frameId);
+                        frameId = null;
+                    }
+                });
+            }, { rootMargin: '120px' }).observe(viewport);
         }
 
         if (reduceMotionQuery.addEventListener) {
-            reduceMotionQuery.addEventListener('change', start);
+            reduceMotionQuery.addEventListener('change', handleMotionChange);
         } else if (reduceMotionQuery.addListener) {
-            reduceMotionQuery.addListener(start);
+            reduceMotionQuery.addListener(handleMotionChange);
         }
-        resize();
-        start();
+
+        if (reduceMotionQuery.matches) {
+            renderStaticDashboard();
+        } else {
+            start();
+        }
     }
 
-    function initAll() {
-        document.querySelectorAll(SELECTOR).forEach(initDiagram);
+    function initAll(context) {
+        var root = context && context.querySelectorAll ? context : document;
+        var animations = root.querySelectorAll(SELECTOR);
+
+        Array.prototype.forEach.call(animations, initAnimation);
+
+        if (root.matches && root.matches(SELECTOR)) {
+            initAnimation(root);
+        }
     }
 
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', initAll);
+        document.addEventListener('DOMContentLoaded', function () {
+            initAll(document);
+        });
     } else {
-        initAll();
+        initAll(document);
+    }
+
+    if (window.MutationObserver) {
+        new MutationObserver(function (mutations) {
+            mutations.forEach(function (mutation) {
+                Array.prototype.forEach.call(mutation.addedNodes, function (node) {
+                    if (node.nodeType === 1) {
+                        initAll(node);
+                    }
+                });
+            });
+        }).observe(document.documentElement, { childList: true, subtree: true });
     }
 }());

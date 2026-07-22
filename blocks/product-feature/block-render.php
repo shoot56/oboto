@@ -59,6 +59,7 @@ $video        = get_field( 'video' );
 $video_poster = get_field( 'video_poster' );
 $list         = get_field( 'list' );
 $button       = get_field( 'button' );
+$button_icon  = get_field( 'button_icon' );
 
 if ( ! in_array( $media_type, array( 'image', 'video' ), true ) ) {
 	$media_type = 'image';
@@ -123,6 +124,7 @@ $resolve_video_data = static function ( $video_value ) {
 $image_data        = $resolve_image_data( $image );
 $video_data        = $resolve_video_data( $video );
 $video_poster_data = $resolve_image_data( $video_poster );
+$button_icon_data  = is_array( $button_icon ) || is_numeric( $button_icon ) ? $resolve_image_data( $button_icon ) : null;
 $media_classes     = 'obot-product-feature__media';
 if ( $media_type === 'video' ) {
 	$media_classes .= ' obot-product-feature__media--video';
@@ -149,7 +151,10 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 	<div class="obot-product-feature__inner">
 		<div class="obot-product-feature__header">
 			<?php if ( $eyebrow ) : ?>
-				<div class="obot-product-feature__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>><?php echo esc_html( $eyebrow ); ?></div>
+				<div class="obot-product-feature__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>>
+					<span class="obot-product-feature__eyebrow-dot" aria-hidden="true"></span>
+					<span><?php echo esc_html( $eyebrow ); ?></span>
+				</div>
 			<?php endif; ?>
 
 			<?php if ( $title ) : ?>
@@ -226,12 +231,19 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 							<?php echo $link_target ? 'target="' . esc_attr( $link_target ) . '"' : ''; ?>
 							<?php echo $link_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
 						>
-							<svg class="obot-product-feature__button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-								<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-								<polyline points="14 2 14 8 20 8"></polyline>
-								<line x1="12" y1="11" x2="12" y2="17"></line>
-								<line x1="9" y1="14" x2="15" y2="14"></line>
-							</svg>
+							<?php if ( $button_icon_data ) : ?>
+								<img
+									class="obot-product-feature__button-icon"
+									src="<?php echo esc_url( $button_icon_data['url'] ); ?>"
+									alt=""
+									loading="lazy"
+								>
+							<?php else : ?>
+								<svg class="obot-product-feature__button-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+									<path d="M5 12h14"></path>
+									<path d="m13 6 6 6-6 6"></path>
+								</svg>
+							<?php endif; ?>
 							<span><?php echo esc_html( $link_title ); ?></span>
 						</a>
 					<?php endif; ?>

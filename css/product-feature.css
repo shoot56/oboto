@@ -51,20 +51,31 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
 
 .obot-product-feature__eyebrow {
     display: inline-flex;
+    align-items: center;
     max-width: 100%;
+    gap: 9px;
     margin-bottom: 32px;
-    padding: 6px 12px;
+    padding: 9px 18px;
     border: 1px solid rgba(var(--product-feature-accent-rgb), 0.4);
-    border-radius: 6px;
-    background-color: rgba(var(--product-feature-accent-rgb), 0.15);
+    border-radius: 999px;
+    background-color: rgba(var(--product-feature-accent-rgb), 0.1);
     color: var(--product-feature-accent);
-    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: 500;
     line-height: 1.3;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     overflow-wrap: anywhere;
+}
+
+.obot-product-feature__eyebrow-dot {
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background-color: var(--product-feature-accent);
+    box-shadow: 0 0 8px rgba(var(--product-feature-accent-rgb), 0.8);
+    animation: obotProductFeatureDotPulse 2.2s ease-in-out infinite;
 }
 
 .obot-product-feature__title {
@@ -82,7 +93,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     max-width: 1120px;
     margin: 24px auto 0;
     color: #c3ccdd;
-    font-size: 20px;
+    font-size: 20.5px;
     line-height: 1.65;
 }
 
@@ -140,7 +151,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
 .obot-product-feature__list {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 16px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -168,33 +179,37 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
 
 .obot-product-feature__button {
     display: inline-flex;
-    align-self: center;
+    align-self: flex-start;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     max-width: 100%;
-    margin-top: 20px;
-    padding: 12px 24px;
-    border-radius: 8px;
-    background-color: #3b82f6;
-    color: #fff;
-    font-size: 14px;
+    margin-top: 8px;
+    padding: 12px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.14);
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.04);
+    color: #dfe6f2;
+    font-size: 15px;
     font-weight: 600;
     line-height: 1.25;
     text-decoration: none;
-    transition: opacity 200ms ease, transform 200ms ease;
+    transition: background-color 200ms ease, border-color 200ms ease, transform 200ms ease;
 }
 
 .obot-product-feature__button:hover,
 .obot-product-feature__button:focus-visible {
-    opacity: 0.86;
+    border-color: rgba(255, 255, 255, 0.24);
+    background-color: rgba(255, 255, 255, 0.08);
     transform: translateY(-2px);
 }
 
 .obot-product-feature__button-icon {
-    width: 16px;
-    height: 16px;
+    display: block;
+    width: 18px;
+    height: 18px;
     flex: 0 0 auto;
+    object-fit: contain;
 }
 
 @media (max-width: 960px) {
@@ -267,8 +282,30 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     }
 
     .obot-product-feature__button {
-        width: 100%;
         margin-top: 10px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .obot-product-feature *,
+    .obot-product-feature *::before,
+    .obot-product-feature *::after {
+        animation-duration: 0s !important;
+        animation-delay: 0s !important;
+        transition-duration: 0s !important;
+    }
+}
+
+@keyframes obotProductFeatureDotPulse {
+    0%,
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+
+    50% {
+        opacity: 0.45;
+        transform: scale(0.7);
     }
 }
 

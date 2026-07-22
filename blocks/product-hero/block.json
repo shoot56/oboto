@@ -1,7 +1,7 @@
 {
   "name": "oboto/product-hero",
   "title": "Product Hero",
-  "description": "Product hero section with copy, CTA buttons, and a hardcoded MCP gateway animation.",
+  "description": "Product hero section with copy, CTA buttons, and a hardcoded AI Control Plane animation.",
   "category": "obot_landing",
   "icon": "cover-image",
   "keywords": ["product", "hero", "mcp", "gateway"],
