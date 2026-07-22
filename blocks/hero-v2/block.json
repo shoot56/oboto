@@ -1,0 +1,45 @@
+{
+  "name": "oboto/hero-v2",
+  "title": "Hero V2",
+  "description": "Homepage hero with editable copy, two CTA buttons, and a hardcoded security rain animation.",
+  "category": "obot_landing",
+  "icon": "cover-image",
+  "keywords": ["hero", "homepage", "security", "animation", "cta"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["hero-v2"],
+  "viewScript": ["hero-v2-script"]
+}

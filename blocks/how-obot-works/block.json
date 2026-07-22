@@ -1,0 +1,45 @@
+{
+  "name": "oboto/how-obot-works",
+  "title": "How Obot Works",
+  "description": "Homepage steps carousel with editable copy, screenshots, and browser URLs.",
+  "category": "obot_landing",
+  "icon": "slides",
+  "keywords": ["how obot works", "steps", "carousel", "homepage"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["how-obot-works"],
+  "viewScript": ["how-obot-works-script"]
+}

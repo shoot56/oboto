@@ -1,0 +1,44 @@
+{
+  "name": "oboto/latest-posts-v2",
+  "title": "Latest Posts V2",
+  "description": "Homepage latest posts section with an eyebrow and a responsive three-card grid.",
+  "category": "obot_landing",
+  "icon": "admin-post",
+  "keywords": ["latest posts", "blog", "news", "homepage"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    },
+    "position": {
+      "sticky": true
+    }
+  },
+  "style": ["latest-posts-v2"]
+}
