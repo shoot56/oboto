@@ -123,11 +123,14 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
 }
 
 .obot-product-feature__media--html {
-    aspect-ratio: 970 / 516;
     overflow: hidden;
     border-radius: 0;
     background: transparent;
     box-shadow: none;
+}
+
+.obot-product-feature__media--html-ratio {
+    aspect-ratio: var(--product-feature-html-aspect-ratio, 970 / 516);
 }
 
 .obot-product-feature__image,
@@ -144,6 +147,15 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
     height: 100%;
     border: 0;
     background: transparent;
+}
+
+.obot-product-feature__media--html-auto .obot-product-feature__html {
+    height: 516px;
+    min-height: 260px;
+}
+
+.obot-product-feature__media--html-ratio .obot-product-feature__html {
+    min-height: 0;
 }
 
 .obot-product-feature__browser-header {

@@ -13,6 +13,14 @@ function product_feature_register_assets() {
 		array(),
 		filemtime( $theme_dir . '/css/product-feature.css' )
 	);
+
+	wp_register_script(
+		'product-feature-script',
+		$theme_uri . '/blocks/product-feature/view-script.js',
+		array(),
+		filemtime( $theme_dir . '/blocks/product-feature/view-script.js' ),
+		true
+	);
 }
 add_action( 'wp_enqueue_scripts', 'product_feature_register_assets' );
 add_action( 'admin_enqueue_scripts', 'product_feature_register_assets' );
@@ -34,5 +42,6 @@ add_action( 'init', 'product_feature_editor_styles' );
 function product_feature_enqueue_editor_assets() {
 	product_feature_register_assets();
 	wp_enqueue_style( 'product-feature' );
+	wp_enqueue_script( 'product-feature-script' );
 }
 add_action( 'enqueue_block_editor_assets', 'product_feature_enqueue_editor_assets' );

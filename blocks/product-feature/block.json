@@ -40,5 +40,6 @@
       "sticky": true
     }
   },
-  "style": ["product-feature"]
+  "style": ["product-feature"],
+  "viewScript": ["product-feature-script"]
 }

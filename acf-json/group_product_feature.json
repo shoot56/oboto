@@ -257,6 +257,95 @@
             "new_lines": ""
         },
         {
+            "key": "field_product_feature_html_sizing",
+            "label": "HTML Sizing",
+            "name": "html_sizing",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Auto Height fits the iframe to its document content. Use Aspect Ratio when the HTML is designed for a fixed viewport.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "auto": "Auto Height",
+                "ratio": "Aspect Ratio"
+            },
+            "default_value": "auto",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_product_feature_html_ratio_width",
+            "label": "HTML Ratio Width",
+            "name": "html_ratio_width",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "The original viewport width used by the HTML animation.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    },
+                    {
+                        "field": "field_product_feature_html_sizing",
+                        "operator": "==",
+                        "value": "ratio"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": 970,
+            "min": 1,
+            "max": "",
+            "placeholder": "970",
+            "step": 1,
+            "prepend": "",
+            "append": "px"
+        },
+        {
+            "key": "field_product_feature_html_ratio_height",
+            "label": "HTML Ratio Height",
+            "name": "html_ratio_height",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "The original viewport height used by the HTML animation.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    },
+                    {
+                        "field": "field_product_feature_html_sizing",
+                        "operator": "==",
+                        "value": "ratio"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": 516,
+            "min": 1,
+            "max": "",
+            "placeholder": "516",
+            "step": 1,
+            "prepend": "",
+            "append": "px"
+        },
+        {
             "key": "field_product_feature_list",
             "label": "List",
             "name": "list",
@@ -345,5 +434,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784726324
+    "modified": 1784732443
 }

@@ -60,12 +60,27 @@ $browser_address    = trim( (string) get_field( 'browser_address' ) );
 $video              = get_field( 'video' );
 $video_poster       = get_field( 'video_poster' );
 $raw_html           = trim( (string) get_field( 'raw_html' ) );
+$html_sizing        = sanitize_key( (string) get_field( 'html_sizing' ) );
+$html_ratio_width   = absint( get_field( 'html_ratio_width' ) );
+$html_ratio_height  = absint( get_field( 'html_ratio_height' ) );
 $list               = get_field( 'list' );
 $button             = get_field( 'button' );
 $button_icon        = get_field( 'button_icon' );
 
 if ( ! in_array( $media_type, array( 'image', 'video', 'html' ), true ) ) {
 	$media_type = 'image';
+}
+
+if ( ! in_array( $html_sizing, array( 'auto', 'ratio' ), true ) ) {
+	$html_sizing = 'auto';
+}
+
+if ( ! $html_ratio_width ) {
+	$html_ratio_width = 970;
+}
+
+if ( ! $html_ratio_height ) {
+	$html_ratio_height = 516;
 }
 
 $show_browser_header = $media_type === 'image' && $add_browser_header;
@@ -130,12 +145,91 @@ $image_data        = $resolve_image_data( $image );
 $video_data        = $resolve_video_data( $video );
 $video_poster_data = $resolve_image_data( $video_poster );
 $button_icon_data  = is_array( $button_icon ) || is_numeric( $button_icon ) ? $resolve_image_data( $button_icon ) : null;
+$html_document      = $raw_html;
+$html_resize_script = <<<'HTML'
+<script>
+(function () {
+  var messageType = 'obot-product-feature-html-height';
+  var lastHeight = 0;
+  var root = document.documentElement;
+
+  function sendHeight() {
+    var body = document.body;
+
+    if (!body || !root) {
+      return;
+    }
+
+    var height = Math.ceil(Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      body.getBoundingClientRect().height,
+      root.scrollHeight,
+      root.offsetHeight,
+      root.getBoundingClientRect().height
+    ));
+
+    if (!Number.isFinite(height) || height < 1 || Math.abs(height - lastHeight) < 1) {
+      return;
+    }
+
+    lastHeight = height;
+    window.parent.postMessage({ type: messageType, height: height }, '*');
+  }
+
+  function scheduleMeasurements() {
+    window.requestAnimationFrame(sendHeight);
+    window.setTimeout(sendHeight, 50);
+    window.setTimeout(sendHeight, 250);
+    window.setTimeout(sendHeight, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleMeasurements, { once: true });
+  } else {
+    scheduleMeasurements();
+  }
+
+  window.addEventListener('load', scheduleMeasurements, { once: true });
+  window.addEventListener('resize', sendHeight);
+
+  if ('ResizeObserver' in window) {
+    var resizeObserver = new ResizeObserver(sendHeight);
+    resizeObserver.observe(root);
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
+  } else if ('MutationObserver' in window) {
+    var mutationObserver = new MutationObserver(sendHeight);
+    mutationObserver.observe(root, { childList: true, subtree: true, attributes: true });
+  }
+})();
+</script>
+HTML;
+
+if ( $media_type === 'html' && $html_document && $html_sizing === 'auto' ) {
+	if ( preg_match( '/<\/body\s*>/i', $html_document ) ) {
+		$resized_html_document = preg_replace( '/<\/body\s*>/i', $html_resize_script . '</body>', $html_document, 1 );
+		if ( is_string( $resized_html_document ) ) {
+			$html_document = $resized_html_document;
+		}
+	} else {
+		$html_document .= $html_resize_script;
+	}
+}
+
 $media_classes     = 'obot-product-feature__media';
+$media_style       = '';
 if ( $media_type === 'video' ) {
 	$media_classes .= ' obot-product-feature__media--video';
 }
 if ( $media_type === 'html' ) {
 	$media_classes .= ' obot-product-feature__media--html';
+	$media_classes .= $html_sizing === 'ratio' ? ' obot-product-feature__media--html-ratio' : ' obot-product-feature__media--html-auto';
+
+	if ( $html_sizing === 'ratio' ) {
+		$media_style = '--product-feature-html-aspect-ratio: ' . $html_ratio_width . ' / ' . $html_ratio_height . ';';
+	}
 }
 if ( $show_browser_header ) {
 	$media_classes .= ' obot-product-feature__media--browser';
@@ -183,16 +277,17 @@ $media_placeholder = array(
 		</div>
 
 		<div class="obot-product-feature__body">
-			<div class="<?php echo esc_attr( $media_classes ); ?>"<?php oboto_the_aos_attributes( 320 ); ?>>
+			<div class="<?php echo esc_attr( $media_classes ); ?>"<?php echo $media_style ? ' style="' . esc_attr( $media_style ) . '"' : ''; ?><?php oboto_the_aos_attributes( 320 ); ?>>
 				<?php if ( $media_type === 'html' && $raw_html ) : ?>
 					<iframe
 						class="obot-product-feature__html"
 						title="<?php echo esc_attr( $title ? $title : __( 'Interactive feature preview', 'oboto' ) ); ?>"
-						srcdoc="<?php echo esc_attr( $raw_html ); ?>"
+						srcdoc="<?php echo esc_attr( $html_document ); ?>"
 						sandbox="allow-scripts"
 						loading="lazy"
 						referrerpolicy="no-referrer"
 						scrolling="no"
+						<?php echo $html_sizing === 'auto' ? 'data-product-feature-html-auto' : ''; ?>
 					></iframe>
 				<?php elseif ( $media_type === 'video' && $video_data ) : ?>
 					<video
