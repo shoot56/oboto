@@ -328,7 +328,12 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-feature.ob
         gap: 34px;
     }
 
+    .obot-product-feature__media {
+        order: 2;
+    }
+
     .obot-product-feature__content {
+        order: 1;
         max-width: none;
         margin-right: 0;
         margin-left: 0;
