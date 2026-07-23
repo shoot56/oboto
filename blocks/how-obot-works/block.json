@@ -1,10 +1,10 @@
 {
-  "name": "oboto/product-hero",
-  "title": "Product Hero",
-  "description": "Product hero section with copy, CTA buttons, and a hardcoded AI Control Plane animation.",
+  "name": "oboto/how-obot-works",
+  "title": "How Obot Works",
+  "description": "Homepage steps carousel with editable copy, screenshots, and browser URLs.",
   "category": "obot_landing",
-  "icon": "cover-image",
-  "keywords": ["product", "hero", "mcp", "gateway"],
+  "icon": "slides",
+  "keywords": ["how obot works", "steps", "carousel", "homepage"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
@@ -40,6 +40,6 @@
       "sticky": true
     }
   },
-  "style": ["product-hero"],
-  "viewScript": ["product-hero-script"]
+  "style": ["how-obot-works"],
+  "viewScript": ["how-obot-works-script"]
 }

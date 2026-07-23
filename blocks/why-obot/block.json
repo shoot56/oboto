@@ -1,10 +1,10 @@
 {
-  "name": "oboto/product-hero",
-  "title": "Product Hero",
-  "description": "Product hero section with copy, CTA buttons, and a hardcoded AI Control Plane animation.",
+  "name": "oboto/why-obot",
+  "title": "Why Obot",
+  "description": "Homepage Why Obot section with editable intro copy and feature cards.",
   "category": "obot_landing",
-  "icon": "cover-image",
-  "keywords": ["product", "hero", "mcp", "gateway"],
+  "icon": "grid-view",
+  "keywords": ["why obot", "features", "cards", "homepage"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
@@ -40,6 +40,5 @@
       "sticky": true
     }
   },
-  "style": ["product-hero"],
-  "viewScript": ["product-hero-script"]
+  "style": ["why-obot"]
 }

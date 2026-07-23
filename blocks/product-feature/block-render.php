@@ -50,19 +50,40 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	)
 );
 
-$eyebrow      = trim( (string) get_field( 'eyebrow' ) );
-$title        = trim( (string) get_field( 'title' ) );
-$text         = trim( (string) get_field( 'text' ) );
-$media_type   = sanitize_key( (string) get_field( 'media_type' ) );
-$image        = get_field( 'image' );
-$video        = get_field( 'video' );
-$video_poster = get_field( 'video_poster' );
-$list         = get_field( 'list' );
-$button       = get_field( 'button' );
+$eyebrow            = trim( (string) get_field( 'eyebrow' ) );
+$title              = trim( (string) get_field( 'title' ) );
+$text               = trim( (string) get_field( 'text' ) );
+$media_type         = sanitize_key( (string) get_field( 'media_type' ) );
+$image              = get_field( 'image' );
+$add_browser_header = (bool) get_field( 'add_browser_header' );
+$browser_address    = trim( (string) get_field( 'browser_address' ) );
+$video              = get_field( 'video' );
+$video_poster       = get_field( 'video_poster' );
+$raw_html           = trim( (string) get_field( 'raw_html' ) );
+$html_sizing        = sanitize_key( (string) get_field( 'html_sizing' ) );
+$html_ratio_width   = absint( get_field( 'html_ratio_width' ) );
+$html_ratio_height  = absint( get_field( 'html_ratio_height' ) );
+$list               = get_field( 'list' );
+$button             = get_field( 'button' );
+$button_icon        = get_field( 'button_icon' );
 
-if ( ! in_array( $media_type, array( 'image', 'video' ), true ) ) {
+if ( ! in_array( $media_type, array( 'image', 'video', 'html' ), true ) ) {
 	$media_type = 'image';
 }
+
+if ( ! in_array( $html_sizing, array( 'auto', 'ratio' ), true ) ) {
+	$html_sizing = 'auto';
+}
+
+if ( ! $html_ratio_width ) {
+	$html_ratio_width = 970;
+}
+
+if ( ! $html_ratio_height ) {
+	$html_ratio_height = 516;
+}
+
+$show_browser_header = $media_type === 'image' && $add_browser_header;
 
 $resolve_image_data = static function ( $image_value ) {
 	if ( is_array( $image_value ) && ! empty( $image_value['url'] ) ) {
@@ -123,9 +144,95 @@ $resolve_video_data = static function ( $video_value ) {
 $image_data        = $resolve_image_data( $image );
 $video_data        = $resolve_video_data( $video );
 $video_poster_data = $resolve_image_data( $video_poster );
+$button_icon_data  = is_array( $button_icon ) || is_numeric( $button_icon ) ? $resolve_image_data( $button_icon ) : null;
+$html_document      = $raw_html;
+$html_resize_script = <<<'HTML'
+<script>
+(function () {
+  var messageType = 'obot-product-feature-html-height';
+  var lastHeight = 0;
+  var root = document.documentElement;
+
+  function sendHeight() {
+    var body = document.body;
+
+    if (!body || !root) {
+      return;
+    }
+
+    var height = Math.ceil(Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      body.getBoundingClientRect().height,
+      root.scrollHeight,
+      root.offsetHeight,
+      root.getBoundingClientRect().height
+    ));
+
+    if (!Number.isFinite(height) || height < 1 || Math.abs(height - lastHeight) < 1) {
+      return;
+    }
+
+    lastHeight = height;
+    window.parent.postMessage({ type: messageType, height: height }, '*');
+  }
+
+  function scheduleMeasurements() {
+    window.requestAnimationFrame(sendHeight);
+    window.setTimeout(sendHeight, 50);
+    window.setTimeout(sendHeight, 250);
+    window.setTimeout(sendHeight, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleMeasurements, { once: true });
+  } else {
+    scheduleMeasurements();
+  }
+
+  window.addEventListener('load', scheduleMeasurements, { once: true });
+  window.addEventListener('resize', sendHeight);
+
+  if ('ResizeObserver' in window) {
+    var resizeObserver = new ResizeObserver(sendHeight);
+    resizeObserver.observe(root);
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
+  } else if ('MutationObserver' in window) {
+    var mutationObserver = new MutationObserver(sendHeight);
+    mutationObserver.observe(root, { childList: true, subtree: true, attributes: true });
+  }
+})();
+</script>
+HTML;
+
+if ( $media_type === 'html' && $html_document && $html_sizing === 'auto' ) {
+	if ( preg_match( '/<\/body\s*>/i', $html_document ) ) {
+		$resized_html_document = preg_replace( '/<\/body\s*>/i', $html_resize_script . '</body>', $html_document, 1 );
+		if ( is_string( $resized_html_document ) ) {
+			$html_document = $resized_html_document;
+		}
+	} else {
+		$html_document .= $html_resize_script;
+	}
+}
+
 $media_classes     = 'obot-product-feature__media';
+$media_style       = '';
 if ( $media_type === 'video' ) {
 	$media_classes .= ' obot-product-feature__media--video';
+}
+if ( $media_type === 'html' ) {
+	$media_classes .= ' obot-product-feature__media--html';
+	$media_classes .= $html_sizing === 'ratio' ? ' obot-product-feature__media--html-ratio' : ' obot-product-feature__media--html-auto';
+
+	if ( $html_sizing === 'ratio' ) {
+		$media_style = '--product-feature-html-aspect-ratio: ' . $html_ratio_width . ' / ' . $html_ratio_height . ';';
+	}
+}
+if ( $show_browser_header ) {
+	$media_classes .= ' obot-product-feature__media--browser';
 }
 
 $list_items = array();
@@ -143,13 +250,21 @@ if ( is_array( $list ) ) {
 }
 
 $has_button = is_array( $button ) && ! empty( $button['url'] );
+$media_placeholder = array(
+	'image' => __( 'Add an image in the block fields.', 'oboto' ),
+	'video' => __( 'Add a video in the block fields.', 'oboto' ),
+	'html'  => __( 'Add HTML code in the block fields.', 'oboto' ),
+);
 
 ?>
 <section id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?>>
 	<div class="obot-product-feature__inner">
 		<div class="obot-product-feature__header">
 			<?php if ( $eyebrow ) : ?>
-				<div class="obot-product-feature__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>><?php echo esc_html( $eyebrow ); ?></div>
+				<div class="obot-product-feature__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>>
+					<span class="obot-product-feature__eyebrow-dot" aria-hidden="true"></span>
+					<span><?php echo esc_html( $eyebrow ); ?></span>
+				</div>
 			<?php endif; ?>
 
 			<?php if ( $title ) : ?>
@@ -162,8 +277,19 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 		</div>
 
 		<div class="obot-product-feature__body">
-			<div class="<?php echo esc_attr( $media_classes ); ?>"<?php oboto_the_aos_attributes( 320 ); ?>>
-				<?php if ( $media_type === 'video' && $video_data ) : ?>
+			<div class="<?php echo esc_attr( $media_classes ); ?>"<?php echo $media_style ? ' style="' . esc_attr( $media_style ) . '"' : ''; ?><?php oboto_the_aos_attributes( 320 ); ?>>
+				<?php if ( $media_type === 'html' && $raw_html ) : ?>
+					<iframe
+						class="obot-product-feature__html"
+						title="<?php echo esc_attr( $title ? $title : __( 'Interactive feature preview', 'oboto' ) ); ?>"
+						srcdoc="<?php echo esc_attr( $html_document ); ?>"
+						sandbox="allow-scripts"
+						loading="lazy"
+						referrerpolicy="no-referrer"
+						scrolling="no"
+						<?php echo $html_sizing === 'auto' ? 'data-product-feature-html-auto' : ''; ?>
+					></iframe>
+				<?php elseif ( $media_type === 'video' && $video_data ) : ?>
 					<video
 						class="obot-product-feature__video"
 						autoplay
@@ -179,6 +305,16 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 						>
 					</video>
 				<?php elseif ( $media_type === 'image' && $image_data ) : ?>
+					<?php if ( $show_browser_header ) : ?>
+						<div class="obot-product-feature__browser-header" aria-hidden="true">
+							<span class="obot-product-feature__browser-controls">
+								<span class="obot-product-feature__browser-dot obot-product-feature__browser-dot--close"></span>
+								<span class="obot-product-feature__browser-dot obot-product-feature__browser-dot--minimize"></span>
+								<span class="obot-product-feature__browser-dot obot-product-feature__browser-dot--maximize"></span>
+							</span>
+							<span class="obot-product-feature__browser-address"><?php echo esc_html( $browser_address ); ?></span>
+						</div>
+					<?php endif; ?>
 					<img
 						class="obot-product-feature__image"
 						src="<?php echo esc_url( $image_data['url'] ); ?>"
@@ -187,13 +323,7 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 					>
 				<?php elseif ( $is_preview ) : ?>
 					<div class="obot-product-feature__image-placeholder">
-						<?php
-						echo esc_html(
-							$media_type === 'video'
-								? __( 'Add a video in the block fields.', 'oboto' )
-								: __( 'Add an image in the block fields.', 'oboto' )
-						);
-						?>
+						<?php echo esc_html( $media_placeholder[ $media_type ] ); ?>
 					</div>
 				<?php endif; ?>
 			</div>
@@ -226,12 +356,19 @@ $has_button = is_array( $button ) && ! empty( $button['url'] );
 							<?php echo $link_target ? 'target="' . esc_attr( $link_target ) . '"' : ''; ?>
 							<?php echo $link_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
 						>
-							<svg class="obot-product-feature__button-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
-								<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
-								<polyline points="14 2 14 8 20 8"></polyline>
-								<line x1="12" y1="11" x2="12" y2="17"></line>
-								<line x1="9" y1="14" x2="15" y2="14"></line>
-							</svg>
+							<?php if ( $button_icon_data ) : ?>
+								<img
+									class="obot-product-feature__button-icon"
+									src="<?php echo esc_url( $button_icon_data['url'] ); ?>"
+									alt=""
+									loading="lazy"
+								>
+							<?php else : ?>
+								<svg class="obot-product-feature__button-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">
+									<path d="M5 12h14"></path>
+									<path d="m13 6 6 6-6 6"></path>
+								</svg>
+							<?php endif; ?>
 							<span><?php echo esc_html( $link_title ); ?></span>
 						</a>
 					<?php endif; ?>

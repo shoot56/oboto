@@ -1,10 +1,10 @@
 {
-  "name": "oboto/product-hero",
-  "title": "Product Hero",
-  "description": "Product hero section with copy, CTA buttons, and a hardcoded AI Control Plane animation.",
+  "name": "oboto/latest-posts-v2",
+  "title": "Latest Posts V2",
+  "description": "Homepage latest posts section with an eyebrow and a responsive three-card grid.",
   "category": "obot_landing",
-  "icon": "cover-image",
-  "keywords": ["product", "hero", "mcp", "gateway"],
+  "icon": "admin-post",
+  "keywords": ["latest posts", "blog", "news", "homepage"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
@@ -40,6 +40,5 @@
       "sticky": true
     }
   },
-  "style": ["product-hero"],
-  "viewScript": ["product-hero-script"]
+  "style": ["latest-posts-v2"]
 }

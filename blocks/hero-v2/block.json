@@ -1,10 +1,10 @@
 {
-  "name": "oboto/product-hero",
-  "title": "Product Hero",
-  "description": "Product hero section with copy, CTA buttons, and a hardcoded AI Control Plane animation.",
+  "name": "oboto/hero-v2",
+  "title": "Hero V2",
+  "description": "Homepage hero with editable copy, two CTA buttons, and a hardcoded security rain animation.",
   "category": "obot_landing",
   "icon": "cover-image",
-  "keywords": ["product", "hero", "mcp", "gateway"],
+  "keywords": ["hero", "homepage", "security", "animation", "cta"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
@@ -40,6 +40,6 @@
       "sticky": true
     }
   },
-  "style": ["product-hero"],
-  "viewScript": ["product-hero-script"]
+  "style": ["hero-v2"],
+  "viewScript": ["hero-v2-script"]
 }

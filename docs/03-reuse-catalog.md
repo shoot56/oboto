@@ -56,6 +56,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **When to use**: Generic listing of posts (implementation details in `blocks/posts/*`).
 - **`oboto/latest-posts`** — Latest Posts block.
   - **When to use**: “Latest” feed section.
+- **`oboto/latest-posts-v2`** — Latest Posts V2 block.
+  - **When to use**: The homepage latest-news section with a centered eyebrow/title and a static responsive grid of three post cards.
+  - **Note**: Supports manual post selection, included categories, and excluded categories; cards display categories, date, title, excerpt, and a read-more link.
 - **`oboto/author-blog`** — Author Blog List block.
   - **When to use**: Author-focused listings.
 - **`oboto/post-head`** — Post Head block.
@@ -71,12 +74,21 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/landing-hero`** — Landing Hero block.
   - **When to use**: Obot landing pages that need the MCP gateway hero from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for hero copy, rotating subheading text, and the optional GitHub meta link.
+- **`oboto/hero-v2`** — Hero V2 block.
+  - **When to use**: The homepage hero that needs centered copy, two CTA links, and the hardcoded animated security-rain backdrop from the homepage reference.
+  - **Note**: Includes separate ACF fields for eyebrow, title, text, primary button, and secondary button; the animation is fixed in the block implementation and respects reduced-motion preferences.
+- **`oboto/why-obot`** — Why Obot block.
+  - **When to use**: The homepage feature overview with a centered introduction and a responsive grid of feature cards.
+  - **Note**: Includes ACF fields for eyebrow, title, text, and repeatable cards with an uploaded icon, optional accent color, title, text, and link; card accents cycle automatically when no color is selected.
+- **`oboto/how-obot-works`** — How Obot Works block.
+  - **When to use**: The homepage walkthrough that presents product steps as an autoplaying, manually navigable carousel.
+  - **Note**: Includes ACF fields for the section introduction and repeatable steps with a short name, title, text, bottom-line text, screenshot, and browser address-bar text; motion pauses off-screen and respects reduced-motion preferences.
 - **`oboto/product-hero`** — Product Hero block.
-  - **When to use**: Product pages that need a two-column hero with eyebrow text, a title field that supports a gradient `<span>`, CTA buttons, and the hardcoded MCP gateway animation.
+  - **When to use**: Product pages that need a two-column hero with eyebrow text, a title field that supports a gradient `<span>`, CTA buttons, and the hardcoded AI Control Plane animation.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title with allowed gradient `<span>` markup, body text, and repeatable buttons.
 - **`oboto/product-feature`** — Product Feature block.
   - **When to use**: Product pages that need repeated feature sections matching the Claude product page reference: accent eyebrow, centered title/text, screenshot, bullet list, and CTA.
-  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for accent color, eyebrow, title, text, image or autoplaying video media, list rows, and one button.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for accent color, eyebrow, title, text, image, autoplaying video, or sandboxed custom HTML media with automatic height and a manual aspect-ratio fallback, an optional browser header/address for images, list rows, and one button with an optional custom image icon and an automatic arrow fallback.
 - **`oboto/product-resources`** — Product Resources block.
   - **When to use**: Product pages that need the `resources` anchor section with an eyebrow, title, and linked resource cards.
   - **Note**: Defaults to `id="resources"` unless an anchor is provided, and includes ACF fields for eyebrow, title, and card rows with title, text, and button link.
