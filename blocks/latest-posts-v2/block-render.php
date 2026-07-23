@@ -121,7 +121,10 @@ $has_header = $eyebrow || $title;
 		<?php if ( $has_header ) : ?>
 			<header class="obot-latest-posts-v2__header">
 				<?php if ( $eyebrow ) : ?>
-					<div class="obot-latest-posts-v2__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>><?php echo esc_html( $eyebrow ); ?></div>
+					<div class="obot-latest-posts-v2__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>>
+						<span class="obot-latest-posts-v2__eyebrow-dot" aria-hidden="true"></span>
+						<span><?php echo esc_html( $eyebrow ); ?></span>
+					</div>
 				<?php endif; ?>
 
 				<?php if ( $title ) : ?>

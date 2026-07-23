@@ -99,7 +99,10 @@ $wrapper_attributes = get_block_wrapper_attributes(
 		<?php if ( $eyebrow || $title || $text ) : ?>
 			<header class="obot-how-obot-works__header">
 				<?php if ( $eyebrow ) : ?>
-					<div class="obot-how-obot-works__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>><?php echo esc_html( $eyebrow ); ?></div>
+					<div class="obot-how-obot-works__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>>
+						<span class="obot-how-obot-works__eyebrow-dot" aria-hidden="true"></span>
+						<span><?php echo esc_html( $eyebrow ); ?></span>
+					</div>
 				<?php endif; ?>
 
 				<?php if ( $title ) : ?>

@@ -100,7 +100,10 @@ if ( is_array( $rows ) ) {
 		<?php if ( $has_header ) : ?>
 			<header class="obot-why-obot__header">
 				<?php if ( $eyebrow ) : ?>
-					<div class="obot-why-obot__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>><?php echo esc_html( $eyebrow ); ?></div>
+					<div class="obot-why-obot__eyebrow"<?php oboto_the_aos_attributes( 100 ); ?>>
+						<span class="obot-why-obot__eyebrow-dot" aria-hidden="true"></span>
+						<span><?php echo esc_html( $eyebrow ); ?></span>
+					</div>
 				<?php endif; ?>
 
 				<?php if ( $title ) : ?>
