@@ -154,6 +154,36 @@
                     "parent_repeater": "field_how_obot_works_steps"
                 },
                 {
+                    "key": "field_how_obot_works_step_animation",
+                    "label": "Animation",
+                    "name": "animation",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "Select how this slide enters and moves while it is active.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "choices": {
+                        "static": "Static",
+                        "zoom-in": "Zoom In",
+                        "corner-zoom": "Corner Zoom",
+                        "pop": "Pop",
+                        "pan-up": "Pan Up",
+                        "pan-right": "Pan Right",
+                        "zoom-out": "Zoom Out",
+                        "pan-diagonal": "Diagonal Pan",
+                        "flip-in": "3D Pivot"
+                    },
+                    "default_value": "static",
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_how_obot_works_steps"
+                },
+                {
                     "key": "field_how_obot_works_step_image",
                     "label": "Image",
                     "name": "image",
@@ -196,5 +226,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784733320
+    "modified": 1784905008
 }

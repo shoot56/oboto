@@ -24,14 +24,16 @@ $title      = trim( (string) get_field( 'title' ) );
 $text       = trim( (string) get_field( 'text' ) );
 $rows       = get_field( 'steps' );
 $steps      = array();
-$fx_classes = array(
+$autoplay_interval_ms = 5000;
+$allowed_effects = array(
+	'static',
 	'zoom-in',
+	'corner-zoom',
+	'pop',
+	'pan-up',
 	'pan-right',
 	'zoom-out',
-	'pan-up',
-	'pop',
 	'pan-diagonal',
-	'corner-zoom',
 	'flip-in',
 );
 
@@ -42,10 +44,15 @@ if ( is_array( $rows ) ) {
 		$step_text  = trim( (string) ( $row['text'] ?? '' ) );
 		$bottom     = trim( (string) ( $row['bottom_text'] ?? '' ) );
 		$browser    = trim( (string) ( $row['browser_url'] ?? '' ) );
+		$effect     = sanitize_key( (string) ( $row['animation'] ?? 'static' ) );
 		$image      = $row['image'] ?? null;
 		$image_id   = 0;
 		$image_url  = '';
 		$image_alt  = '';
+
+		if ( ! in_array( $effect, $allowed_effects, true ) ) {
+			$effect = 'static';
+		}
 
 		if ( is_array( $image ) ) {
 			$image_id  = absint( $image['ID'] ?? $image['id'] ?? 0 );
@@ -73,6 +80,7 @@ if ( is_array( $rows ) ) {
 			'text'        => $step_text,
 			'bottom_text' => $bottom,
 			'browser_url' => $browser,
+			'effect'      => $effect,
 			'image_id'    => $image_id,
 			'image_url'   => $image_url,
 			'image_alt'   => $image_alt,
@@ -89,7 +97,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 	array(
 		'class'                  => $wrapper_classes,
 		'data-how-obot-works'    => 'true',
-		'data-how-obot-interval' => '8000',
+		'data-how-obot-interval' => (string) $autoplay_interval_ms,
 	)
 );
 
@@ -151,7 +159,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						$total_number = str_pad( (string) $step_count, 2, '0', STR_PAD_LEFT );
 						$tab_id      = $id . '-tab-' . $step_number;
 						$panel_id    = $id . '-panel-' . $step_number;
-						$effect      = $fx_classes[ $index % count( $fx_classes ) ];
+						$effect      = $step['effect'];
 						?>
 						<article
 							id="<?php echo esc_attr( $panel_id ); ?>"

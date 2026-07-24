@@ -23,7 +23,7 @@
 
 		root.dataset.howObotInitialized = 'true';
 
-		const interval = Math.max(Number(root.dataset.howObotInterval) || 8000, 1000);
+		const interval = Math.max(Number(root.dataset.howObotInterval) || 5000, 1000);
 		const pauseReasons = new Set(['offscreen']);
 		let current = 0;
 		let timer = null;
@@ -82,6 +82,22 @@
 			syncPausedState();
 		}
 
+		function restartSlideAnimations(slide) {
+			const animatedElements = Array.from(
+				slide.querySelectorAll(
+					'.obot-how-obot-works__image, .obot-how-obot-works__browser, .obot-how-obot-works__copy > *'
+				)
+			);
+
+			animatedElements.forEach(function (element) {
+				element.style.animation = 'none';
+			});
+			void slide.offsetWidth;
+			animatedElements.forEach(function (element) {
+				element.style.removeProperty('animation');
+			});
+		}
+
 		function show(index, focusTab) {
 			current = (index + slides.length) % slides.length;
 
@@ -106,6 +122,7 @@
 				slide.hidden = !active;
 				slide.classList.toggle('is-active', active);
 			});
+			restartSlideAnimations(slides[current]);
 
 			if (focusTab) {
 				tabs[current].focus();

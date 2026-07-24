@@ -1,4 +1,5 @@
 .obot-how-obot-works {
+	--how-obot-slide-duration: 5s;
 	position: relative;
 	box-sizing: border-box;
 	width: 100%;
@@ -154,7 +155,8 @@
 }
 
 .obot-how-obot-works.is-paused .obot-how-obot-works__progress-bar,
-.obot-how-obot-works.is-paused .obot-how-obot-works__image {
+.obot-how-obot-works.is-paused .obot-how-obot-works__image,
+.obot-how-obot-works.is-paused .obot-how-obot-works__browser {
 	animation-play-state: paused !important;
 }
 
@@ -362,8 +364,20 @@
 	animation-delay: 0.26s;
 }
 
+.obot-how-obot-works__slide.is-active[data-how-obot-effect="flip-in"] .obot-how-obot-works__copy > * {
+	animation-name: obot-how-obot-copy-in-right;
+	animation-duration: 0.9s;
+}
+
+.obot-how-obot-works__slide.is-active[data-how-obot-effect="static"] .obot-how-obot-works__image,
+.obot-how-obot-works__slide.is-active[data-how-obot-effect="static"] .obot-how-obot-works__copy > * {
+	animation: none;
+	opacity: 1;
+	transform: none;
+}
+
 .obot-how-obot-works__slide.is-active .obot-how-obot-works__image {
-	animation-duration: 8s;
+	animation-duration: var(--how-obot-slide-duration);
 	animation-timing-function: ease-out;
 	animation-fill-mode: both;
 }
@@ -399,7 +413,15 @@
 }
 
 .obot-how-obot-works__slide.is-active[data-how-obot-effect="flip-in"] .obot-how-obot-works__image {
-	animation-name: obot-how-obot-flip-in;
+	animation: none;
+	opacity: 1;
+	transform: none;
+}
+
+.obot-how-obot-works__slide.is-active[data-how-obot-effect="flip-in"] .obot-how-obot-works__browser {
+	transform-origin: left center;
+	backface-visibility: hidden;
+	animation: obot-how-obot-pivot var(--how-obot-slide-duration) ease-out both;
 }
 
 .obot-how-obot-works__arrow {
@@ -498,6 +520,18 @@
 	to {
 		opacity: 1;
 		transform: translateY(0);
+	}
+}
+
+@keyframes obot-how-obot-copy-in-right {
+	from {
+		opacity: 0;
+		transform: translateX(46px);
+	}
+
+	to {
+		opacity: 1;
+		transform: translateX(0);
 	}
 }
 
@@ -624,23 +658,19 @@
 	}
 }
 
-@keyframes obot-how-obot-flip-in {
+@keyframes obot-how-obot-pivot {
 	0% {
 		opacity: 0;
-		transform: perspective(1400px) rotateY(15deg) scale(0.9);
+		transform: perspective(1600px) rotateY(0);
 	}
 
-	12% {
+	10% {
 		opacity: 1;
-	}
-
-	45% {
-		transform: perspective(1400px) rotateY(0) scale(1);
 	}
 
 	100% {
 		opacity: 1;
-		transform: perspective(1400px) rotateY(-3deg) scale(1.08);
+		transform: perspective(1600px) rotateY(34deg);
 	}
 }
 
@@ -779,11 +809,13 @@
 
 	.obot-how-obot-works__progress-bar,
 	.obot-how-obot-works__slide.is-active .obot-how-obot-works__image,
+	.obot-how-obot-works__slide.is-active .obot-how-obot-works__browser,
 	.obot-how-obot-works__slide.is-active .obot-how-obot-works__copy > * {
 		animation: none !important;
 	}
 
-	.obot-how-obot-works__slide.is-active .obot-how-obot-works__image {
+	.obot-how-obot-works__slide.is-active .obot-how-obot-works__image,
+	.obot-how-obot-works__slide.is-active .obot-how-obot-works__browser {
 		opacity: 1 !important;
 		transform: none !important;
 	}
