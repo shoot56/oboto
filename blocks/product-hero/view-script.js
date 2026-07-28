@@ -2,7 +2,14 @@
     var SELECTOR = '[data-product-hero-animation]';
     var STAGE_WIDTH = 900;
     var STAGE_HEIGHT = 560;
-    var CYCLE_MS = 40000;
+    var CODE_SCENE_MS = 5000;
+    var SCAN_SCENE_MS = 5000;
+    var DASHBOARD_TAB_MS = 3500;
+    var DASHBOARD_TAB_COUNT = 8;
+    var CYCLE_PAUSE_MS = 2000;
+    var DASHBOARD_START_MS = CODE_SCENE_MS + SCAN_SCENE_MS;
+    var DASHBOARD_DURATION_MS = DASHBOARD_TAB_MS * DASHBOARD_TAB_COUNT;
+    var CYCLE_MS = DASHBOARD_START_MS + DASHBOARD_DURATION_MS + CYCLE_PAUSE_MS;
 
     function setActive(elements, activeIndex) {
         Array.prototype.forEach.call(elements, function (element, index) {
@@ -31,8 +38,6 @@
         var scanBar = animation.querySelector('[data-product-hero-scan-bar]');
         var scanValue = animation.querySelector('[data-product-hero-scan-value]');
         var dashboardProgress = animation.querySelector('[data-product-hero-dashboard-progress]');
-        var cliProgress = animation.querySelector('[data-product-hero-cli-progress]');
-        var cliValue = animation.querySelector('[data-product-hero-cli-value]');
         var reduceMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
         var startTime = performance.now();
         var frameId = null;
@@ -59,11 +64,9 @@
             dashboardScene.classList.add('is-active');
             setActive(tabs, 0);
             setActive(panels, 0);
-            address.textContent = 'control.obot.ai / admin';
-            status.textContent = 'Protected';
+            address.textContent = 'control.acme-corp.obot.ai';
+            status.textContent = 'live';
             dashboardProgress.style.width = '100%';
-            cliProgress.style.width = '78%';
-            cliValue.textContent = '78';
             scanBar.style.width = '100%';
             scanValue.textContent = '100';
         }
@@ -75,7 +78,6 @@
             var tabIndex = 0;
             var scanPercent = 0;
             var dashboardPercent = 0;
-            var cliPercent = 42;
             var tabElapsed;
 
             if (!document.documentElement.contains(animation)) {
@@ -92,21 +94,21 @@
             elapsed = now - startTime;
             cycleTime = ((elapsed % CYCLE_MS) + CYCLE_MS) % CYCLE_MS;
 
-            if (cycleTime < 5000) {
+            if (cycleTime < CODE_SCENE_MS) {
                 scene = 'code';
-            } else if (cycleTime < 10000) {
+            } else if (cycleTime < DASHBOARD_START_MS) {
                 scene = 'scan';
-                scanPercent = Math.min(Math.floor((cycleTime - 5000) / 60) * 2, 100);
+                scanPercent = Math.min(Math.floor((cycleTime - CODE_SCENE_MS) / 60) * 2, 100);
             } else {
                 scene = 'dashboard';
-                tabElapsed = cycleTime - 10000;
-                tabIndex = Math.min(Math.floor(tabElapsed / 3500), 7);
-                dashboardPercent = Math.min((tabElapsed / 30000) * 100, 100);
+                tabElapsed = cycleTime - DASHBOARD_START_MS;
 
-                if (tabIndex === 3) {
-                    cliPercent = Math.min(42 + Math.floor((tabElapsed - 10500) / 700) * 2, 78);
-                } else if (tabIndex > 3) {
-                    cliPercent = 78;
+                if (tabElapsed >= DASHBOARD_DURATION_MS) {
+                    tabIndex = DASHBOARD_TAB_COUNT - 1;
+                    dashboardPercent = 100;
+                } else {
+                    tabIndex = Math.floor(tabElapsed / DASHBOARD_TAB_MS);
+                    dashboardPercent = ((tabElapsed % DASHBOARD_TAB_MS) / DASHBOARD_TAB_MS) * 100;
                 }
             }
 
@@ -115,20 +117,18 @@
             dashboardScene.classList.toggle('is-active', scene === 'dashboard');
 
             if (scene === 'dashboard') {
-                address.textContent = 'control.obot.ai / admin';
-                status.textContent = 'Protected';
+                address.textContent = 'control.acme-corp.obot.ai';
+                status.textContent = 'live';
                 setActive(tabs, tabIndex);
                 setActive(panels, tabIndex);
             } else {
-                address.textContent = 'Claude Code / acme-platform';
-                status.textContent = scene === 'scan' ? 'Analyzing' : 'Connected';
+                address.textContent = 'claude.ai/code';
+                status.textContent = scene === 'scan' ? 'scanning' : 'active';
             }
 
             scanBar.style.width = scanPercent + '%';
             scanValue.textContent = scanPercent;
             dashboardProgress.style.width = dashboardPercent + '%';
-            cliProgress.style.width = cliPercent + '%';
-            cliValue.textContent = cliPercent;
 
             if (isVisible) {
                 frameId = window.requestAnimationFrame(renderFrame);

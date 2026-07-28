@@ -85,7 +85,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **Note**: Includes ACF fields for the section introduction and repeatable steps with a short name, title, text, bottom-line text, screenshot, browser address-bar text, and a selectable prototype animation that defaults to static; motion pauses off-screen and respects reduced-motion preferences.
 - **`oboto/product-hero`** — Product Hero block.
   - **When to use**: Product pages that need a two-column hero with eyebrow text, a title field that supports a gradient `<span>`, CTA buttons, and the hardcoded AI Control Plane animation.
-  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title with allowed gradient `<span>` markup, body text, and repeatable buttons.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title with allowed gradient `<span>` markup, body text, and repeatable buttons; its bundled animation cycles through the Claude workflow, Obot scan callout, and eight product screenshots.
 - **`oboto/product-feature`** — Product Feature block.
   - **When to use**: Product pages that need repeated feature sections matching the Claude product page reference: accent eyebrow, centered title/text, screenshot, bullet list, and CTA.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for accent color, eyebrow, title, text, image, autoplaying video, or sandboxed custom HTML media with automatic height and a manual aspect-ratio fallback, an optional browser header/address for images, list rows, and one button with an optional custom image icon and an automatic arrow fallback.

@@ -56,7 +56,44 @@ if ( is_array( $buttons ) ) {
 	}
 }
 
-$has_heading = trim( wp_strip_all_tags( $title ) ) !== '';
+$dashboard_tabs = array(
+	array(
+		'label' => 'Dashboard',
+		'image' => 'launch.png',
+	),
+	array(
+		'label' => 'Audit Logs',
+		'image' => 'audit.png',
+	),
+	array(
+		'label' => 'MCP Catalog',
+		'image' => 'build.png',
+	),
+	array(
+		'label' => 'Filters',
+		'image' => 'compliance.png',
+	),
+	array(
+		'label' => 'Access Policies',
+		'image' => 'policy.png',
+	),
+	array(
+		'label' => 'Devices',
+		'image' => 'discover.png',
+	),
+	array(
+		'label' => 'Users',
+		'image' => 'users.png',
+	),
+	array(
+		'label' => 'Authentication',
+		'image' => 'auth.png',
+	),
+);
+
+$animation_assets_url = trailingslashit( get_template_directory_uri() ) . 'images/product-hero/';
+$scan_logo_url        = $animation_assets_url . 'obot-icon-blue.svg';
+$has_heading          = trim( wp_strip_all_tags( $title ) ) !== '';
 
 ?>
 <section id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?> data-product-hero>
@@ -116,20 +153,26 @@ $has_heading = trim( wp_strip_all_tags( $title ) ) !== '';
 							<div class="obot-product-hero__app-lights">
 								<span></span><span></span><span></span>
 							</div>
-							<div class="obot-product-hero__app-address" data-product-hero-address>Claude Code</div>
+							<div class="obot-product-hero__app-address" data-product-hero-address>claude.ai/code</div>
 							<div class="obot-product-hero__app-status">
 								<span class="obot-product-hero__status-dot"></span>
-								<span data-product-hero-status>Connected</span>
+								<span data-product-hero-status>active</span>
 							</div>
 						</div>
 
 						<div class="obot-product-hero__app-toolbar">
 							<div class="obot-product-hero__code-path" data-product-hero-code-toolbar>
-								<span class="obot-product-hero__code-mark">C</span>
-								<span>acme-platform / infrastructure</span>
+								<span>acme-crm</span>
+								<b>/</b>
+								<span>src</span>
+								<b>/</b>
+								<strong>api.ts</strong>
+								<div class="obot-product-hero__code-flags">
+									<span class="is-managed">2 MCPs active</span>
+									<span class="is-unmanaged">! unmanaged</span>
+								</div>
 							</div>
 							<div class="obot-product-hero__dashboard-progress" data-product-hero-dashboard-toolbar>
-								<span>AI Control Plane</span>
 								<div><i data-product-hero-dashboard-progress></i></div>
 							</div>
 						</div>
@@ -138,152 +181,79 @@ $has_heading = trim( wp_strip_all_tags( $title ) ) !== '';
 							<div class="obot-product-hero__scene obot-product-hero__scene--code is-active" data-product-hero-scene="code">
 								<div class="obot-product-hero__file-tree">
 									<strong>EXPLORER</strong>
-									<span class="is-folder">v acme-platform</span>
-									<span class="is-folder">&nbsp;&nbsp;v infrastructure</span>
-									<span class="is-file is-active">&nbsp;&nbsp;&nbsp;&nbsp;gateway.yaml</span>
-									<span class="is-file">&nbsp;&nbsp;&nbsp;&nbsp;policies.yaml</span>
-									<span class="is-folder">&nbsp;&nbsp;v services</span>
-									<span class="is-file">&nbsp;&nbsp;&nbsp;&nbsp;agents.ts</span>
-									<span class="is-file">&nbsp;&nbsp;&nbsp;&nbsp;tools.ts</span>
-									<span class="is-file">&nbsp;&nbsp;README.md</span>
+									<span class="is-folder">v acme-crm</span>
+									<span class="is-folder">&nbsp;&nbsp;v src</span>
+									<span class="is-file is-active">&nbsp;&nbsp;&nbsp;&nbsp;api.ts</span>
+									<span class="is-file">&nbsp;&nbsp;&nbsp;&nbsp;routes.ts</span>
+									<span class="is-file">&nbsp;&nbsp;&nbsp;&nbsp;models.ts</span>
+									<span class="is-file">&nbsp;&nbsp;package.json</span>
+									<span class="is-file is-sensitive">&nbsp;&nbsp;! .env.local</span>
+									<strong class="obot-product-hero__tree-section">ACTIVE MCPS</strong>
+									<span class="is-mcp"><i></i>salesforce</span>
+									<span class="is-mcp"><i></i>notion</span>
+									<span class="is-mcp is-muted"><i></i>+10 more</span>
 								</div>
-								<div class="obot-product-hero__code-editor">
-									<div class="obot-product-hero__code-tab">gateway.yaml</div>
-									<ol class="obot-product-hero__code-lines">
-										<li><span class="is-key">gateway</span>:</li>
-										<li>&nbsp;&nbsp;<span class="is-key">name</span>: <span class="is-string">acme-production</span></li>
-										<li>&nbsp;&nbsp;<span class="is-key">authentication</span>:</li>
-										<li>&nbsp;&nbsp;&nbsp;&nbsp;<span class="is-key">provider</span>: <span class="is-string">oidc</span></li>
-										<li>&nbsp;&nbsp;<span class="is-key">policies</span>:</li>
-										<li>&nbsp;&nbsp;&nbsp;&nbsp;- <span class="is-string">production-access</span></li>
-										<li>&nbsp;&nbsp;&nbsp;&nbsp;- <span class="is-string">audit-all-tools</span></li>
-										<li>&nbsp;&nbsp;<span class="is-key">servers</span>:</li>
-										<li>&nbsp;&nbsp;&nbsp;&nbsp;- <span class="is-string">github</span></li>
-										<li>&nbsp;&nbsp;&nbsp;&nbsp;- <span class="is-string">postgres</span></li>
-									</ol>
-								</div>
-								<div class="obot-product-hero__assistant-pane">
-									<div class="obot-product-hero__assistant-title"><span>AI</span> Claude Code</div>
-									<div class="obot-product-hero__assistant-message">Review this MCP configuration before deployment.</div>
-									<div class="obot-product-hero__assistant-action">
-										<strong>Using tool</strong>
-										<span>mcp_security_scan</span>
+
+								<div class="obot-product-hero__chat">
+									<div class="obot-product-hero__model-bar">
+										<span>C</span>
+										<strong>claude-3-5-sonnet-20241022</strong>
+										<small>A. Chen / Personal account</small>
 									</div>
-									<div class="obot-product-hero__assistant-result">
-										<span class="is-success">&#10003;</span>
-										<div><strong>Configuration ready</strong><small>Connecting to Obot Control Plane...</small></div>
+
+									<div class="obot-product-hero__messages">
+										<div class="obot-product-hero__message obot-product-hero__message--user">
+											<strong>A. Chen</strong>
+											<p>Pull the top 10 open deals from Salesforce and add a summary to our Q2 Pipeline Notion doc.</p>
+										</div>
+
+										<div class="obot-product-hero__tool-card">
+											<small>tool use</small>
+											<strong>salesforce_mcp &rarr; list_opportunities</strong>
+											<code>{ stage: "Open", limit: 10, sort: "amount:desc" }</code>
+											<span>&rarr; 10 records returned</span>
+										</div>
+
+										<div class="obot-product-hero__tool-card">
+											<small>tool use</small>
+											<strong>notion_mcp &rarr; append_to_page</strong>
+											<code>{ page_id: "q2-pipeline-doc", content: "..." }</code>
+											<span>&rarr; success / page updated</span>
+										</div>
+
+										<div class="obot-product-hero__message obot-product-hero__message--claude">
+											<strong><i>C</i> Claude</strong>
+											<p>Done! Fetched your top 10 open deals totalling <b>$4.2M</b> and added the summary to <em>Q2 Pipeline Doc</em>. Top deal: Acme Corp at $840K.</p>
+										</div>
+
+										<div class="obot-product-hero__typing">
+											<span>C</span>
+											<i></i><i></i><i></i>
+										</div>
 									</div>
 								</div>
 							</div>
 
 							<div class="obot-product-hero__scene obot-product-hero__scene--dashboard" data-product-hero-scene="dashboard">
 								<div class="obot-product-hero__dashboard-nav">
-									<div class="obot-product-hero__dashboard-brand"><span>O</span> OBOT</div>
-									<?php
-									$dashboard_tabs = array(
-										'Dashboard',
-										'Audit Logs',
-										'MCP Catalog',
-										'Obot CLI',
-										'Access Policies',
-										'Devices',
-										'Users',
-										'Authentication',
-									);
-									?>
 									<?php foreach ( $dashboard_tabs as $tab_index => $dashboard_tab ) : ?>
 										<div class="obot-product-hero__dashboard-tab<?php echo $tab_index === 0 ? ' is-active' : ''; ?>" data-product-hero-tab="<?php echo esc_attr( $tab_index ); ?>">
-											<span class="obot-product-hero__dashboard-tab-icon"></span>
-											<span><?php echo esc_html( $dashboard_tab ); ?></span>
+											<?php echo esc_html( $dashboard_tab['label'] ); ?>
 										</div>
 									<?php endforeach; ?>
 								</div>
 
 								<div class="obot-product-hero__dashboard-content">
-									<div class="obot-product-hero__dashboard-panel is-active" data-product-hero-panel="0">
-										<div class="obot-product-hero__panel-heading"><div><strong>Dashboard</strong><span>Control plane overview</span></div><span class="obot-product-hero__live-pill">Live</span></div>
-										<div class="obot-product-hero__metric-grid">
-											<div><span>Active users</span><strong>1,284</strong><small>+12.4%</small></div>
-											<div><span>MCP servers</span><strong>48</strong><small>All healthy</small></div>
-											<div><span>Tool calls</span><strong>24.8k</strong><small>Last 24h</small></div>
-											<div><span>Policies</span><strong>36</strong><small>Enforced</small></div>
+									<?php foreach ( $dashboard_tabs as $tab_index => $dashboard_tab ) : ?>
+										<div class="obot-product-hero__dashboard-panel<?php echo $tab_index === 0 ? ' is-active' : ''; ?>" data-product-hero-panel="<?php echo esc_attr( $tab_index ); ?>">
+											<img
+												class="obot-product-hero__dashboard-image"
+												src="<?php echo esc_url( $animation_assets_url . $dashboard_tab['image'] ); ?>"
+												alt=""
+												decoding="async"
+											>
 										</div>
-										<div class="obot-product-hero__activity-card">
-											<div class="obot-product-hero__activity-head"><strong>Tool activity</strong><span>Last 7 days</span></div>
-											<div class="obot-product-hero__chart-bars"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="1">
-										<div class="obot-product-hero__panel-heading"><div><strong>Audit Logs</strong><span>Every request, identity, and outcome</span></div><span class="obot-product-hero__filter-pill">24 hours</span></div>
-										<div class="obot-product-hero__data-table">
-											<div class="is-head"><span>Time</span><span>User</span><span>Tool</span><span>Status</span></div>
-											<div><span>10:42:18</span><span>maya@acme.io</span><span>github.create_pr</span><span class="is-ok">Allowed</span></div>
-											<div><span>10:41:52</span><span>liam@acme.io</span><span>postgres.query</span><span class="is-ok">Allowed</span></div>
-											<div><span>10:39:06</span><span>agent-prod-02</span><span>slack.post</span><span class="is-blocked">Blocked</span></div>
-											<div><span>10:37:44</span><span>sofia@acme.io</span><span>notion.search</span><span class="is-ok">Allowed</span></div>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="2">
-										<div class="obot-product-hero__panel-heading"><div><strong>MCP Catalog</strong><span>Approved tools for every team</span></div><span class="obot-product-hero__filter-pill">48 servers</span></div>
-										<div class="obot-product-hero__catalog-grid">
-											<div><b>GH</b><strong>GitHub</strong><span>12 tools</span></div>
-											<div><b>SL</b><strong>Slack</strong><span>8 tools</span></div>
-											<div><b>PG</b><strong>Postgres</strong><span>6 tools</span></div>
-											<div><b>NT</b><strong>Notion</strong><span>10 tools</span></div>
-											<div><b>SF</b><strong>Salesforce</strong><span>9 tools</span></div>
-											<div><b>+</b><strong>Add server</strong><span>Catalog</span></div>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="3">
-										<div class="obot-product-hero__panel-heading"><div><strong>Obot CLI</strong><span>Discover shadow MCP usage</span></div><span class="obot-product-hero__live-pill">Scanning</span></div>
-										<div class="obot-product-hero__terminal">
-											<span><b>$</b> obot discover --organization acme</span>
-											<span>Scanning managed developer devices...</span>
-											<span class="is-terminal-ok">found 127 MCP configurations</span>
-											<span class="is-terminal-warn">18 servers require policy review</span>
-											<div><i data-product-hero-cli-progress></i></div>
-											<small><span data-product-hero-cli-value>42</span>% complete</small>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="4">
-										<div class="obot-product-hero__panel-heading"><div><strong>Access Policies</strong><span>Least-privilege controls by default</span></div><span class="obot-product-hero__filter-pill">36 active</span></div>
-										<div class="obot-product-hero__policy-list">
-											<div><i></i><span><strong>Production database access</strong><small>Engineering leads / Read only</small></span><b>Active</b></div>
-											<div><i></i><span><strong>Source control write access</strong><small>Developers / Approved repositories</small></span><b>Active</b></div>
-											<div><i></i><span><strong>External communication tools</strong><small>All employees / Monitored</small></span><b>Active</b></div>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="5">
-										<div class="obot-product-hero__panel-heading"><div><strong>Devices</strong><span>Managed endpoints and MCP clients</span></div><span class="obot-product-hero__live-pill">243 online</span></div>
-										<div class="obot-product-hero__device-grid">
-											<div><i></i><span><strong>Maya's MacBook Pro</strong><small>macOS 15.3 / Compliant</small></span><b>Online</b></div>
-											<div><i></i><span><strong>Build Agent 04</strong><small>Ubuntu 24.04 / Compliant</small></span><b>Online</b></div>
-											<div><i></i><span><strong>Design Workstation</strong><small>Windows 11 / Review due</small></span><b>Online</b></div>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="6">
-										<div class="obot-product-hero__panel-heading"><div><strong>Users</strong><span>People, teams, and service identities</span></div><span class="obot-product-hero__filter-pill">1,284 users</span></div>
-										<div class="obot-product-hero__user-list">
-											<div><i>MA</i><span><strong>Maya Anderson</strong><small>Engineering / Admin</small></span><b>Active</b></div>
-											<div><i>LC</i><span><strong>Liam Chen</strong><small>Platform / Member</small></span><b>Active</b></div>
-											<div><i>SR</i><span><strong>Sofia Reyes</strong><small>Product / Member</small></span><b>Active</b></div>
-										</div>
-									</div>
-
-									<div class="obot-product-hero__dashboard-panel" data-product-hero-panel="7">
-										<div class="obot-product-hero__panel-heading"><div><strong>Authentication</strong><span>One identity layer for every connection</span></div><span class="obot-product-hero__live-pill">Protected</span></div>
-										<div class="obot-product-hero__auth-grid">
-											<div><b>SSO</b><strong>Single Sign-On</strong><span>Microsoft Entra ID</span><small>Connected</small></div>
-											<div><b>SC</b><strong>SCIM Provisioning</strong><span>Automated lifecycle</span><small>Active</small></div>
-											<div><b>2F</b><strong>Multi-factor Auth</strong><span>Required for admins</span><small>Enforced</small></div>
-										</div>
-									</div>
+									<?php endforeach; ?>
 								</div>
 							</div>
 						</div>
@@ -293,7 +263,9 @@ $has_heading = trim( wp_strip_all_tags( $title ) ) !== '';
 						<div class="obot-product-hero__scan-beam"></div>
 						<div class="obot-product-hero__scan-card">
 							<div class="obot-product-hero__scan-header">
-								<div class="obot-product-hero__scan-logo">O</div>
+								<div class="obot-product-hero__scan-logo">
+									<img src="<?php echo esc_url( $scan_logo_url ); ?>" alt="">
+								</div>
 								<div class="obot-product-hero__scan-copy">
 									<strong>Obot AI Control Plane</strong>
 									<span>Unmanaged AI session detected on this device</span>
@@ -306,12 +278,12 @@ $has_heading = trim( wp_strip_all_tags( $title ) ) !== '';
 							</div>
 							<div class="obot-product-hero__scan-progress"><i data-product-hero-scan-bar></i></div>
 							<div class="obot-product-hero__scan-findings">
-								<div><i>!</i><span><strong>12 unapproved MCP servers</strong><small>filesystem, postgres, stripe, salesforce, notion +7 more</small></span></div>
-								<div><i>!</i><span><strong>Zero audit trail</strong><small>Salesforce and Notion calls are unlogged</small></span></div>
-								<div class="is-warning"><i>!</i><span><strong>Sensitive data exposure risk</strong><small>Environment and CRM data flowing to a personal account</small></span></div>
+								<div><i>&#9888;</i><span><strong>12 unapproved MCP servers</strong><small>filesystem, postgres, stripe, salesforce, notion +7 more - outside policy</small></span></div>
+								<div><i>&#9888;</i><span><strong>Zero audit trail</strong><small>All Salesforce and Notion calls are unlogged - no visibility for the security team</small></span></div>
+								<div class="is-warning"><i>!</i><span><strong>Sensitive data exposure risk</strong><small>.env.local is readable by Claude / CRM data is flowing to a personal account</small></span></div>
 							</div>
 							<div class="obot-product-hero__scan-actions">
-								<span>Bring Under Management <i aria-hidden="true">-&gt;</i></span>
+								<span>Bring Under Management <i aria-hidden="true">&rarr;</i></span>
 								<span>Dismiss</span>
 							</div>
 						</div>
