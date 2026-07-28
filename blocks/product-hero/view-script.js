@@ -56,6 +56,7 @@
             animation.style.left = ((width - STAGE_WIDTH * scale) / 2) + 'px';
             animation.style.top = ((height - STAGE_HEIGHT * scale) / 2) + 'px';
             animation.style.transform = 'scale(' + scale + ')';
+            animation.dataset.productHeroReady = 'true';
         }
 
         function renderStaticDashboard() {
