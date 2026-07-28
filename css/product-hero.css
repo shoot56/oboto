@@ -253,15 +253,13 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-product-hero.obot-
     width: 900px;
     height: 560px;
     color: #dfe6f2;
-    visibility: hidden;
     opacity: 0;
     transform-origin: top left;
+    transition: opacity 160ms ease;
 }
 
 .obot-product-hero__animation[data-product-hero-ready="true"] {
-    visibility: visible;
     opacity: 1;
-    transition: opacity 160ms ease;
 }
 
 .obot-product-hero__app-window {
