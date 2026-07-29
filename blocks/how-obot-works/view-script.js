@@ -25,18 +25,25 @@
 
 		const interval = Math.max(Number(root.dataset.howObotInterval) || 5000, 1000);
 		const pauseReasons = new Set(['offscreen']);
+		const mediaPauseReasons = new Set(['offscreen', 'hidden', 'reduced-motion']);
 		let current = 0;
 		let timer = null;
 		let startedAt = 0;
 		let remaining = interval;
 
-		function isPaused() {
+		function isCarouselPaused() {
 			return pauseReasons.size > 0 || tabs.length < 2;
+		}
+
+		function isMediaPaused() {
+			return Array.from(mediaPauseReasons).some(function (reason) {
+				return pauseReasons.has(reason);
+			});
 		}
 
 		function syncVideoPlayback(resetActiveVideo) {
 			slides.forEach(function (slide, slideIndex) {
-				const shouldPlay = slideIndex === current && pauseReasons.size === 0;
+				const shouldPlay = slideIndex === current && !isMediaPaused();
 
 				slide.querySelectorAll('[data-how-obot-video]').forEach(function (video) {
 					if (!shouldPlay) {
@@ -68,7 +75,7 @@
 
 		function schedule() {
 			window.clearTimeout(timer);
-			if (isPaused()) {
+			if (isCarouselPaused()) {
 				return;
 			}
 
@@ -79,10 +86,11 @@
 		}
 
 		function syncPausedState() {
-			const paused = isPaused();
-			root.classList.toggle('is-paused', paused);
+			const carouselPaused = isCarouselPaused();
+			root.classList.toggle('is-paused', carouselPaused);
+			root.classList.toggle('is-media-paused', isMediaPaused());
 
-			if (paused) {
+			if (carouselPaused) {
 				if (timer) {
 					remaining = Math.max(0, remaining - (window.performance.now() - startedAt));
 				}
@@ -191,11 +199,19 @@
 			});
 		}
 
-		if (next) {
-			next.addEventListener('click', function () {
-				show(current + 1);
-			});
-		}
+			if (next) {
+				next.addEventListener('click', function () {
+					show(current + 1);
+				});
+			}
+
+		carousel.addEventListener('mouseenter', function () {
+			setPauseReason('hover', true);
+		});
+
+		carousel.addEventListener('mouseleave', function () {
+			setPauseReason('hover', false);
+		});
 
 		document.addEventListener('visibilitychange', function () {
 			setPauseReason('hidden', document.hidden);

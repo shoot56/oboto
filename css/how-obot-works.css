@@ -155,7 +155,7 @@
 }
 
 .obot-how-obot-works.is-paused .obot-how-obot-works__progress-bar,
-.obot-how-obot-works.is-paused .obot-how-obot-works__image {
+.obot-how-obot-works.is-media-paused .obot-how-obot-works__image {
 	animation-play-state: paused !important;
 }
 
