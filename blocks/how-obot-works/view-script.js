@@ -197,14 +197,6 @@
 			});
 		}
 
-		carousel.addEventListener('mouseenter', function () {
-			setPauseReason('hover', true);
-		});
-
-		carousel.addEventListener('mouseleave', function () {
-			setPauseReason('hover', false);
-		});
-
 		document.addEventListener('visibilitychange', function () {
 			setPauseReason('hidden', document.hidden);
 		});
