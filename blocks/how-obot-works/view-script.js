@@ -34,6 +34,28 @@
 			return pauseReasons.size > 0 || tabs.length < 2;
 		}
 
+		function syncVideoPlayback(resetActiveVideo) {
+			slides.forEach(function (slide, slideIndex) {
+				const shouldPlay = slideIndex === current && pauseReasons.size === 0;
+
+				slide.querySelectorAll('[data-how-obot-video]').forEach(function (video) {
+					if (!shouldPlay) {
+						video.pause();
+						return;
+					}
+
+					if (resetActiveVideo && video.readyState > 0) {
+						video.currentTime = 0;
+					}
+
+					const playPromise = video.play();
+					if (playPromise && typeof playPromise.catch === 'function') {
+						playPromise.catch(function () {});
+					}
+				});
+			});
+		}
+
 		function restartProgress() {
 			if (!progress || reducedMotion.matches || tabs.length < 2) {
 				return;
@@ -66,10 +88,12 @@
 				}
 				window.clearTimeout(timer);
 				timer = null;
+				syncVideoPlayback(false);
 				return;
 			}
 
 			schedule();
+			syncVideoPlayback(false);
 		}
 
 		function setPauseReason(reason, shouldPause) {
@@ -85,7 +109,7 @@
 		function restartSlideAnimations(slide) {
 			const animatedElements = Array.from(
 				slide.querySelectorAll(
-					'.obot-how-obot-works__image, .obot-how-obot-works__browser, .obot-how-obot-works__copy > *'
+					'.obot-how-obot-works__image, .obot-how-obot-works__copy > *'
 				)
 			);
 
@@ -123,6 +147,7 @@
 				slide.classList.toggle('is-active', active);
 			});
 			restartSlideAnimations(slides[current]);
+			syncVideoPlayback(true);
 
 			if (focusTab) {
 				tabs[current].focus();

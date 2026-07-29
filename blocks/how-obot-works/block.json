@@ -1,7 +1,7 @@
 {
   "name": "oboto/how-obot-works",
   "title": "How Obot Works",
-  "description": "Homepage steps carousel with editable copy, screenshots, and browser URLs.",
+  "description": "Homepage steps carousel with editable copy, image or looping video media, and browser URLs.",
   "category": "obot_landing",
   "icon": "slides",
   "keywords": ["how obot works", "steps", "carousel", "homepage"],

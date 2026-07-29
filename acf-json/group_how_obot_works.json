@@ -56,7 +56,7 @@
             "name": "steps",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "The carousel moves to the next step automatically. Each image is displayed inside a browser frame.",
+            "instructions": "The carousel moves to the next step automatically. Each image or video is displayed inside a browser frame.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
@@ -154,14 +154,42 @@
                     "parent_repeater": "field_how_obot_works_steps"
                 },
                 {
+                    "key": "field_how_obot_works_step_media_type",
+                    "label": "Media Type",
+                    "name": "media_type",
+                    "aria-label": "",
+                    "type": "button_group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "choices": {
+                        "image": "Image",
+                        "video": "Video"
+                    },
+                    "default_value": "image",
+                    "return_format": "value",
+                    "allow_null": 0,
+                    "layout": "horizontal",
+                    "parent_repeater": "field_how_obot_works_steps"
+                },
+                {
                     "key": "field_how_obot_works_step_animation",
                     "label": "Animation",
                     "name": "animation",
                     "aria-label": "",
                     "type": "select",
-                    "instructions": "Select how this slide enters and moves while it is active.",
+                    "instructions": "Select how this image enters and moves while the slide is active.",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_how_obot_works_step_media_type",
+                                "operator": "==",
+                                "value": "image"
+                            }
+                        ]
+                    ],
                     "wrapper": { "width": "50", "class": "", "id": "" },
                     "choices": {
                         "static": "Static",
@@ -171,8 +199,7 @@
                         "pan-up": "Pan Up",
                         "pan-right": "Pan Right",
                         "zoom-out": "Zoom Out",
-                        "pan-diagonal": "Diagonal Pan",
-                        "flip-in": "3D Pivot"
+                        "pan-diagonal": "Diagonal Pan"
                     },
                     "default_value": "static",
                     "return_format": "value",
@@ -191,7 +218,15 @@
                     "type": "image",
                     "instructions": "Upload a screenshot for this step.",
                     "required": 0,
-                    "conditional_logic": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_how_obot_works_step_media_type",
+                                "operator": "==",
+                                "value": "image"
+                            }
+                        ]
+                    ],
                     "wrapper": { "width": "", "class": "", "id": "" },
                     "return_format": "array",
                     "library": "all",
@@ -203,6 +238,31 @@
                     "max_size": "",
                     "mime_types": "png,jpg,jpeg,webp",
                     "preview_size": "medium",
+                    "parent_repeater": "field_how_obot_works_steps"
+                },
+                {
+                    "key": "field_how_obot_works_step_video",
+                    "label": "Video",
+                    "name": "video",
+                    "aria-label": "",
+                    "type": "file",
+                    "instructions": "Upload an MP4 or WebM file. The video autoplays, loops, and stays muted inside the browser frame.",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_how_obot_works_step_media_type",
+                                "operator": "==",
+                                "value": "video"
+                            }
+                        ]
+                    ],
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_size": "",
+                    "max_size": "",
+                    "mime_types": "mp4,webm",
                     "parent_repeater": "field_how_obot_works_steps"
                 }
             ]
@@ -226,5 +286,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1784905008
+    "modified": 1785322891
 }
