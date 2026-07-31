@@ -162,20 +162,6 @@ $has_header = $eyebrow || $title;
 							<?php endif; ?>
 
 							<div class="obot-latest-posts-v2__content">
-								<div class="obot-latest-posts-v2__meta">
-									<?php if ( $category_names ) : ?>
-										<span><?php echo esc_html( implode( ', ', $category_names ) ); ?></span>
-										<span aria-hidden="true">&middot;</span>
-									<?php endif; ?>
-									<time datetime="<?php echo esc_attr( $post_date_iso ); ?>"><?php echo esc_html( $post_date ); ?></time>
-								</div>
-
-								<h3 class="obot-latest-posts-v2__card-title"><?php echo esc_html( $post_title ); ?></h3>
-
-								<?php if ( $post_excerpt ) : ?>
-									<p class="obot-latest-posts-v2__excerpt"><?php echo esc_html( $post_excerpt ); ?></p>
-								<?php endif; ?>
-
 								<span class="obot-latest-posts-v2__read-more">
 									<span><?php esc_html_e( 'Read more', 'oboto' ); ?></span>
 									<span class="obot-latest-posts-v2__arrow" aria-hidden="true"></span>
