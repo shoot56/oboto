@@ -92,6 +92,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/product-feature`** — Product Feature block.
   - **When to use**: Product pages that need repeated feature sections matching the Claude product page reference: accent eyebrow, centered title/text, screenshot, bullet list, and CTA.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for accent color, eyebrow, title, text, image, autoplaying video, or sandboxed custom HTML media with automatic height and a manual aspect-ratio fallback, an optional browser header/address for images, list rows, and one button with an optional custom image icon and an automatic arrow fallback.
+- **`oboto/product-feature-v2`** — Product Feature V2 block.
+  - **When to use**: Homepage or product sections that need an alternating two-column feature layout with detailed icon rows.
+  - **Note**: Keeps the image, looping video, and sandboxed HTML media options from Product Feature, adds an optional centered section eyebrow/title, a desktop media-position toggle, a separate eyebrow/title inside the content column, uploaded icons and WYSIWYG copy per list row, and one consistent CTA style derived from the selected accent color. Content always appears above media on smaller screens.
 - **`oboto/product-resources`** — Product Resources block.
   - **When to use**: Product pages that need the `resources` anchor section with an eyebrow, title, and linked resource cards.
   - **Note**: Defaults to `id="resources"` unless an anchor is provided, and includes ACF fields for eyebrow, title, and card rows with title, text, and button link.

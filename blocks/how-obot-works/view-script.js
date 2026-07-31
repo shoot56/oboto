@@ -213,6 +213,16 @@
 			setPauseReason('hover', false);
 		});
 
+		if (tabList) {
+			tabList.addEventListener('mouseenter', function () {
+				setPauseReason('tabs-hover', true);
+			});
+
+			tabList.addEventListener('mouseleave', function () {
+				setPauseReason('tabs-hover', false);
+			});
+		}
+
 		document.addEventListener('visibilitychange', function () {
 			setPauseReason('hidden', document.hidden);
 		});
