@@ -155,8 +155,7 @@
 }
 
 .obot-how-obot-works.is-paused .obot-how-obot-works__progress-bar,
-.obot-how-obot-works.is-paused .obot-how-obot-works__image,
-.obot-how-obot-works.is-paused .obot-how-obot-works__browser {
+.obot-how-obot-works.is-media-paused .obot-how-obot-works__image {
 	animation-play-state: paused !important;
 }
 
@@ -261,14 +260,24 @@
 	justify-content: center;
 }
 
-.obot-how-obot-works__image {
+.obot-how-obot-works__image,
+.obot-how-obot-works__video {
 	position: absolute;
 	inset: 0;
 	display: block;
 	width: 100%;
 	height: 100%;
 	object-fit: cover;
+}
+
+.obot-how-obot-works__image {
 	will-change: transform, opacity;
+}
+
+.obot-how-obot-works__video {
+	border: 0;
+	background: #0d1220;
+	pointer-events: none;
 }
 
 .obot-how-obot-works__image-placeholder {
@@ -364,11 +373,6 @@
 	animation-delay: 0.26s;
 }
 
-.obot-how-obot-works__slide.is-active[data-how-obot-effect="flip-in"] .obot-how-obot-works__copy > * {
-	animation-name: obot-how-obot-copy-in-right;
-	animation-duration: 0.9s;
-}
-
 .obot-how-obot-works__slide.is-active[data-how-obot-effect="static"] .obot-how-obot-works__image,
 .obot-how-obot-works__slide.is-active[data-how-obot-effect="static"] .obot-how-obot-works__copy > * {
 	animation: none;
@@ -410,18 +414,6 @@
 .obot-how-obot-works__slide.is-active[data-how-obot-effect="corner-zoom"] .obot-how-obot-works__image {
 	animation-name: obot-how-obot-corner-zoom;
 	transform-origin: top right;
-}
-
-.obot-how-obot-works__slide.is-active[data-how-obot-effect="flip-in"] .obot-how-obot-works__image {
-	animation: none;
-	opacity: 1;
-	transform: none;
-}
-
-.obot-how-obot-works__slide.is-active[data-how-obot-effect="flip-in"] .obot-how-obot-works__browser {
-	transform-origin: left center;
-	backface-visibility: hidden;
-	animation: obot-how-obot-pivot var(--how-obot-slide-duration) ease-out both;
 }
 
 .obot-how-obot-works__arrow {
@@ -520,18 +512,6 @@
 	to {
 		opacity: 1;
 		transform: translateY(0);
-	}
-}
-
-@keyframes obot-how-obot-copy-in-right {
-	from {
-		opacity: 0;
-		transform: translateX(46px);
-	}
-
-	to {
-		opacity: 1;
-		transform: translateX(0);
 	}
 }
 
@@ -655,22 +635,6 @@
 
 	100% {
 		transform: scale(1.2);
-	}
-}
-
-@keyframes obot-how-obot-pivot {
-	0% {
-		opacity: 0;
-		transform: perspective(1600px) rotateY(0);
-	}
-
-	10% {
-		opacity: 1;
-	}
-
-	100% {
-		opacity: 1;
-		transform: perspective(1600px) rotateY(34deg);
 	}
 }
 
@@ -809,13 +773,11 @@
 
 	.obot-how-obot-works__progress-bar,
 	.obot-how-obot-works__slide.is-active .obot-how-obot-works__image,
-	.obot-how-obot-works__slide.is-active .obot-how-obot-works__browser,
 	.obot-how-obot-works__slide.is-active .obot-how-obot-works__copy > * {
 		animation: none !important;
 	}
 
-	.obot-how-obot-works__slide.is-active .obot-how-obot-works__image,
-	.obot-how-obot-works__slide.is-active .obot-how-obot-works__browser {
+	.obot-how-obot-works__slide.is-active .obot-how-obot-works__image {
 		opacity: 1 !important;
 		transform: none !important;
 	}

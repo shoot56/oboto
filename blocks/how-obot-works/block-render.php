@@ -34,23 +34,34 @@ $allowed_effects = array(
 	'pan-right',
 	'zoom-out',
 	'pan-diagonal',
-	'flip-in',
 );
 
 if ( is_array( $rows ) ) {
 	foreach ( $rows as $row ) {
-		$step_name  = trim( (string) ( $row['name'] ?? '' ) );
-		$step_title = trim( (string) ( $row['title'] ?? '' ) );
-		$step_text  = trim( (string) ( $row['text'] ?? '' ) );
-		$bottom     = trim( (string) ( $row['bottom_text'] ?? '' ) );
-		$browser    = trim( (string) ( $row['browser_url'] ?? '' ) );
-		$effect     = sanitize_key( (string) ( $row['animation'] ?? 'static' ) );
-		$image      = $row['image'] ?? null;
-		$image_id   = 0;
-		$image_url  = '';
-		$image_alt  = '';
+		$step_name   = trim( (string) ( $row['name'] ?? '' ) );
+		$step_title  = trim( (string) ( $row['title'] ?? '' ) );
+		$step_text   = trim( (string) ( $row['text'] ?? '' ) );
+		$bottom      = trim( (string) ( $row['bottom_text'] ?? '' ) );
+		$browser     = trim( (string) ( $row['browser_url'] ?? '' ) );
+		$media_type  = sanitize_key( (string) ( $row['media_type'] ?? 'image' ) );
+		$effect      = sanitize_key( (string) ( $row['animation'] ?? 'static' ) );
+		$image       = $row['image'] ?? null;
+		$video       = $row['video'] ?? null;
+		$image_id    = 0;
+		$image_url   = '';
+		$image_alt   = '';
+		$video_url   = '';
+		$video_mime  = '';
+
+		if ( 'video' !== $media_type ) {
+			$media_type = 'image';
+		}
 
 		if ( ! in_array( $effect, $allowed_effects, true ) ) {
+			$effect = 'static';
+		}
+
+		if ( 'video' === $media_type ) {
 			$effect = 'static';
 		}
 
@@ -70,7 +81,18 @@ if ( is_array( $rows ) ) {
 			$image_alt = $step_title;
 		}
 
-		if ( ! $step_name && ! $step_title && ! $step_text && ! $bottom && ! $browser && ! $image_url ) {
+		if ( is_array( $video ) ) {
+			$video_url  = (string) ( $video['url'] ?? '' );
+			$video_mime = (string) ( $video['mime_type'] ?? '' );
+		} elseif ( is_numeric( $video ) ) {
+			$video_id   = absint( $video );
+			$video_url  = (string) wp_get_attachment_url( $video_id );
+			$video_mime = (string) get_post_mime_type( $video_id );
+		} elseif ( is_string( $video ) ) {
+			$video_url = $video;
+		}
+
+		if ( ! $step_name && ! $step_title && ! $step_text && ! $bottom && ! $browser && ! $image_url && ! $video_url ) {
 			continue;
 		}
 
@@ -80,10 +102,13 @@ if ( is_array( $rows ) ) {
 			'text'        => $step_text,
 			'bottom_text' => $bottom,
 			'browser_url' => $browser,
+			'media_type'  => $media_type,
 			'effect'      => $effect,
 			'image_id'    => $image_id,
 			'image_url'   => $image_url,
 			'image_alt'   => $image_alt,
+			'video_url'   => $video_url,
+			'video_mime'  => $video_mime,
 		);
 	}
 }
@@ -160,6 +185,7 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						$tab_id      = $id . '-tab-' . $step_number;
 						$panel_id    = $id . '-panel-' . $step_number;
 						$effect      = $step['effect'];
+						$has_media   = 'video' === $step['media_type'] ? (bool) $step['video_url'] : (bool) $step['image_url'];
 						?>
 						<article
 							id="<?php echo esc_attr( $panel_id ); ?>"
@@ -180,8 +206,21 @@ $wrapper_attributes = get_block_wrapper_attributes(
 									<?php endif; ?>
 								</div>
 
-								<div class="obot-how-obot-works__image-wrap<?php echo $step['image_url'] ? '' : ' obot-how-obot-works__image-wrap--empty'; ?>">
-									<?php if ( $step['image_id'] ) : ?>
+								<div class="obot-how-obot-works__image-wrap<?php echo $has_media ? '' : ' obot-how-obot-works__image-wrap--empty'; ?>">
+									<?php if ( 'video' === $step['media_type'] && $step['video_url'] ) : ?>
+										<video
+											class="obot-how-obot-works__video"
+											autoplay
+											muted
+											loop
+											playsinline
+											preload="<?php echo 0 === $index ? 'auto' : 'metadata'; ?>"
+											aria-hidden="true"
+											data-how-obot-video
+										>
+											<source src="<?php echo esc_url( $step['video_url'] ); ?>"<?php echo $step['video_mime'] ? ' type="' . esc_attr( $step['video_mime'] ) . '"' : ''; ?>>
+										</video>
+									<?php elseif ( 'image' === $step['media_type'] && $step['image_id'] ) : ?>
 										<?php
 										echo wp_get_attachment_image(
 											$step['image_id'],
@@ -194,10 +233,10 @@ $wrapper_attributes = get_block_wrapper_attributes(
 											)
 										); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 										?>
-									<?php elseif ( $step['image_url'] ) : ?>
+									<?php elseif ( 'image' === $step['media_type'] && $step['image_url'] ) : ?>
 										<img class="obot-how-obot-works__image" src="<?php echo esc_url( $step['image_url'] ); ?>" alt="<?php echo esc_attr( $step['image_alt'] ); ?>" loading="<?php echo 0 === $index ? 'eager' : 'lazy'; ?>">
 									<?php elseif ( $is_preview ) : ?>
-										<span class="obot-how-obot-works__image-placeholder"><?php esc_html_e( 'Select a step image', 'oboto' ); ?></span>
+										<span class="obot-how-obot-works__image-placeholder"><?php esc_html_e( 'Select step media', 'oboto' ); ?></span>
 									<?php endif; ?>
 								</div>
 							</div>

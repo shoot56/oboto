@@ -1,10 +1,10 @@
 {
-  "name": "oboto/how-obot-works",
-  "title": "How Obot Works",
-  "description": "Homepage steps carousel with editable copy, image or looping video media, and browser URLs.",
+  "name": "oboto/product-feature-v2",
+  "title": "Product Feature V2",
+  "description": "Two-column product feature with an optional section heading, configurable media position, rich feature rows, and an accent-colored CTA.",
   "category": "obot_landing",
-  "icon": "slides",
-  "keywords": ["how obot works", "steps", "carousel", "homepage"],
+  "icon": "columns",
+  "keywords": ["product", "feature", "media", "video", "html"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
@@ -35,11 +35,8 @@
     },
     "dimensions": {
       "minHeight": true
-    },
-    "position": {
-      "sticky": true
     }
   },
-  "style": ["how-obot-works"],
-  "viewScript": ["how-obot-works-script"]
+  "style": ["product-feature-v2"],
+  "viewScript": ["product-feature-v2-script"]
 }

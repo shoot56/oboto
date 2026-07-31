@@ -80,15 +80,21 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/why-obot`** — Why Obot block.
   - **When to use**: The homepage feature overview with a centered introduction and a responsive grid of feature cards.
   - **Note**: Includes ACF fields for eyebrow, title, text, and repeatable cards with an uploaded icon, optional accent color, title, text, and link; card accents cycle automatically when no color is selected.
+- **`oboto/obot-editions`** — Obot Editions block.
+  - **When to use**: Product or landing pages that need a three-card editions or deployment comparison section.
+  - **Note**: Includes ACF fields for the section eyebrow and title, plus exactly three cards with an accent color, eyebrow, title, text, check/cross option rows, and a CTA link. The second card is hardcoded as Recommended and receives the highlighted treatment.
 - **`oboto/how-obot-works`** — How Obot Works block.
   - **When to use**: The homepage walkthrough that presents product steps as an autoplaying, manually navigable carousel.
-  - **Note**: Includes ACF fields for the section introduction and repeatable steps with a short name, title, text, bottom-line text, screenshot, browser address-bar text, and a selectable prototype animation that defaults to static; motion pauses off-screen and respects reduced-motion preferences.
+  - **Note**: Includes ACF fields for the section introduction and repeatable steps with a short name, title, text, bottom-line text, browser address-bar text, and image or looping MP4/WebM video media. Image steps support selectable motion effects that default to static; video steps keep the browser frame static, pause off-screen, and respect reduced-motion preferences.
 - **`oboto/product-hero`** — Product Hero block.
   - **When to use**: Product pages that need a two-column hero with eyebrow text, a title field that supports a gradient `<span>`, CTA buttons, and the hardcoded AI Control Plane animation.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title with allowed gradient `<span>` markup, body text, and repeatable buttons; its bundled animation cycles through the Claude workflow, Obot scan callout, and eight product screenshots.
 - **`oboto/product-feature`** — Product Feature block.
   - **When to use**: Product pages that need repeated feature sections matching the Claude product page reference: accent eyebrow, centered title/text, screenshot, bullet list, and CTA.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for accent color, eyebrow, title, text, image, autoplaying video, or sandboxed custom HTML media with automatic height and a manual aspect-ratio fallback, an optional browser header/address for images, list rows, and one button with an optional custom image icon and an automatic arrow fallback.
+- **`oboto/product-feature-v2`** — Product Feature V2 block.
+  - **When to use**: Homepage or product sections that need an alternating two-column feature layout with detailed icon rows.
+  - **Note**: Keeps the image, looping video, and sandboxed HTML media options from Product Feature, adds an optional centered section eyebrow/title, a desktop media-position toggle, a separate eyebrow/title inside the content column, uploaded icons and WYSIWYG copy per list row, and one consistent CTA style derived from the selected accent color. Content always appears above media on smaller screens.
 - **`oboto/product-resources`** — Product Resources block.
   - **When to use**: Product pages that need the `resources` anchor section with an eyebrow, title, and linked resource cards.
   - **Note**: Defaults to `id="resources"` unless an anchor is provided, and includes ACF fields for eyebrow, title, and card rows with title, text, and button link.

@@ -25,13 +25,42 @@
 
 		const interval = Math.max(Number(root.dataset.howObotInterval) || 5000, 1000);
 		const pauseReasons = new Set(['offscreen']);
+		const mediaPauseReasons = new Set(['offscreen', 'hidden', 'reduced-motion']);
 		let current = 0;
 		let timer = null;
 		let startedAt = 0;
 		let remaining = interval;
 
-		function isPaused() {
+		function isCarouselPaused() {
 			return pauseReasons.size > 0 || tabs.length < 2;
+		}
+
+		function isMediaPaused() {
+			return Array.from(mediaPauseReasons).some(function (reason) {
+				return pauseReasons.has(reason);
+			});
+		}
+
+		function syncVideoPlayback(resetActiveVideo) {
+			slides.forEach(function (slide, slideIndex) {
+				const shouldPlay = slideIndex === current && !isMediaPaused();
+
+				slide.querySelectorAll('[data-how-obot-video]').forEach(function (video) {
+					if (!shouldPlay) {
+						video.pause();
+						return;
+					}
+
+					if (resetActiveVideo && video.readyState > 0) {
+						video.currentTime = 0;
+					}
+
+					const playPromise = video.play();
+					if (playPromise && typeof playPromise.catch === 'function') {
+						playPromise.catch(function () {});
+					}
+				});
+			});
 		}
 
 		function restartProgress() {
@@ -46,7 +75,7 @@
 
 		function schedule() {
 			window.clearTimeout(timer);
-			if (isPaused()) {
+			if (isCarouselPaused()) {
 				return;
 			}
 
@@ -57,19 +86,22 @@
 		}
 
 		function syncPausedState() {
-			const paused = isPaused();
-			root.classList.toggle('is-paused', paused);
+			const carouselPaused = isCarouselPaused();
+			root.classList.toggle('is-paused', carouselPaused);
+			root.classList.toggle('is-media-paused', isMediaPaused());
 
-			if (paused) {
+			if (carouselPaused) {
 				if (timer) {
 					remaining = Math.max(0, remaining - (window.performance.now() - startedAt));
 				}
 				window.clearTimeout(timer);
 				timer = null;
+				syncVideoPlayback(false);
 				return;
 			}
 
 			schedule();
+			syncVideoPlayback(false);
 		}
 
 		function setPauseReason(reason, shouldPause) {
@@ -85,7 +117,7 @@
 		function restartSlideAnimations(slide) {
 			const animatedElements = Array.from(
 				slide.querySelectorAll(
-					'.obot-how-obot-works__image, .obot-how-obot-works__browser, .obot-how-obot-works__copy > *'
+					'.obot-how-obot-works__image, .obot-how-obot-works__copy > *'
 				)
 			);
 
@@ -123,6 +155,7 @@
 				slide.classList.toggle('is-active', active);
 			});
 			restartSlideAnimations(slides[current]);
+			syncVideoPlayback(true);
 
 			if (focusTab) {
 				tabs[current].focus();
@@ -166,11 +199,11 @@
 			});
 		}
 
-		if (next) {
-			next.addEventListener('click', function () {
-				show(current + 1);
-			});
-		}
+			if (next) {
+				next.addEventListener('click', function () {
+					show(current + 1);
+				});
+			}
 
 		carousel.addEventListener('mouseenter', function () {
 			setPauseReason('hover', true);
@@ -179,6 +212,16 @@
 		carousel.addEventListener('mouseleave', function () {
 			setPauseReason('hover', false);
 		});
+
+		if (tabList) {
+			tabList.addEventListener('mouseenter', function () {
+				setPauseReason('tabs-hover', true);
+			});
+
+			tabList.addEventListener('mouseleave', function () {
+				setPauseReason('tabs-hover', false);
+			});
+		}
 
 		document.addEventListener('visibilitychange', function () {
 			setPauseReason('hidden', document.hidden);

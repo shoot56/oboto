@@ -1,10 +1,10 @@
 {
-  "name": "oboto/how-obot-works",
-  "title": "How Obot Works",
-  "description": "Homepage steps carousel with editable copy, image or looping video media, and browser URLs.",
+  "name": "oboto/obot-editions",
+  "title": "Obot Editions",
+  "description": "Obot editions section with three configurable feature cards.",
   "category": "obot_landing",
-  "icon": "slides",
-  "keywords": ["how obot works", "steps", "carousel", "homepage"],
+  "icon": "columns",
+  "keywords": ["obot editions", "pricing", "plans", "cards"],
   "acf": {
     "mode": "preview",
     "renderTemplate": "block-render.php"
@@ -35,11 +35,7 @@
     },
     "dimensions": {
       "minHeight": true
-    },
-    "position": {
-      "sticky": true
     }
   },
-  "style": ["how-obot-works"],
-  "viewScript": ["how-obot-works-script"]
+  "style": ["obot-editions"]
 }
