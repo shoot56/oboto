@@ -142,9 +142,25 @@ $has_header = $eyebrow || $title;
 					$post_excerpt   = wp_trim_words( wp_strip_all_tags( get_the_excerpt( $displayed_post_id ) ), 24, '...' );
 					$post_date      = get_the_date( 'M j, Y', $displayed_post_id );
 					$post_date_iso  = get_the_date( DATE_W3C, $displayed_post_id );
+					$post_thumbnail = get_the_post_thumbnail(
+						$displayed_post_id,
+						'medium_large',
+						array(
+							'class'    => 'obot-latest-posts-v2__image',
+							'alt'      => $post_title,
+							'loading'  => 'lazy',
+							'decoding' => 'async',
+						)
+					);
 					?>
 					<article class="obot-latest-posts-v2__card"<?php oboto_the_aos_attributes( 260 + ( $index * 70 ) ); ?>>
 						<a class="obot-latest-posts-v2__card-link" href="<?php echo esc_url( get_permalink( $displayed_post_id ) ); ?>">
+							<?php if ( $post_thumbnail ) : ?>
+								<figure class="obot-latest-posts-v2__media">
+									<?php echo $post_thumbnail; ?>
+								</figure>
+							<?php endif; ?>
+
 							<div class="obot-latest-posts-v2__content">
 								<div class="obot-latest-posts-v2__meta">
 									<?php if ( $category_names ) : ?>
