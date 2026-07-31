@@ -80,6 +80,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/why-obot`** — Why Obot block.
   - **When to use**: The homepage feature overview with a centered introduction and a responsive grid of feature cards.
   - **Note**: Includes ACF fields for eyebrow, title, text, and repeatable cards with an uploaded icon, optional accent color, title, text, and link; card accents cycle automatically when no color is selected.
+- **`oboto/obot-editions`** — Obot Editions block.
+  - **When to use**: Product or landing pages that need a three-card editions or deployment comparison section.
+  - **Note**: Includes ACF fields for the section eyebrow and title, plus exactly three cards with an accent color, eyebrow, title, text, check/cross option rows, and a CTA link. The second card is hardcoded as Recommended and receives the highlighted treatment.
 - **`oboto/how-obot-works`** — How Obot Works block.
   - **When to use**: The homepage walkthrough that presents product steps as an autoplaying, manually navigable carousel.
   - **Note**: Includes ACF fields for the section introduction and repeatable steps with a short name, title, text, bottom-line text, browser address-bar text, and image or looping MP4/WebM video media. Image steps support selectable motion effects that default to static; video steps keep the browser frame static, pause off-screen, and respect reduced-motion preferences.
