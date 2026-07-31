@@ -136,9 +136,9 @@ if ( is_array( $rows ) ) {
 					<?php
 					$is_recommended = 1 === $index;
 					$card_classes   = 'obot-editions__card';
-					if ( $is_recommended ) {
-						$card_classes .= ' is-recommended';
-					}
+//					if ( $is_recommended ) {
+//						$card_classes .= ' is-recommended';
+//					}
 
 					$card_style = sprintf(
 						'--obot-editions-accent: %s; --obot-editions-accent-rgb: %s;',
@@ -147,9 +147,9 @@ if ( is_array( $rows ) ) {
 					);
 					?>
 					<article class="<?php echo esc_attr( $card_classes ); ?>" style="<?php echo esc_attr( $card_style ); ?>">
-						<?php if ( $is_recommended ) : ?>
-							<span class="obot-editions__recommended"><?php esc_html_e( 'Recommended', 'oboto' ); ?></span>
-						<?php endif; ?>
+<!--						--><?php //if ( $is_recommended ) : ?>
+<!--							<span class="obot-editions__recommended">--><?php //esc_html_e( 'Recommended', 'oboto' ); ?><!--</span>-->
+<!--						--><?php //endif; ?>
 
 						<?php if ( $card['eyebrow'] ) : ?>
 							<div class="obot-editions__card-eyebrow"><?php echo esc_html( $card['eyebrow'] ); ?></div>
