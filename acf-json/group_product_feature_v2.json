@@ -1,0 +1,500 @@
+{
+    "key": "group_product_feature_v2",
+    "title": "Block: Product Feature V2",
+    "fields": [
+        {
+            "key": "field_product_feature_v2_content_tab",
+            "label": "Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_product_feature_v2_section_eyebrow",
+            "label": "Section Eyebrow",
+            "name": "section_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional shared eyebrow displayed above the product feature row.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Discover Obot",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_product_feature_v2_section_title",
+            "label": "Section Title",
+            "name": "section_title",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Optional shared title displayed above the product feature row.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Three ways to take control of enterprise AI",
+            "new_lines": ""
+        },
+        {
+            "key": "field_product_feature_v2_accent_color",
+            "label": "Accent Color",
+            "name": "accent_color",
+            "aria-label": "",
+            "type": "color_picker",
+            "instructions": "Used for the eyebrow, media frame, links, and CTA button.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "#5b9bff",
+            "enable_opacity": 0,
+            "return_format": "string"
+        },
+        {
+            "key": "field_product_feature_v2_media_on_left",
+            "label": "Column Order",
+            "name": "media_on_left",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "On smaller screens, the content always appears above the media.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "message": "Show media in the left column",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Media Left",
+            "ui_off_text": "Media Right"
+        },
+        {
+            "key": "field_product_feature_v2_eyebrow",
+            "label": "Feature Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "AI Control Plane",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_product_feature_v2_title",
+            "label": "Feature Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "Govern every action your agents take.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_product_feature_v2_text",
+            "label": "Text",
+            "name": "text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Optional introductory text displayed above the feature list.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_product_feature_v2_list",
+            "label": "Feature List",
+            "name": "list",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Upload an icon for each row and use the editor to add emphasis or links.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "field_product_feature_v2_list_text",
+            "button_label": "Add Feature",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_product_feature_v2_list_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "image",
+                    "instructions": "Upload an SVG, PNG, JPG, or WebP icon.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "25", "class": "", "id": "" },
+                    "return_format": "array",
+                    "library": "all",
+                    "min_width": "",
+                    "min_height": "",
+                    "min_size": "",
+                    "max_width": "",
+                    "max_height": "",
+                    "max_size": "",
+                    "mime_types": "svg,png,jpg,jpeg,webp",
+                    "preview_size": "thumbnail",
+                    "parent_repeater": "field_product_feature_v2_list"
+                },
+                {
+                    "key": "field_product_feature_v2_list_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "wysiwyg",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "75", "class": "", "id": "" },
+                    "default_value": "",
+                    "tabs": "all",
+                    "toolbar": "basic",
+                    "media_upload": 0,
+                    "delay": 0,
+                    "parent_repeater": "field_product_feature_v2_list"
+                }
+            ]
+        },
+        {
+            "key": "field_product_feature_v2_button",
+            "label": "Button",
+            "name": "button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Leave empty to hide the button. Its color follows the selected accent color.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
+            "key": "field_product_feature_v2_media_tab",
+            "label": "Media",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_product_feature_v2_media_type",
+            "label": "Media Type",
+            "name": "media_type",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "image": "Image",
+                "video": "Video",
+                "html": "HTML"
+            },
+            "default_value": "image",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_product_feature_v2_image",
+            "label": "Image",
+            "name": "image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "image"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_product_feature_v2_add_browser_header",
+            "label": "Browser Header",
+            "name": "add_browser_header",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Add browser controls and an address bar above the image.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "image"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "Add browser header",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "On",
+            "ui_off_text": "Off"
+        },
+        {
+            "key": "field_product_feature_v2_browser_address",
+            "label": "Browser Address",
+            "name": "browser_address",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Text displayed in the browser address bar.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "image"
+                    },
+                    {
+                        "field": "field_product_feature_v2_add_browser_header",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "app.obot.ai/admin/dashboard",
+            "maxlength": "",
+            "placeholder": "app.obot.ai/admin/dashboard",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_product_feature_v2_video",
+            "label": "Video",
+            "name": "video",
+            "aria-label": "",
+            "type": "file",
+            "instructions": "Use a lightweight MP4 or WebM file. The video will autoplay, loop, and stay muted.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "video"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array",
+            "library": "all",
+            "min_size": "",
+            "max_size": "",
+            "mime_types": "mp4,webm,mov,m4v,ogv"
+        },
+        {
+            "key": "field_product_feature_v2_video_poster",
+            "label": "Video Poster",
+            "name": "video_poster",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "Optional fallback image shown before the video loads.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "video"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        },
+        {
+            "key": "field_product_feature_v2_raw_html",
+            "label": "HTML Code",
+            "name": "raw_html",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Paste a complete HTML document or fragment. Inline CSS and JavaScript are rendered in a sandboxed iframe.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 18,
+            "placeholder": "<div>...</div>",
+            "new_lines": ""
+        },
+        {
+            "key": "field_product_feature_v2_html_sizing",
+            "label": "HTML Sizing",
+            "name": "html_sizing",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Auto Height fits the iframe to its document. Use Aspect Ratio for fixed-viewport animations.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "auto": "Auto Height",
+                "ratio": "Aspect Ratio"
+            },
+            "default_value": "auto",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
+            "key": "field_product_feature_v2_html_ratio_width",
+            "label": "HTML Ratio Width",
+            "name": "html_ratio_width",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "The original viewport width used by the HTML animation.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    },
+                    {
+                        "field": "field_product_feature_v2_html_sizing",
+                        "operator": "==",
+                        "value": "ratio"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": 970,
+            "min": 1,
+            "max": "",
+            "placeholder": "970",
+            "step": 1,
+            "prepend": "",
+            "append": "px"
+        },
+        {
+            "key": "field_product_feature_v2_html_ratio_height",
+            "label": "HTML Ratio Height",
+            "name": "html_ratio_height",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "The original viewport height used by the HTML animation.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_product_feature_v2_media_type",
+                        "operator": "==",
+                        "value": "html"
+                    },
+                    {
+                        "field": "field_product_feature_v2_html_sizing",
+                        "operator": "==",
+                        "value": "ratio"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": 516,
+            "min": 1,
+            "max": "",
+            "placeholder": "516",
+            "step": 1,
+            "prepend": "",
+            "append": "px"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "oboto/product-feature-v2"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1785500000
+}
