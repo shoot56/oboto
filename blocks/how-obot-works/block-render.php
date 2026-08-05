@@ -25,6 +25,8 @@ $text       = trim( (string) get_field( 'text' ) );
 $rows       = get_field( 'steps' );
 $steps      = array();
 $autoplay_interval_ms = 5000;
+$default_html_ratio_width  = 970;
+$default_html_ratio_height = 516;
 $allowed_effects = array(
 	'static',
 	'zoom-in',
@@ -35,6 +37,65 @@ $allowed_effects = array(
 	'zoom-out',
 	'pan-diagonal',
 );
+$html_resize_script = <<<'HTML'
+<script>
+(function () {
+  var messageType = 'obot-how-obot-works-html-height';
+  var lastHeight = 0;
+  var root = document.documentElement;
+
+  function sendHeight() {
+    var body = document.body;
+    if (!body || !root) {
+      return;
+    }
+
+    var height = Math.ceil(Math.max(
+      body.scrollHeight,
+      body.offsetHeight,
+      body.getBoundingClientRect().height,
+      root.scrollHeight,
+      root.offsetHeight,
+      root.getBoundingClientRect().height
+    ));
+
+    if (!Number.isFinite(height) || height < 1 || Math.abs(height - lastHeight) < 1) {
+      return;
+    }
+
+    lastHeight = height;
+    window.parent.postMessage({ type: messageType, height: height }, '*');
+  }
+
+  function scheduleMeasurements() {
+    window.requestAnimationFrame(sendHeight);
+    window.setTimeout(sendHeight, 50);
+    window.setTimeout(sendHeight, 250);
+    window.setTimeout(sendHeight, 1000);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', scheduleMeasurements, { once: true });
+  } else {
+    scheduleMeasurements();
+  }
+
+  window.addEventListener('load', scheduleMeasurements, { once: true });
+  window.addEventListener('resize', sendHeight);
+
+  if ('ResizeObserver' in window) {
+    var resizeObserver = new ResizeObserver(sendHeight);
+    resizeObserver.observe(root);
+    if (document.body) {
+      resizeObserver.observe(document.body);
+    }
+  } else if ('MutationObserver' in window) {
+    var mutationObserver = new MutationObserver(sendHeight);
+    mutationObserver.observe(root, { childList: true, subtree: true, attributes: true });
+  }
+})();
+</script>
+HTML;
 
 if ( is_array( $rows ) ) {
 	foreach ( $rows as $row ) {
@@ -47,21 +108,37 @@ if ( is_array( $rows ) ) {
 		$effect      = sanitize_key( (string) ( $row['animation'] ?? 'static' ) );
 		$image       = $row['image'] ?? null;
 		$video       = $row['video'] ?? null;
+		$raw_html    = trim( (string) ( $row['raw_html'] ?? '' ) );
+		$html_sizing = sanitize_key( (string) ( $row['html_sizing'] ?? 'auto' ) );
+		$html_ratio_width  = absint( $row['html_ratio_width'] ?? 0 );
+		$html_ratio_height = absint( $row['html_ratio_height'] ?? 0 );
 		$image_id    = 0;
 		$image_url   = '';
 		$image_alt   = '';
 		$video_url   = '';
 		$video_mime  = '';
 
-		if ( 'video' !== $media_type ) {
+		if ( ! in_array( $media_type, array( 'image', 'video', 'html' ), true ) ) {
 			$media_type = 'image';
+		}
+
+		if ( ! in_array( $html_sizing, array( 'auto', 'ratio' ), true ) ) {
+			$html_sizing = 'auto';
+		}
+
+		if ( ! $html_ratio_width ) {
+			$html_ratio_width = $default_html_ratio_width;
+		}
+
+		if ( ! $html_ratio_height ) {
+			$html_ratio_height = $default_html_ratio_height;
 		}
 
 		if ( ! in_array( $effect, $allowed_effects, true ) ) {
 			$effect = 'static';
 		}
 
-		if ( 'video' === $media_type ) {
+		if ( in_array( $media_type, array( 'video', 'html' ), true ) ) {
 			$effect = 'static';
 		}
 
@@ -92,7 +169,19 @@ if ( is_array( $rows ) ) {
 			$video_url = $video;
 		}
 
-		if ( ! $step_name && ! $step_title && ! $step_text && ! $bottom && ! $browser && ! $image_url && ! $video_url ) {
+		$html_document = $raw_html;
+		if ( 'html' === $media_type && $html_document && 'auto' === $html_sizing ) {
+			if ( preg_match( '/<\/body\s*>/i', $html_document ) ) {
+				$resized_html_document = preg_replace( '/<\/body\s*>/i', $html_resize_script . '</body>', $html_document, 1 );
+				if ( is_string( $resized_html_document ) ) {
+					$html_document = $resized_html_document;
+				}
+			} else {
+				$html_document .= $html_resize_script;
+			}
+		}
+
+		if ( ! $step_name && ! $step_title && ! $step_text && ! $bottom && ! $browser && ! $image_url && ! $video_url && ! $raw_html ) {
 			continue;
 		}
 
@@ -109,6 +198,10 @@ if ( is_array( $rows ) ) {
 			'image_alt'   => $image_alt,
 			'video_url'   => $video_url,
 			'video_mime'  => $video_mime,
+			'html_document' => $html_document,
+			'html_sizing'   => $html_sizing,
+			'html_ratio_width' => $html_ratio_width,
+			'html_ratio_height' => $html_ratio_height,
 		);
 	}
 }
@@ -185,7 +278,26 @@ $wrapper_attributes = get_block_wrapper_attributes(
 						$tab_id      = $id . '-tab-' . $step_number;
 						$panel_id    = $id . '-panel-' . $step_number;
 						$effect      = $step['effect'];
-						$has_media   = 'video' === $step['media_type'] ? (bool) $step['video_url'] : (bool) $step['image_url'];
+						$has_media   = 'video' === $step['media_type']
+							? (bool) $step['video_url']
+							: ( 'html' === $step['media_type'] ? (bool) $step['html_document'] : (bool) $step['image_url'] );
+						$image_wrap_classes = 'obot-how-obot-works__image-wrap';
+						$image_wrap_style   = '';
+
+						if ( ! $has_media ) {
+							$image_wrap_classes .= ' obot-how-obot-works__image-wrap--empty';
+						}
+
+						if ( 'html' === $step['media_type'] ) {
+							$image_wrap_classes .= ' obot-how-obot-works__image-wrap--html';
+							$image_wrap_classes .= 'ratio' === $step['html_sizing']
+								? ' obot-how-obot-works__image-wrap--html-ratio'
+								: ' obot-how-obot-works__image-wrap--html-auto';
+
+							if ( 'ratio' === $step['html_sizing'] ) {
+								$image_wrap_style = '--how-obot-works-html-aspect-ratio: ' . $step['html_ratio_width'] . ' / ' . $step['html_ratio_height'] . ';';
+							}
+						}
 						?>
 						<article
 							id="<?php echo esc_attr( $panel_id ); ?>"
@@ -206,8 +318,19 @@ $wrapper_attributes = get_block_wrapper_attributes(
 									<?php endif; ?>
 								</div>
 
-								<div class="obot-how-obot-works__image-wrap<?php echo $has_media ? '' : ' obot-how-obot-works__image-wrap--empty'; ?>">
-									<?php if ( 'video' === $step['media_type'] && $step['video_url'] ) : ?>
+								<div class="<?php echo esc_attr( $image_wrap_classes ); ?>"<?php echo $image_wrap_style ? ' style="' . esc_attr( $image_wrap_style ) . '"' : ''; ?>>
+									<?php if ( 'html' === $step['media_type'] && $step['html_document'] ) : ?>
+										<iframe
+											class="obot-how-obot-works__html"
+											title="<?php echo esc_attr( $step['title'] ? $step['title'] : __( 'Interactive step preview', 'oboto' ) ); ?>"
+											srcdoc="<?php echo esc_attr( $step['html_document'] ); ?>"
+											sandbox="allow-scripts"
+											loading="<?php echo 0 === $index ? 'eager' : 'lazy'; ?>"
+											referrerpolicy="no-referrer"
+											scrolling="no"
+											<?php echo 'auto' === $step['html_sizing'] ? 'data-how-obot-html-auto' : ''; ?>
+										></iframe>
+									<?php elseif ( 'video' === $step['media_type'] && $step['video_url'] ) : ?>
 										<video
 											class="obot-how-obot-works__video"
 											autoplay

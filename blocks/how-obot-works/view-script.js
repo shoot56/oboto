@@ -2,7 +2,41 @@
 	'use strict';
 
 	const rootSelector = '[data-how-obot-works]';
+	const htmlFrameSelector = 'iframe[data-how-obot-html-auto]';
+	const htmlHeightMessageType = 'obot-how-obot-works-html-height';
+	const minimumHtmlHeight = 180;
+	const maximumHtmlHeight = 2400;
 	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+	window.addEventListener('message', function (event) {
+		const data = event.data;
+
+		if (!data || data.type !== htmlHeightMessageType) {
+			return;
+		}
+
+		const requestedHeight = Number(data.height);
+		if (!Number.isFinite(requestedHeight) || requestedHeight <= 0) {
+			return;
+		}
+
+		document.querySelectorAll(htmlFrameSelector).forEach(function (frame) {
+			if (frame.contentWindow !== event.source) {
+				return;
+			}
+
+			const height = Math.min(
+				Math.max(Math.ceil(requestedHeight), minimumHtmlHeight),
+				maximumHtmlHeight
+			);
+
+			if (Math.abs(frame.getBoundingClientRect().height - height) < 1) {
+				return;
+			}
+
+			frame.style.height = height + 'px';
+		});
+	});
 
 	function initBlock(root) {
 		if (root.dataset.howObotInitialized === 'true') {
