@@ -4,11 +4,11 @@ const initializeBanners = () => {
   const DEFAULT_VISIBLE_DURATION_SECONDS = 10;
 
   banners.forEach((banner) => {
-    if (banner.dataset.bannerInitialized === "true") {
+    if (banner.dataset.bannerTimersInitialized === "true") {
       return;
     }
 
-    banner.dataset.bannerInitialized = "true";
+    banner.dataset.bannerTimersInitialized = "true";
     const closeBanner = banner.querySelector("button");
     const bannerDelay = Number.parseInt(banner.dataset.bannerDelay, 10);
     const delay = Number.isFinite(bannerDelay) ? Math.max(0, bannerDelay) : 0;
@@ -24,7 +24,8 @@ const initializeBanners = () => {
       }
     };
 
-    if (closeBanner) {
+    if (closeBanner && closeBanner.dataset.bannerCloseInitialized !== "true") {
+      closeBanner.dataset.bannerCloseInitialized = "true";
       closeBanner.addEventListener("click", removeBanner);
 
       // Mobile Safari and Firefox can occasionally miss the synthetic click
@@ -49,8 +50,4 @@ const initializeBanners = () => {
   });
 };
 
-if (document.readyState === "loading") {
-  document.addEventListener("DOMContentLoaded", initializeBanners, { once: true });
-} else {
-  initializeBanners();
-}
+initializeBanners();

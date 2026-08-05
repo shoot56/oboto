@@ -14,7 +14,6 @@ function banner_scripts()
 		filemtime(get_template_directory() . '/blocks/banner/view-script.js'),
 		array(
 			'in_footer' => true,
-			'strategy'  => 'defer',
 		)
 	);
 }
