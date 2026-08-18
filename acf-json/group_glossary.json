@@ -1,0 +1,891 @@
+{
+    "key": "group_glossary",
+    "title": "Block: Glossary",
+    "fields": [
+        {
+            "key": "field_glossary_tab_content",
+            "label": "Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_glossary_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Small label above the title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "Learning Center",
+            "maxlength": "",
+            "placeholder": "Learning Center",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_title_tag",
+            "label": "Title tag",
+            "name": "title_tag",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "Use H1 when the glossary block is the main content of the page.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "choices": { "h1": "H1", "h2": "H2" },
+            "default_value": "h1",
+            "return_format": "value",
+            "layout": "horizontal",
+            "allow_null": 0,
+            "other_choice": 0,
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_glossary_title",
+            "label": "Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "AI & MCP Glossary",
+            "maxlength": "",
+            "placeholder": "AI & MCP Glossary",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_intro",
+            "label": "Intro text",
+            "name": "intro",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Short paragraph below the title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_glossary_enable_search",
+            "label": "Show search",
+            "name": "enable_search",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Search filters the list instantly and shows suggestions.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_search_placeholder",
+            "label": "Search placeholder",
+            "name": "search_placeholder",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_enable_search",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "placeholder": "Search terms, for example “MCP gateway”",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_meta_items",
+            "label": "Hero meta items",
+            "name": "meta_items",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Small facts under the search box. Use {count} to insert the number of terms.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 4,
+            "collapsed": "",
+            "button_label": "Add meta item",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glossary_meta_text",
+                    "label": "Text",
+                    "name": "text",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "{count} terms and counting",
+                    "parent_repeater": "field_glossary_meta_items"
+                }
+            ]
+        },
+        {
+            "key": "field_glossary_browse_eyebrow",
+            "label": "List eyebrow",
+            "name": "browse_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "Browse",
+            "placeholder": "Browse",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_browse_title",
+            "label": "List title",
+            "name": "browse_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "All glossary terms",
+            "placeholder": "All glossary terms",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_empty_text",
+            "label": "No results text",
+            "name": "empty_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Shown when search or filters return nothing.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "No terms match your search. Try a shorter phrase or another category.",
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_tab_source",
+            "label": "Data source",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_glossary_term_sources",
+            "label": "Term sources",
+            "name": "term_sources",
+            "aria-label": "",
+            "type": "checkbox",
+            "instructions": "Taxonomies the glossary reads terms from. The term name becomes the entry title and the term description becomes the definition.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "learning-center-category": "Learning Center Categories (learning-center-category)",
+                "post_tag": "Tags (post_tag)",
+                "category": "Categories (category)"
+            },
+            "default_value": ["learning-center-category", "post_tag"],
+            "return_format": "value",
+            "allow_custom": 0,
+            "save_custom": 0,
+            "layout": "vertical",
+            "toggle": 0
+        },
+        {
+            "key": "field_glossary_group_mode",
+            "label": "Category filter grouping",
+            "name": "group_mode",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "How the filter chips above the list are built.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "source": "By source taxonomy (Learning Center Categories, Tags, …)",
+                "parent": "By top level parent term (hierarchical taxonomies)"
+            },
+            "default_value": "source",
+            "return_format": "value",
+            "layout": "vertical",
+            "allow_null": 0,
+            "other_choice": 0,
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_glossary_require_description",
+            "label": "Only terms with a description",
+            "name": "require_description",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Recommended once definitions are written: hides terms that have no description yet.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_hide_empty",
+            "label": "Only terms with posts",
+            "name": "hide_empty",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Hide terms that are not assigned to any published content.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_exclude_slugs",
+            "label": "Exclude term slugs",
+            "name": "exclude_slugs",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Comma or space separated slugs to skip, for example: blog, uncategorized, news.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 2,
+            "placeholder": "blog, uncategorized",
+            "new_lines": ""
+        },
+        {
+            "key": "field_glossary_link_terms",
+            "label": "Link terms to their archive",
+            "name": "link_terms",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Each row links to the term archive, so readers can see all content about that concept.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "33", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_show_alphabet",
+            "label": "Show A–Z navigation",
+            "name": "show_alphabet",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "33", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_show_filters",
+            "label": "Show category chips",
+            "name": "show_filters",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "33", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_show_counts",
+            "label": "Show post counts",
+            "name": "show_counts",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Display how many posts are attached to each term.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "",
+            "default_value": 0,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_tab_featured",
+            "label": "Featured",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_glossary_featured_enabled",
+            "label": "Show featured concepts",
+            "name": "featured_enabled",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Card row above the A–Z list.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_featured_eyebrow",
+            "label": "Featured eyebrow",
+            "name": "featured_eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_featured_enabled",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "Start here",
+            "placeholder": "Start here",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_featured_title",
+            "label": "Featured title",
+            "name": "featured_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_featured_enabled",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "Essential concepts",
+            "placeholder": "Essential concepts",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_featured_subtitle",
+            "label": "Featured note",
+            "name": "featured_subtitle",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional line on the right of the featured heading.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_featured_enabled",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "placeholder": "The terms most teams encounter first.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_featured_terms",
+            "label": "Featured cards",
+            "name": "featured_terms",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Fill in the term slug to reuse its name, description and category automatically. Any field left empty falls back to the term data.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_featured_enabled",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 8,
+            "collapsed": "field_glossary_featured_reference",
+            "button_label": "Add featured card",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glossary_featured_reference",
+                    "label": "Term slug or name",
+                    "name": "term_reference",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Slug of a term from the sources above, for example: mcp-gateway.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "mcp-gateway",
+                    "parent_repeater": "field_glossary_featured_terms"
+                },
+                {
+                    "key": "field_glossary_featured_icon",
+                    "label": "Icon",
+                    "name": "icon",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Optional single character or symbol, for example ◇.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "default_value": "",
+                    "maxlength": 4,
+                    "placeholder": "◇",
+                    "parent_repeater": "field_glossary_featured_terms"
+                },
+                {
+                    "key": "field_glossary_featured_card_tag",
+                    "label": "Tag",
+                    "name": "tag",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Overrides the category label on the card.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "Protocol",
+                    "parent_repeater": "field_glossary_featured_terms"
+                },
+                {
+                    "key": "field_glossary_featured_card_title",
+                    "label": "Title",
+                    "name": "title",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "Overrides the term name.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "Model Context Protocol",
+                    "parent_repeater": "field_glossary_featured_terms"
+                },
+                {
+                    "key": "field_glossary_featured_card_desc",
+                    "label": "Description",
+                    "name": "description",
+                    "aria-label": "",
+                    "type": "textarea",
+                    "instructions": "Overrides the term description.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "rows": 2,
+                    "new_lines": "",
+                    "parent_repeater": "field_glossary_featured_terms"
+                },
+                {
+                    "key": "field_glossary_featured_card_link",
+                    "label": "Link",
+                    "name": "link",
+                    "aria-label": "",
+                    "type": "url",
+                    "instructions": "Overrides the term archive link.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "https://",
+                    "parent_repeater": "field_glossary_featured_terms"
+                }
+            ]
+        },
+        {
+            "key": "field_glossary_tab_sidebar",
+            "label": "Sidebar",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_glossary_show_sidebar",
+            "label": "Show sidebar",
+            "name": "show_sidebar",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_popular_title",
+            "label": "Popular terms title",
+            "name": "popular_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "Popular terms",
+            "placeholder": "Popular terms",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_popular_mode",
+            "label": "Popular terms source",
+            "name": "popular_mode",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "Automatic picks the terms with the most published content.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "choices": { "auto": "Automatic (most content)", "manual": "Manual list" },
+            "default_value": "auto",
+            "return_format": "value",
+            "layout": "vertical",
+            "allow_null": 0,
+            "other_choice": 0,
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_glossary_popular_count",
+            "label": "Number of popular terms",
+            "name": "popular_count",
+            "aria-label": "",
+            "type": "number",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_glossary_popular_mode",
+                        "operator": "==",
+                        "value": "auto"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": 4,
+            "min": 1,
+            "max": 12,
+            "step": 1,
+            "placeholder": "4",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_popular_terms",
+            "label": "Popular terms",
+            "name": "popular_terms",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_glossary_popular_mode",
+                        "operator": "==",
+                        "value": "manual"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 12,
+            "collapsed": "",
+            "button_label": "Add term",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glossary_popular_reference",
+                    "label": "Term slug or name",
+                    "name": "term_reference",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "mcp-gateway",
+                    "parent_repeater": "field_glossary_popular_terms"
+                }
+            ]
+        },
+        {
+            "key": "field_glossary_show_cta",
+            "label": "Show sidebar CTA",
+            "name": "show_cta",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        },
+        {
+            "key": "field_glossary_cta_title",
+            "label": "CTA title",
+            "name": "cta_title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_glossary_show_cta",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "placeholder": "Put these concepts into practice.",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_glossary_cta_text",
+            "label": "CTA text",
+            "name": "cta_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_glossary_show_cta",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "rows": 3,
+            "new_lines": ""
+        },
+        {
+            "key": "field_glossary_cta_link",
+            "label": "CTA link",
+            "name": "cta_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_show_sidebar",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_glossary_show_cta",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
+            "key": "field_glossary_tab_seo",
+            "label": "SEO",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_glossary_enable_schema",
+            "label": "Output DefinedTermSet schema",
+            "name": "enable_schema",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Adds JSON-LD structured data describing the glossary and its terms. Only terms with a description are included.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "message": "",
+            "default_value": 1,
+            "ui": 1,
+            "ui_on_text": "Yes",
+            "ui_off_text": "No"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "oboto/glossary"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1787000000
+}

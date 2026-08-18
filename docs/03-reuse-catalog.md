@@ -174,6 +174,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **TODO: Clarify with tech lead**: intended difference vs `oboto/faqs`.
 - **`obot/glossary-item`** — Glossary item block (accordion row with InnerBlocks content).
   - **When to use**: Glossary/definition lists where each item expands to reveal rich content.
+- **`oboto/glossary`** — Glossary block (A–Z listing built from taxonomy terms).
+  - **When to use**: The `/glossary` page. Reads terms from the taxonomies selected in the block settings (Learning Center categories and blog tags by default): the term name is the entry title, the term description is the definition, and each row links to the term archive. Provides hero + instant search with suggestions, sticky A–Z navigation, category filter chips, an optional featured-cards row, an optional sidebar (popular terms + CTA) and optional `DefinedTermSet` JSON-LD. Filtering is client-side, so no AJAX endpoint is involved.
+  - **Content workflow**: definitions live in the term descriptions (Learning Center → Categories, Posts → Tags). Turn on “Only terms with a description” once the definitions are written.
 - **`oboto/footer-get-started`** — Footer Get Started block.
   - **When to use**: Footer “get started” CTA section.
 - **`oboto/not-found`** — 404 Block.

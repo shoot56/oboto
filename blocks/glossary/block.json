@@ -1,0 +1,36 @@
+{
+  "name": "oboto/glossary",
+  "title": "Glossary",
+  "description": "A-Z glossary built from existing taxonomy terms (Learning Center categories, blog tags) with search, alphabet navigation and category filters.",
+  "category": "theme_block_category",
+  "icon": "book-alt",
+  "keywords": ["glossary", "terms", "definitions", "a-z", "dictionary"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    },
+    "dimensions": {
+      "minHeight": true
+    }
+  },
+  "style": ["glossary"],
+  "viewScript": ["glossary-script"]
+}
