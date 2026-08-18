@@ -15,14 +15,20 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class MCP_Catalog_Fetcher {
 
-	const TRANSIENT_KEY = 'mcp_catalog_data';
-	const CRON_HOOK     = 'mcp_catalog_refresh';
-	const GITHUB_OWNER = 'obot-platform';
-	const GITHUB_REPO  = 'mcp-catalog';
-	const GITHUB_BRANCH = 'main';
+	const TRANSIENT_KEY       = 'mcp_catalog_data';
+	const STALE_OPTION_KEY    = 'mcp_catalog_last_successful_data';
+	const REFRESH_LOCK_KEY    = 'mcp_catalog_refresh_lock';
+	const CRON_HOOK           = 'mcp_catalog_refresh';
+	const ASYNC_REFRESH_HOOK  = 'mcp_catalog_async_refresh';
+	const GITHUB_OWNER        = 'obot-platform';
+	const GITHUB_REPO         = 'mcp-catalog';
+	const GITHUB_BRANCH       = 'main';
+	const REQUEST_TIMEOUT     = 3;
+	const MAX_FETCH_DURATION  = 45;
+	const REFRESH_LOCK_TTL    = 300;
 
 	/**
-	 * Get catalog data (from cache or by fetching from GitHub).
+	 * Get catalog data without blocking the page request on GitHub.
 	 *
 	 * @param int $cache_hours Cache TTL in hours. Default 24.
 	 * @return array List of server entries with keys: name, short_description, icon, link, categories.
@@ -32,20 +38,64 @@ class MCP_Catalog_Fetcher {
 		$cached    = get_transient( $cache_key );
 
 		if ( false !== $cached && is_array( $cached ) ) {
+			$stale = get_option( self::STALE_OPTION_KEY, array() );
+			if ( ! is_array( $stale ) || empty( $stale ) ) {
+				update_option( self::STALE_OPTION_KEY, $cached, false );
+			}
 			return $cached;
 		}
 
-		$data = self::fetch_from_github();
-		if ( ! empty( $data ) ) {
-			$ttl = max( 1, (int) $cache_hours ) * HOUR_IN_SECONDS;
-			set_transient( $cache_key, $data, $ttl );
-		}
+		self::schedule_refresh( $cache_hours );
 
-		return $data;
+		$stale = get_option( self::STALE_OPTION_KEY, array() );
+		return is_array( $stale ) ? $stale : array();
 	}
 
 	/**
-	 * Clear the cached catalog (e.g. before manual refresh).
+	 * Schedule a non-blocking catalog refresh.
+	 *
+	 * @param int $cache_hours Cache TTL in hours.
+	 */
+	public static function schedule_refresh( $cache_hours = 24 ) {
+		$cache_hours = max( 1, (int) $cache_hours );
+		$args        = array( $cache_hours );
+
+		if ( ! wp_next_scheduled( self::ASYNC_REFRESH_HOOK, $args ) ) {
+			wp_schedule_single_event( time(), self::ASYNC_REFRESH_HOOK, $args );
+		}
+	}
+
+	/**
+	 * Fetch and store fresh data, retaining the last successful catalog on failure.
+	 *
+	 * @param int $cache_hours Cache TTL in hours.
+	 * @return array Fresh catalog data, or an empty array when the refresh fails or is already running.
+	 */
+	public static function refresh_catalog( $cache_hours = 24 ) {
+		if ( get_transient( self::REFRESH_LOCK_KEY ) ) {
+			return array();
+		}
+
+		set_transient( self::REFRESH_LOCK_KEY, 1, self::REFRESH_LOCK_TTL );
+
+		try {
+			$data = self::fetch_from_github();
+			if ( empty( $data ) ) {
+				return array();
+			}
+
+			$ttl = max( 1, (int) $cache_hours ) * HOUR_IN_SECONDS;
+			set_transient( self::TRANSIENT_KEY, $data, $ttl );
+			update_option( self::STALE_OPTION_KEY, $data, false );
+
+			return $data;
+		} finally {
+			delete_transient( self::REFRESH_LOCK_KEY );
+		}
+	}
+
+	/**
+	 * Clear the expiring cache while retaining the last successful fallback.
 	 */
 	public static function clear_cache() {
 		delete_transient( self::TRANSIENT_KEY );
@@ -53,6 +103,8 @@ class MCP_Catalog_Fetcher {
 
 	/**
 	 * Fetch catalog from GitHub: list YAML files, then fetch and parse each.
+	 * The refresh fails as a whole if GitHub becomes unavailable, so partial data
+	 * never replaces the last successful catalog.
 	 *
 	 * @return array Normalized server list.
 	 */
@@ -62,14 +114,21 @@ class MCP_Catalog_Fetcher {
 			return array();
 		}
 
-		$servers = array();
-		$base    = 'https://raw.githubusercontent.com/' . self::GITHUB_OWNER . '/' . self::GITHUB_REPO . '/' . self::GITHUB_BRANCH . '/';
+		$servers    = array();
+		$base       = 'https://raw.githubusercontent.com/' . self::GITHUB_OWNER . '/' . self::GITHUB_REPO . '/' . self::GITHUB_BRANCH . '/';
+		$started_at = microtime( true );
 
 		foreach ( $files as $filename ) {
+			$remaining_time = self::MAX_FETCH_DURATION - ( microtime( true ) - $started_at );
+			if ( $remaining_time < 1 ) {
+				return array();
+			}
+
 			$url     = $base . $filename;
-			$content = self::fetch_url( $url );
+			$timeout = min( self::REQUEST_TIMEOUT, max( 1, (int) ceil( $remaining_time ) ) );
+			$content = self::fetch_url( $url, false, $timeout );
 			if ( '' === $content ) {
-				continue;
+				return array();
 			}
 
 			$parsed = self::parse_yaml_server( $content );
@@ -92,7 +151,7 @@ class MCP_Catalog_Fetcher {
 			self::GITHUB_OWNER,
 			self::GITHUB_REPO
 		);
-		$body = self::fetch_url( $url, true );
+		$body = self::fetch_url( $url, true, self::REQUEST_TIMEOUT );
 		if ( '' === $body ) {
 			return array();
 		}
@@ -118,13 +177,14 @@ class MCP_Catalog_Fetcher {
 	/**
 	 * Fetch URL with wp_remote_get.
 	 *
-	 * @param string $url     URL to fetch.
-	 * @param bool   $is_json Whether to send Accept: application/json (e.g. for API).
+	 * @param string $url      URL to fetch.
+	 * @param bool   $is_json  Whether to send Accept: application/json (e.g. for API).
+	 * @param int    $timeout  Request timeout in seconds.
 	 * @return string Response body or empty string on failure.
 	 */
-	private static function fetch_url( $url, $is_json = false ) {
+	private static function fetch_url( $url, $is_json = false, $timeout = self::REQUEST_TIMEOUT ) {
 		$args = array(
-			'timeout' => 15,
+			'timeout' => max( 1, (int) $timeout ),
 			'headers' => array(
 				'User-Agent' => 'Oboto-Theme-MCP-Catalog/1.0',
 			),
@@ -204,12 +264,21 @@ class MCP_Catalog_Fetcher {
 	}
 
 	/**
-	 * Cron callback: clear cache and re-fetch so next request gets fresh data.
+	 * Cron callback: refresh the cache without deleting the last successful data.
 	 */
 	public static function cron_refresh() {
-		self::clear_cache();
-		self::get_catalog( 24 );
+		self::refresh_catalog( 24 );
+	}
+
+	/**
+	 * Async callback for a refresh scheduled after a frontend cache miss.
+	 *
+	 * @param int $cache_hours Cache TTL in hours.
+	 */
+	public static function async_refresh( $cache_hours = 24 ) {
+		self::refresh_catalog( $cache_hours );
 	}
 }
 
 add_action( MCP_Catalog_Fetcher::CRON_HOOK, array( 'MCP_Catalog_Fetcher', 'cron_refresh' ) );
+add_action( MCP_Catalog_Fetcher::ASYNC_REFRESH_HOOK, array( 'MCP_Catalog_Fetcher', 'async_refresh' ), 10, 1 );

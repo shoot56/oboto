@@ -60,7 +60,7 @@ function mcp_list_schedule_cron() {
 add_action( 'init', 'mcp_list_schedule_cron' );
 
 /**
- * AJAX handler: clear MCP catalog cache (for "Refresh catalog" in editor).
+ * AJAX handler: schedule an MCP catalog refresh from the editor.
  * Requires capability to edit posts. Always returns JSON (no redirect).
  */
 function mcp_list_ajax_refresh_cache() {
@@ -71,8 +71,8 @@ function mcp_list_ajax_refresh_cache() {
 		wp_send_json_error( array( 'message' => 'Invalid nonce' ), 403 );
 	}
 
-	MCP_Catalog_Fetcher::clear_cache();
+	MCP_Catalog_Fetcher::schedule_refresh( 24 );
 
-	wp_send_json_success( array( 'message' => __( 'Cache cleared.', 'oboto' ) ) );
+	wp_send_json_success( array( 'message' => __( 'Catalog refresh scheduled.', 'oboto' ) ) );
 }
 add_action( 'wp_ajax_mcp_list_refresh_cache', 'mcp_list_ajax_refresh_cache' );

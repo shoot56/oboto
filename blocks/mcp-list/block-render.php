@@ -99,7 +99,11 @@ if ( isset( $block['data']['preview_image_help'] ) ) {
 	<?php endif; ?>
 
 	<?php if ( empty( $servers ) ) : ?>
-		<p class="mcp-list__empty"><?php esc_html_e( 'No MCP servers to display. Add servers manually or switch to Automatic and refresh the cache.', 'oboto' ); ?></p>
+		<?php if ( 'automatic' === $data_src ) : ?>
+			<p class="mcp-list__empty"><?php esc_html_e( 'The MCP catalog is temporarily unavailable. Please try again later.', 'oboto' ); ?></p>
+		<?php else : ?>
+			<p class="mcp-list__empty"><?php esc_html_e( 'No MCP servers to display. Add servers manually or switch to Automatic and refresh the cache.', 'oboto' ); ?></p>
+		<?php endif; ?>
 	<?php else : ?>
 		<?php if ( $show_bar ) : ?>
 		<div class="mcp-list__bar">

@@ -39,7 +39,7 @@
 			e.stopPropagation();
 			btn.disabled = true;
 
-			console.log('[MCP List] Refreshing catalog cache…');
+			console.log('[MCP List] Scheduling catalog refresh…');
 
 			var formData = new FormData();
 			formData.append('action', MCP_REFRESH_ACTION);
@@ -53,10 +53,10 @@
 				.then(function (res) { return res.json(); })
 				.then(function (data) {
 					if (data.success && okEl) {
-						okEl.textContent = 'Cache refreshed.';
+						okEl.textContent = 'Catalog refresh scheduled.';
 						okEl.classList.remove('mcp-list__refresh-ok--hidden');
 					}
-					console.log('[MCP List] Cache cleared successfully.', data.data && data.data.message ? data.data.message : '');
+					console.log('[MCP List] Catalog refresh scheduled.', data.data && data.data.message ? data.data.message : '');
 					btn.disabled = false;
 				})
 				.catch(function (err) {
