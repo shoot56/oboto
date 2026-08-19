@@ -1,5 +1,14 @@
 {
   "version": 2,
+  "customTemplates": [
+    {
+      "name": "page-cloud-trial",
+      "title": "Cloud Trial Landing",
+      "postTypes": [
+        "page"
+      ]
+    }
+  ],
   "settings": {
     "border": {
       "color": true,
