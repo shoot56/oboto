@@ -1,0 +1,28 @@
+{
+  "name": "oboto/cloud-trial",
+  "title": "Obot Cloud Trial",
+  "description": "Full Obot Cloud trial landing page: hero with embedded form, feature list, callout cards and self-hosted CTA.",
+  "category": "obot_landing",
+  "icon": "cloud",
+  "keywords": ["cloud trial", "free trial", "landing", "fillout", "form"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": ["full"],
+    "anchor": true,
+    "multiple": false,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "style": ["cloud-trial"]
+}
