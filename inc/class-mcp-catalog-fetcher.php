@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Fetches and caches MCP server catalog from GitHub obot-platform/mcp-catalog.
+ * Fetches, normalizes, and caches the MCP server catalog from GitHub.
  *
  * @package Oboto
  */
@@ -15,27 +15,35 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class MCP_Catalog_Fetcher {
 
-	const TRANSIENT_KEY       = 'mcp_catalog_data';
-	const STALE_OPTION_KEY    = 'mcp_catalog_last_successful_data';
-	const REFRESH_LOCK_KEY    = 'mcp_catalog_refresh_lock';
-	const CRON_HOOK           = 'mcp_catalog_refresh';
-	const ASYNC_REFRESH_HOOK  = 'mcp_catalog_async_refresh';
-	const GITHUB_OWNER        = 'obot-platform';
-	const GITHUB_REPO         = 'mcp-catalog';
-	const GITHUB_BRANCH       = 'main';
-	const REQUEST_TIMEOUT     = 3;
-	const MAX_FETCH_DURATION  = 45;
-	const REFRESH_LOCK_TTL    = 300;
+	const TRANSIENT_KEY          = 'mcp_catalog_data';
+	const STALE_OPTION_KEY       = 'mcp_catalog_last_successful_data';
+	const STATUS_OPTION_KEY      = 'mcp_catalog_sync_status';
+	const REFRESH_LOCK_KEY       = 'mcp_catalog_refresh_lock';
+	const CRON_HOOK              = 'mcp_catalog_refresh';
+	const ASYNC_REFRESH_HOOK     = 'mcp_catalog_async_refresh';
+	const GITHUB_OWNER           = 'obot-platform';
+	const GITHUB_REPO            = 'mcp-catalog';
+	const GITHUB_BRANCH          = 'main';
+	const REQUEST_TIMEOUT        = 5;
+	const MAX_FETCH_DURATION     = 90;
+	const REFRESH_LOCK_TTL       = 300;
+	const NORMALIZATION_VERSION = 3;
 
 	/**
-	 * Get catalog data without blocking the page request on GitHub.
+	 * Most recent fetch error for the current request.
+	 *
+	 * @var string
+	 */
+	private static $last_error = '';
+
+	/**
+	 * Get catalog data without blocking a frontend request on GitHub.
 	 *
 	 * @param int $cache_hours Cache TTL in hours. Default 24.
-	 * @return array List of server entries with keys: name, short_description, icon, link, categories.
+	 * @return array Normalized MCP server entries.
 	 */
 	public static function get_catalog( $cache_hours = 24 ) {
-		$cache_key = self::TRANSIENT_KEY;
-		$cached    = get_transient( $cache_key );
+		$cached = get_transient( self::TRANSIENT_KEY );
 
 		if ( false !== $cached && is_array( $cached ) ) {
 			$stale = get_option( self::STALE_OPTION_KEY, array() );
@@ -49,6 +57,16 @@ class MCP_Catalog_Fetcher {
 
 		$stale = get_option( self::STALE_OPTION_KEY, array() );
 		return is_array( $stale ) ? $stale : array();
+	}
+
+	/**
+	 * Get the latest catalog synchronization status.
+	 *
+	 * @return array Status data.
+	 */
+	public static function get_sync_status() {
+		$status = get_option( self::STATUS_OPTION_KEY, array() );
+		return is_array( $status ) ? $status : array();
 	}
 
 	/**
@@ -66,10 +84,10 @@ class MCP_Catalog_Fetcher {
 	}
 
 	/**
-	 * Fetch and store fresh data, retaining the last successful catalog on failure.
+	 * Fetch and store fresh data while retaining the last successful fallback.
 	 *
 	 * @param int $cache_hours Cache TTL in hours.
-	 * @return array Fresh catalog data, or an empty array when the refresh fails or is already running.
+	 * @return array Fresh catalog data, or an empty array on failure/lock.
 	 */
 	public static function refresh_catalog( $cache_hours = 24 ) {
 		if ( get_transient( self::REFRESH_LOCK_KEY ) ) {
@@ -77,16 +95,22 @@ class MCP_Catalog_Fetcher {
 		}
 
 		set_transient( self::REFRESH_LOCK_KEY, 1, self::REFRESH_LOCK_TTL );
+		self::$last_error = '';
+		self::record_attempt( 'syncing' );
 
 		try {
 			$data = self::fetch_from_github();
 			if ( empty( $data ) ) {
+				self::record_failure( self::$last_error ? self::$last_error : 'GitHub returned an empty catalog.' );
 				return array();
 			}
 
 			$ttl = max( 1, (int) $cache_hours ) * HOUR_IN_SECONDS;
 			set_transient( self::TRANSIENT_KEY, $data, $ttl );
 			update_option( self::STALE_OPTION_KEY, $data, false );
+
+			$status = self::record_success( $data );
+			do_action( 'mcp_catalog_refreshed', $data, $status );
 
 			return $data;
 		} finally {
@@ -102,54 +126,94 @@ class MCP_Catalog_Fetcher {
 	}
 
 	/**
-	 * Fetch catalog from GitHub: list YAML files, then fetch and parse each.
-	 * The refresh fails as a whole if GitHub becomes unavailable, so partial data
-	 * never replaces the last successful catalog.
+	 * Fetch catalog files from GitHub and normalize their complete payloads.
+	 * Unchanged entries are reused by Git blob SHA to avoid repeated downloads.
 	 *
 	 * @return array Normalized server list.
 	 */
 	public static function fetch_from_github() {
+		if ( ! class_exists( '\\Symfony\\Component\\Yaml\\Yaml' ) ) {
+			self::$last_error = 'Symfony YAML is unavailable. Run Composer install for the theme.';
+			return array();
+		}
+
 		$files = self::list_yaml_files();
 		if ( empty( $files ) ) {
 			return array();
 		}
 
-		$servers    = array();
-		$base       = 'https://raw.githubusercontent.com/' . self::GITHUB_OWNER . '/' . self::GITHUB_REPO . '/' . self::GITHUB_BRANCH . '/';
-		$started_at = microtime( true );
+		$previous         = get_option( self::STALE_OPTION_KEY, array() );
+		$previous_by_file = array();
+		$servers          = array();
+		$started_at       = microtime( true );
+		$raw_base         = sprintf(
+			'https://raw.githubusercontent.com/%s/%s/%s/',
+			self::GITHUB_OWNER,
+			self::GITHUB_REPO,
+			self::GITHUB_BRANCH
+		);
 
-		foreach ( $files as $filename ) {
+		if ( is_array( $previous ) ) {
+			foreach ( $previous as $entry ) {
+				if ( is_array( $entry ) && ! empty( $entry['source_file'] ) ) {
+					$previous_by_file[ $entry['source_file'] ] = $entry;
+				}
+			}
+		}
+
+		foreach ( $files as $file ) {
+			$filename = $file['name'];
+			$sha      = $file['sha'];
+			$old      = isset( $previous_by_file[ $filename ] ) ? $previous_by_file[ $filename ] : array();
+
+			if (
+				! empty( $old ) &&
+				isset( $old['source_sha'], $old['normalization_version'] ) &&
+				hash_equals( (string) $old['source_sha'], (string) $sha ) &&
+				self::NORMALIZATION_VERSION === (int) $old['normalization_version']
+			) {
+				$servers[] = $old;
+				continue;
+			}
+
 			$remaining_time = self::MAX_FETCH_DURATION - ( microtime( true ) - $started_at );
 			if ( $remaining_time < 1 ) {
+				self::$last_error = 'The GitHub catalog refresh exceeded its time budget.';
 				return array();
 			}
 
-			$url     = $base . $filename;
+			$url     = $raw_base . rawurlencode( $filename );
 			$timeout = min( self::REQUEST_TIMEOUT, max( 1, (int) ceil( $remaining_time ) ) );
 			$content = self::fetch_url( $url, false, $timeout );
 			if ( '' === $content ) {
 				return array();
 			}
 
-			$parsed = self::parse_yaml_server( $content );
-			if ( ! empty( $parsed['name'] ) ) {
-				$servers[] = $parsed;
+			$parsed = self::parse_yaml_server( $content, $filename, $sha );
+			if ( empty( $parsed ) ) {
+				if ( ! self::$last_error ) {
+					self::$last_error = sprintf( 'Could not normalize %s.', $filename );
+				}
+				return array();
 			}
+
+			$servers[] = $parsed;
 		}
 
 		return $servers;
 	}
 
 	/**
-	 * List .yaml files in the repo root via GitHub API.
+	 * List root-level YAML files in the catalog repository.
 	 *
-	 * @return array List of filenames (e.g. ['slack.yaml', 'github.yaml']).
+	 * @return array List of arrays containing name and Git blob SHA.
 	 */
 	private static function list_yaml_files() {
-		$url  = sprintf(
-			'https://api.github.com/repos/%s/%s/contents/',
+		$url = sprintf(
+			'https://api.github.com/repos/%s/%s/contents/?ref=%s',
 			self::GITHUB_OWNER,
-			self::GITHUB_REPO
+			self::GITHUB_REPO,
+			rawurlencode( self::GITHUB_BRANCH )
 		);
 		$body = self::fetch_url( $url, true, self::REQUEST_TIMEOUT );
 		if ( '' === $body ) {
@@ -158,48 +222,63 @@ class MCP_Catalog_Fetcher {
 
 		$json = json_decode( $body, true );
 		if ( ! is_array( $json ) ) {
+			self::$last_error = 'GitHub returned an invalid catalog file listing.';
 			return array();
 		}
 
 		$files = array();
 		foreach ( $json as $item ) {
-			if ( isset( $item['name'] ) && isset( $item['type'] ) && 'file' === $item['type'] ) {
-				$name = $item['name'];
-				if ( preg_match( '/\.ya?ml$/i', $name ) ) {
-					$files[] = $name;
-				}
+			if (
+				is_array( $item ) &&
+				isset( $item['name'], $item['sha'], $item['type'] ) &&
+				'file' === $item['type'] &&
+				preg_match( '/\.ya?ml$/i', $item['name'] )
+			) {
+				$files[] = array(
+					'name' => sanitize_file_name( $item['name'] ),
+					'sha'  => sanitize_text_field( $item['sha'] ),
+				);
 			}
 		}
+
+		usort(
+			$files,
+			static function ( $first, $second ) {
+				return strcasecmp( $first['name'], $second['name'] );
+			}
+		);
 
 		return $files;
 	}
 
 	/**
-	 * Fetch URL with wp_remote_get.
+	 * Fetch a URL through the WordPress HTTP API.
 	 *
-	 * @param string $url      URL to fetch.
-	 * @param bool   $is_json  Whether to send Accept: application/json (e.g. for API).
-	 * @param int    $timeout  Request timeout in seconds.
-	 * @return string Response body or empty string on failure.
+	 * @param string $url     URL to fetch.
+	 * @param bool   $is_json Whether to request JSON.
+	 * @param int    $timeout Request timeout in seconds.
+	 * @return string Response body or an empty string on failure.
 	 */
 	private static function fetch_url( $url, $is_json = false, $timeout = self::REQUEST_TIMEOUT ) {
 		$args = array(
 			'timeout' => max( 1, (int) $timeout ),
 			'headers' => array(
-				'User-Agent' => 'Oboto-Theme-MCP-Catalog/1.0',
+				'User-Agent' => 'Oboto-Theme-MCP-Catalog/2.0',
 			),
 		);
 		if ( $is_json ) {
-			$args['headers']['Accept'] = 'application/vnd.github.v3+json';
+			$args['headers']['Accept'] = 'application/vnd.github+json';
 		}
 
 		$response = wp_remote_get( $url, $args );
 		if ( is_wp_error( $response ) ) {
+			self::$last_error = $response->get_error_message();
 			return '';
 		}
 
 		$code = wp_remote_retrieve_response_code( $response );
 		if ( $code < 200 || $code >= 300 ) {
+			self::$last_error = sprintf( 'GitHub request failed with HTTP %d.', $code );
 			return '';
 		}
 
@@ -207,71 +286,203 @@ class MCP_Catalog_Fetcher {
 	}
 
 	/**
-	 * Parse a single server YAML content into normalized array.
+	 * Parse and normalize a catalog YAML document.
 	 *
-	 * @param string $content Raw YAML file content.
-	 * @return array Keys: name, short_description, icon, link, categories (array of strings).
+	 * @param string $content  Raw YAML.
+	 * @param string $filename Source filename.
+	 * @param string $sha      Git blob SHA.
+	 * @return array Normalized catalog entry.
 	 */
-	private static function parse_yaml_server( $content ) {
-		$name = self::yaml_line_value( $content, 'name' );
-		if ( '' === $name ) {
+	private static function parse_yaml_server( $content, $filename, $sha ) {
+		try {
+			$data = \Symfony\Component\Yaml\Yaml::parse( $content );
+		} catch ( \Symfony\Component\Yaml\Exception\ParseException $exception ) {
+			self::$last_error = sprintf( 'Invalid YAML in %1$s: %2$s', $filename, $exception->getMessage() );
 			return array();
 		}
 
-		$short_description = self::yaml_line_value( $content, 'shortDescription' );
-		$icon              = self::yaml_line_value( $content, 'icon' );
-		if ( '' === $icon && preg_match( '/metadata:\s*\n(?:.*\n)*?\s*icon:\s*(.+)$/m', $content, $m ) ) {
-			$icon = trim( $m[1] );
+		if ( ! is_array( $data ) || empty( $data['name'] ) ) {
+			self::$last_error = sprintf( '%s is missing a server name.', $filename );
+			return array();
 		}
 
-		$link = self::yaml_line_value( $content, 'repoURL' );
-		if ( '' === $link && preg_match( '/metadata:\s*\n(?:.*\n)*?\s*repoURL:\s*(.+)$/m', $content, $m ) ) {
-			$link = trim( $m[1] );
-		}
-
-		$categories_str = self::yaml_line_value( $content, 'categories' );
-		if ( '' === $categories_str && preg_match( '/metadata:\s*\n(?:.*\n)*?\s*categories:\s*(.+)$/m', $content, $m ) ) {
-			$categories_str = trim( $m[1] );
-		}
-		$categories = array();
-		if ( '' !== $categories_str ) {
-			$categories = array_map( 'trim', preg_split( '/,\s*/', $categories_str ) );
-			$categories = array_filter( $categories );
-		}
+		$metadata       = isset( $data['metadata'] ) && is_array( $data['metadata'] ) ? $data['metadata'] : array();
+		$categories_raw = isset( $metadata['categories'] ) ? $metadata['categories'] : array();
+		$categories     = self::normalize_categories( $categories_raw );
+		$external_url   = isset( $data['repoURL'] ) ? esc_url_raw( (string) $data['repoURL'] ) : '';
+		$slug           = sanitize_title( str_replace( '_', '-', pathinfo( $filename, PATHINFO_FILENAME ) ) );
 
 		return array(
-			'name'              => $name,
-			'short_description' => $short_description,
-			'icon'              => $icon,
-			'link'              => $link,
-			'categories'        => $categories,
+			'name'                  => self::string_value( $data, 'name' ),
+			'entry_key'             => self::string_value( $data, 'entryKey' ),
+			'slug'                  => $slug,
+			'server_user_type'      => self::string_value( $data, 'serverUserType' ),
+			'short_description'     => self::string_value( $data, 'shortDescription' ),
+			'description'           => self::string_value( $data, 'description' ),
+			'icon'                  => isset( $data['icon'] ) ? esc_url_raw( (string) $data['icon'] ) : '',
+			'external_url'          => $external_url,
+			'link'                  => $external_url,
+			'categories'            => $categories,
+			'env'                   => self::array_value( $data, 'env' ),
+			'runtime'               => self::string_value( $data, 'runtime' ),
+			'containerized_config'  => self::array_value( $data, 'containerizedConfig' ),
+			'remote_config'         => self::array_value( $data, 'remoteConfig' ),
+			'tool_preview'          => self::array_value( $data, 'toolPreview' ),
+			'metadata'              => self::normalize_value( $metadata ),
+			'source_file'           => $filename,
+			'source_sha'            => $sha,
+			'normalization_version' => self::NORMALIZATION_VERSION,
 		);
 	}
 
 	/**
-	 * Extract value of a top-level YAML key (single line).
+	 * Normalize a comma-separated or array category value.
 	 *
-	 * @param string $content YAML content.
-	 * @param string $key     Key name (e.g. name, shortDescription).
-	 * @return string Trimmed value or empty string.
+	 * @param mixed $value Raw categories.
+	 * @return array Category labels.
 	 */
-	private static function yaml_line_value( $content, $key ) {
-		$pattern = '/^' . preg_quote( $key, '/' ) . '\s*:\s*(.+)$/m';
-		if ( preg_match( $pattern, $content, $m ) ) {
-			return trim( $m[1] );
+	private static function normalize_categories( $value ) {
+		if ( is_string( $value ) ) {
+			$value = preg_split( '/,\s*/', $value );
 		}
-		return '';
+		if ( ! is_array( $value ) ) {
+			return array();
+		}
+
+		$categories = array();
+		foreach ( $value as $category ) {
+			if ( is_scalar( $category ) ) {
+				$category = trim( (string) $category );
+				if ( '' !== $category ) {
+					$categories[] = $category;
+				}
+			}
+		}
+
+		return array_values( array_unique( $categories ) );
 	}
 
 	/**
-	 * Cron callback: refresh the cache without deleting the last successful data.
+	 * Read a scalar value as a string.
+	 *
+	 * @param array  $data Source array.
+	 * @param string $key  Key to read.
+	 * @return string Value or empty string.
+	 */
+	private static function string_value( $data, $key ) {
+		return isset( $data[ $key ] ) && is_scalar( $data[ $key ] ) ? trim( (string) $data[ $key ] ) : '';
+	}
+
+	/**
+	 * Read and recursively normalize an array value.
+	 *
+	 * @param array  $data Source array.
+	 * @param string $key  Key to read.
+	 * @return array Normalized array.
+	 */
+	private static function array_value( $data, $key ) {
+		return isset( $data[ $key ] ) && is_array( $data[ $key ] ) ? self::normalize_value( $data[ $key ] ) : array();
+	}
+
+	/**
+	 * Limit cached YAML values to arrays, scalars, and null.
+	 *
+	 * @param mixed $value Raw parsed value.
+	 * @return mixed Normalized value.
+	 */
+	private static function normalize_value( $value ) {
+		if ( is_array( $value ) ) {
+			$normalized = array();
+			foreach ( $value as $key => $item ) {
+				$normalized[ $key ] = self::normalize_value( $item );
+			}
+			return $normalized;
+		}
+
+		if ( is_scalar( $value ) || null === $value ) {
+			return $value;
+		}
+
+		return (string) $value;
+	}
+
+	/**
+	 * Store a synchronization attempt status.
+	 *
+	 * @param string $state Current state.
+	 */
+	private static function record_attempt( $state ) {
+		$status                     = self::get_sync_status();
+		$status['state']            = $state;
+		$status['last_attempt_gmt'] = gmdate( 'c' );
+		unset( $status['error'] );
+		update_option( self::STATUS_OPTION_KEY, $status, false );
+	}
+
+	/**
+	 * Store a failed synchronization status without losing success metadata.
+	 *
+	 * @param string $message Error message.
+	 */
+	private static function record_failure( $message ) {
+		$status                     = self::get_sync_status();
+		$status['state']            = 'error';
+		$status['last_attempt_gmt'] = gmdate( 'c' );
+		$status['error']            = sanitize_text_field( $message );
+		update_option( self::STATUS_OPTION_KEY, $status, false );
+	}
+
+	/**
+	 * Store a successful synchronization status.
+	 *
+	 * @param array $data Normalized catalog.
+	 * @return array Stored status.
+	 */
+	private static function record_success( $data ) {
+		$github_count = 0;
+		$manifest     = array();
+
+		foreach ( $data as $entry ) {
+			if ( self::is_github_url( isset( $entry['external_url'] ) ? $entry['external_url'] : '' ) ) {
+				++$github_count;
+			}
+			$manifest[] = ( isset( $entry['source_file'] ) ? $entry['source_file'] : '' ) . ':' . ( isset( $entry['source_sha'] ) ? $entry['source_sha'] : '' );
+		}
+
+		$status = array(
+			'state'            => 'success',
+			'last_attempt_gmt' => gmdate( 'c' ),
+			'last_success_gmt' => gmdate( 'c' ),
+			'server_count'     => count( $data ),
+			'github_count'     => $github_count,
+			'external_count'   => count( $data ) - $github_count,
+			'manifest_hash'    => hash( 'sha256', implode( '|', $manifest ) ),
+		);
+		update_option( self::STATUS_OPTION_KEY, $status, false );
+
+		return $status;
+	}
+
+	/**
+	 * Determine whether a catalog resource URL points to GitHub.
+	 *
+	 * @param string $url Resource URL.
+	 * @return bool True for github.com URLs.
+	 */
+	public static function is_github_url( $url ) {
+		$host = strtolower( (string) wp_parse_url( $url, PHP_URL_HOST ) );
+		return 'github.com' === $host || 'www.github.com' === $host;
+	}
+
+	/**
+	 * Cron callback.
 	 */
 	public static function cron_refresh() {
 		self::refresh_catalog( 24 );
 	}
 
 	/**
-	 * Async callback for a refresh scheduled after a frontend cache miss.
+	 * Async callback for refreshes scheduled after a cache miss or manual sync.
 	 *
 	 * @param int $cache_hours Cache TTL in hours.
 	 */

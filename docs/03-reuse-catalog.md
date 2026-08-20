@@ -12,8 +12,14 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
     - Registers a pattern category `theme_pattern_category`.
     - `dd(mixed $data, string $label = '', bool $return = false)` debug helper (prints styled dump and terminates).
 - **`inc/custom-post-type.php`**
-  - **When to use**: Extending the Learning Center content model (CPT/taxonomy) or its rewrites/rest settings.
-  - **Provides**: `learning-center` CPT and `learning-center-category` taxonomy.
+  - **When to use**: Extending the Learning Center or MCP Server content model and rewrite settings.
+  - **Provides**: `learning-center`, `learning-center-category`, and the hidden read-only `mcp-server` CPT.
+- **`inc/class-mcp-catalog-fetcher.php`**
+  - **When to use**: Reading or refreshing normalized upstream MCP catalog data.
+  - **Provides**: stale-while-revalidate catalog access, daily/async refresh callbacks, SHA-based reuse, and sync status.
+- **`inc/class-mcp-server-sync.php`**
+  - **When to use**: Resolving a GitHub catalog entry to an internal URL or reading the immutable server payload for a detail page.
+  - **Provides**: GitHub-only post synchronization, payload access, internal URL resolution, and one-time rewrite flushing.
 - **`inc/navigations-functions.php`**
   - **When to use**: Rendering navigation menus with ACF-enhanced menu items.
   - **Provides**: `Header_Menu_Walker` (custom `Walker_Nav_Menu`) supporting ACF fields like `icon`, `item_type`, `open_in_new_tab`.
@@ -148,7 +154,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`obot/cards`** — Cards block.
   - **When to use**: Card grids/lists.
 - **`oboto/mcp-list`** — MCP List block.
-  - **When to use**: Catalog of MCP servers (from [obot-platform/mcp-catalog](https://github.com/obot-platform/mcp-catalog)) with search and category filters. Supports manual (ACF repeater) or automatic (GitHub API with transient cache) data source.
+  - **When to use**: Catalog of MCP servers (from [obot-platform/mcp-catalog](https://github.com/obot-platform/mcp-catalog)) with search and category filters. Supports manual or automatic data; automatic GitHub-backed cards link to internal detail pages while other resources remain external.
+- **`oboto/mcp-server-single`** — MCP Server detail block.
+  - **When to use**: Only in `templates/single-mcp-server.html`; it conditionally renders the synchronized description, tools, runtime configuration, related servers, and source metadata.
 - **`obot/steps`** — Steps block.
   - **When to use**: Step-by-step sections.
 - **`obot/work-steps`** — work-steps block.

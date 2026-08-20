@@ -116,3 +116,39 @@ function register_learning_center_post_type(){
 }
 
 add_action('init', 'register_learning_center_post_type');
+
+/**
+ * Register the read-only MCP Server post type used by the GitHub catalog sync.
+ */
+function register_mcp_server_post_type() {
+	$labels = array(
+		'name'          => esc_html__( 'MCP Servers', 'oboto' ),
+		'singular_name' => esc_html__( 'MCP Server', 'oboto' ),
+	);
+
+	register_post_type(
+		'mcp-server',
+		array(
+			'label'               => esc_html__( 'MCP Servers', 'oboto' ),
+			'labels'              => $labels,
+			'description'         => esc_html__( 'Read-only MCP server pages synchronized from the Obot GitHub catalog.', 'oboto' ),
+			'public'              => true,
+			'publicly_queryable'  => true,
+			'show_ui'             => false,
+			'show_in_rest'        => false,
+			'show_in_nav_menus'   => false,
+			'has_archive'         => false,
+			'exclude_from_search' => false,
+			'hierarchical'        => false,
+			'can_export'          => false,
+			'delete_with_user'    => false,
+			'query_var'           => true,
+			'supports'            => array( 'title', 'excerpt' ),
+			'rewrite'             => array(
+				'slug'       => 'mcp-catalog',
+				'with_front' => false,
+			),
+		)
+	);
+}
+add_action( 'init', 'register_mcp_server_post_type' );
