@@ -10,7 +10,7 @@
 
 - **Backend/runtime**
   - **WordPress** (PHP) theme code (`functions.php`, `inc/*.php`, `blocks/*/*.php`).
-  - **Custom content types**: editable `learning-center` content plus hidden, read-only `mcp-server` records synchronized from GitHub (`inc/custom-post-type.php`).
+  - **Custom content types**: editable `learning-center` content plus generated, read-only `mcp-server` records synchronized from GitHub and inspectable by administrators (`inc/custom-post-type.php`).
   - **ACF (Advanced Custom Fields)** is used extensively:
     - `get_field(...)` in block renders and menu walker (`blocks/navigation/block-render.php`, `inc/navigations-functions.php`).
     - Options page via `acf_add_options_page(...)` (`functions.php`).
@@ -58,7 +58,7 @@
 
 - WP-Cron refreshes the upstream `obot-platform/mcp-catalog` YAML manifest daily.
 - The theme keeps a last-successful cache and only downloads YAML files whose Git blob SHA changed.
-- GitHub-backed entries are synchronized into hidden `mcp-server` posts and rendered at `/mcp-catalog/<yaml-filename>/`; non-GitHub entries remain direct external links.
+- GitHub-backed entries are synchronized into read-only `mcp-server` posts and rendered at `/mcp-catalog/<yaml-filename>/`; non-GitHub entries remain direct external links.
 
 ### AJAX request → content fragments
 

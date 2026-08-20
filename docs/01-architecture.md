@@ -9,7 +9,7 @@
   - `functions.php`: theme supports, global assets, rewrite rules, plugin filters, and module includes.
   - `inc/helpers.php`: block registration and editor block style registration.
 - **Domain/content layer**
-  - `inc/custom-post-type.php`: registers `learning-center`, its taxonomy, and the hidden read-only `mcp-server` CPT and rewrites.
+  - `inc/custom-post-type.php`: registers `learning-center`, its taxonomy, and the generated read-only `mcp-server` CPT and rewrites.
   - `inc/class-mcp-catalog-fetcher.php`: fetches, normalizes, and atomically caches the upstream MCP YAML catalog.
   - `inc/class-mcp-server-sync.php`: materializes only GitHub-backed catalog entries as published internal pages.
   - WordPress DB provides persistence for posts, terms, options.
@@ -46,8 +46,9 @@
 - **MCP Catalog**
   - Source: root YAML files in `obot-platform/mcp-catalog`.
   - Listing: `oboto/mcp-list` uses cached normalized data; GitHub entries resolve to internal pages and other resources preserve their external URLs.
-  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a JSON snapshot stored in post meta, with a last-successful-catalog fallback by slug when that meta is missing or invalid.
-  - Persistence: transient current cache, last-successful option fallback, hidden `mcp-server` posts, and synchronization status options.
+  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a normalized array snapshot stored in post meta, with legacy JSON support and a last-successful-catalog fallback by slug when that meta is missing or invalid.
+  - Persistence: transient current cache, last-successful option fallback, generated `mcp-server` posts, and synchronization status options. Administrators can inspect records and payload health in a read-only wp-admin list.
+  - Deployment repair: a versioned one-time synchronization matches existing records by catalog identity or public slug and rewrites payload meta from the cached catalog without waiting for WP-Cron or a new GitHub request.
   - Refresh: daily WP-Cron plus asynchronous stale-cache refresh; posts are updated only after a complete successful catalog fetch.
 - **Blog URL shaping**
   - Permalink override for posts in category `blog` and redirect/canonical alignment (`functions.php`)
