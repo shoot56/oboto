@@ -21,6 +21,10 @@ class MCP_Server_Sync {
 	const SOURCE_FILE_META_KEY = '_mcp_catalog_source_file';
 	const SOURCE_SHA_META_KEY  = '_mcp_catalog_source_sha';
 	const SYNC_STATUS_OPTION   = 'mcp_server_post_sync_status';
+	const DATA_VERSION_OPTION  = 'oboto_mcp_server_data_version';
+	const DATA_VERSION         = 'mcp_server_payload_array_v1';
+	const REPAIR_LOCK_KEY      = 'oboto_mcp_server_data_repair_lock';
+	const REPAIR_LOCK_TTL      = 5 * MINUTE_IN_SECONDS;
 	const REWRITE_OPTION       = 'oboto_mcp_server_rewrite_version';
 	const REWRITE_VERSION      = 'mcp_server_rewrite_v1';
 
@@ -49,12 +53,17 @@ class MCP_Server_Sync {
 			)
 		);
 		$existing_by_identity = array();
+		$existing_by_slug     = array();
 		foreach ( $existing_ids as $post_id ) {
 			$entry_key   = (string) get_post_meta( $post_id, self::ENTRY_KEY_META_KEY, true );
 			$source_file = (string) get_post_meta( $post_id, self::SOURCE_FILE_META_KEY, true );
 			$identity    = $entry_key ? $entry_key : $source_file;
+			$post_slug   = (string) get_post_field( 'post_name', $post_id );
 			if ( $identity ) {
 				$existing_by_identity[ $identity ] = (int) $post_id;
+			}
+			if ( $post_slug ) {
+				$existing_by_slug[ $post_slug ] = (int) $post_id;
 			}
 		}
 
@@ -79,16 +88,18 @@ class MCP_Server_Sync {
 				continue;
 			}
 
-			$post_id      = isset( $existing_by_identity[ $identity ] ) ? $existing_by_identity[ $identity ] : 0;
-			$source_sha   = isset( $server['source_sha'] ) ? (string) $server['source_sha'] : '';
-			$stored_sha   = $post_id ? (string) get_post_meta( $post_id, self::SOURCE_SHA_META_KEY, true ) : '';
-			$payload_json = wp_json_encode( $server, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
-			$stored_json  = $post_id ? (string) get_post_meta( $post_id, self::PAYLOAD_META_KEY, true ) : '';
-			$current_post = $post_id ? get_post( $post_id ) : null;
-			$excerpt      = isset( $server['short_description'] ) ? (string) $server['short_description'] : '';
-			$needs_update = ! $current_post ||
+			$post_id         = isset( $existing_by_identity[ $identity ] )
+				? $existing_by_identity[ $identity ]
+				: ( isset( $existing_by_slug[ $slug ] ) ? $existing_by_slug[ $slug ] : 0 );
+			$source_sha      = isset( $server['source_sha'] ) ? (string) $server['source_sha'] : '';
+			$stored_sha      = $post_id ? (string) get_post_meta( $post_id, self::SOURCE_SHA_META_KEY, true ) : '';
+			$stored_payload  = $post_id ? get_post_meta( $post_id, self::PAYLOAD_META_KEY, true ) : null;
+			$payload_matches = is_array( $stored_payload ) && $stored_payload === $server;
+			$current_post    = $post_id ? get_post( $post_id ) : null;
+			$excerpt         = isset( $server['short_description'] ) ? (string) $server['short_description'] : '';
+			$needs_update    = ! $current_post ||
 				$stored_sha !== $source_sha ||
-				$stored_json !== $payload_json ||
+				! $payload_matches ||
 				'publish' !== $current_post->post_status ||
 				$current_post->post_name !== $slug ||
 				$current_post->post_title !== $name ||
@@ -122,8 +133,8 @@ class MCP_Server_Sync {
 					++$created;
 				}
 
-				$payload_saved = update_post_meta( $post_id, self::PAYLOAD_META_KEY, wp_slash( $payload_json ) );
-				if ( false === $payload_saved && (string) get_post_meta( $post_id, self::PAYLOAD_META_KEY, true ) !== $payload_json ) {
+				$payload_saved = update_post_meta( $post_id, self::PAYLOAD_META_KEY, wp_slash( $server ) );
+				if ( false === $payload_saved && get_post_meta( $post_id, self::PAYLOAD_META_KEY, true ) !== $server ) {
 					$errors[] = sprintf( '%s: Could not save the catalog payload.', $source_file );
 				}
 				update_post_meta( $post_id, self::ENTRY_KEY_META_KEY, $entry_key );
@@ -178,7 +189,12 @@ class MCP_Server_Sync {
 	 * @return array Catalog payload.
 	 */
 	public static function get_payload( $post_id ) {
-		$json = get_post_meta( $post_id, self::PAYLOAD_META_KEY, true );
+		$stored_payload = get_post_meta( $post_id, self::PAYLOAD_META_KEY, true );
+		if ( is_array( $stored_payload ) ) {
+			return $stored_payload;
+		}
+
+		$json = $stored_payload;
 		if ( is_string( $json ) && '' !== $json ) {
 			$payload = json_decode( $json, true );
 			if ( is_array( $payload ) ) {
@@ -263,6 +279,144 @@ class MCP_Server_Sync {
 	}
 
 	/**
+	 * Repair synchronized payloads once after a data-model deployment.
+	 *
+	 * Existing posts can survive a deployment even when their payload meta was not
+	 * written. The catalog cache is already the source used by the listing, so this
+	 * repair does not wait for WP-Cron or make a blocking GitHub request.
+	 */
+	public static function maybe_repair_payloads() {
+		if ( self::DATA_VERSION === get_option( self::DATA_VERSION_OPTION ) || get_transient( self::REPAIR_LOCK_KEY ) ) {
+			return;
+		}
+
+		$catalog = MCP_Catalog_Fetcher::get_catalog( 24 );
+		if ( empty( $catalog ) ) {
+			return;
+		}
+
+		set_transient( self::REPAIR_LOCK_KEY, 1, self::REPAIR_LOCK_TTL );
+		self::sync_posts( $catalog, MCP_Catalog_Fetcher::get_sync_status() );
+
+		$status = get_option( self::SYNC_STATUS_OPTION, array() );
+		if ( is_array( $status ) && 'success' === ( isset( $status['state'] ) ? $status['state'] : '' ) ) {
+			update_option( self::DATA_VERSION_OPTION, self::DATA_VERSION, false );
+			delete_transient( self::REPAIR_LOCK_KEY );
+		}
+	}
+
+	/**
+	 * Add synchronization diagnostics to the read-only MCP Server list.
+	 *
+	 * @param array $columns Existing admin columns.
+	 * @return array Filtered columns.
+	 */
+	public static function admin_columns( $columns ) {
+		return array(
+			'title'       => __( 'Server', 'oboto' ),
+			'mcp_slug'    => __( 'Slug', 'oboto' ),
+			'mcp_payload' => __( 'Payload', 'oboto' ),
+			'mcp_source'  => __( 'Source', 'oboto' ),
+			'date'        => isset( $columns['date'] ) ? $columns['date'] : __( 'Date', 'oboto' ),
+		);
+	}
+
+	/**
+	 * Render synchronization diagnostics for an MCP Server row.
+	 *
+	 * @param string $column_name Column key.
+	 * @param int    $post_id     MCP Server post ID.
+	 */
+	public static function render_admin_column( $column_name, $post_id ) {
+		if ( 'mcp_slug' === $column_name ) {
+			echo '<a href="' . esc_url( get_permalink( $post_id ) ) . '" target="_blank" rel="noopener noreferrer"><code>' . esc_html( get_post_field( 'post_name', $post_id ) ) . '</code></a>';
+			return;
+		}
+
+		if ( 'mcp_payload' === $column_name ) {
+			$stored_payload = get_post_meta( $post_id, self::PAYLOAD_META_KEY, true );
+			$payload        = is_array( $stored_payload ) ? $stored_payload : null;
+			if ( ! $payload && is_string( $stored_payload ) && '' !== $stored_payload ) {
+				$payload = json_decode( $stored_payload, true );
+				if ( ! is_array( $payload ) ) {
+					$payload = json_decode( wp_unslash( $stored_payload ), true );
+				}
+			}
+			if ( is_array( $payload ) ) {
+				$encoded_size = wp_json_encode( $payload, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE );
+				echo esc_html( sprintf( __( 'Valid (%s)', 'oboto' ), size_format( strlen( (string) $encoded_size ) ) ) );
+			} elseif ( is_string( $stored_payload ) && '' !== $stored_payload ) {
+				echo '<strong>' . esc_html__( 'Invalid JSON', 'oboto' ) . '</strong>';
+			} else {
+				echo '<strong>' . esc_html__( 'Missing', 'oboto' ) . '</strong>';
+			}
+			return;
+		}
+
+		if ( 'mcp_source' === $column_name ) {
+			echo esc_html( get_post_meta( $post_id, self::SOURCE_FILE_META_KEY, true ) );
+		}
+	}
+
+	/**
+	 * Remove row actions from generated, read-only MCP Server records.
+	 *
+	 * @param array   $actions Existing row actions.
+	 * @param WP_Post $post    Current post.
+	 * @return array Empty actions list.
+	 */
+	public static function remove_admin_row_actions( $actions, $post ) {
+		return $post instanceof WP_Post && self::POST_TYPE === $post->post_type ? array() : $actions;
+	}
+
+	/**
+	 * Remove bulk mutation actions from the read-only MCP Server list.
+	 *
+	 * @param array $actions Existing bulk actions.
+	 * @return array Empty actions list.
+	 */
+	public static function remove_admin_bulk_actions( $actions ) {
+		return array();
+	}
+
+	/**
+	 * Show the latest catalog and post synchronization state in wp-admin.
+	 */
+	public static function render_admin_sync_notice() {
+		$screen = get_current_screen();
+		if ( ! $screen || 'edit-' . self::POST_TYPE !== $screen->id ) {
+			return;
+		}
+
+		$catalog_status = MCP_Catalog_Fetcher::get_sync_status();
+		$post_status    = get_option( self::SYNC_STATUS_OPTION, array() );
+		$catalog_state  = isset( $catalog_status['state'] ) ? (string) $catalog_status['state'] : __( 'not run', 'oboto' );
+		$post_state     = isset( $post_status['state'] ) ? (string) $post_status['state'] : __( 'not run', 'oboto' );
+		$published      = isset( $post_status['published_count'] ) ? (int) $post_status['published_count'] : 0;
+		$errors         = isset( $post_status['errors'] ) && is_array( $post_status['errors'] ) ? $post_status['errors'] : array();
+		?>
+		<div class="notice notice-info">
+			<p>
+				<?php
+				echo esc_html(
+					sprintf(
+						/* translators: 1: catalog state, 2: post sync state, 3: published MCP Server count. */
+						__( 'Catalog: %1$s. Post sync: %2$s. Published servers: %3$d.', 'oboto' ),
+						$catalog_state,
+						$post_state,
+						$published
+					)
+				);
+				?>
+			</p>
+			<?php if ( $errors ) : ?>
+				<p><strong><?php esc_html_e( 'Latest errors:', 'oboto' ); ?></strong> <?php echo esc_html( implode( ' | ', array_slice( array_map( 'strval', $errors ), 0, 5 ) ) ); ?></p>
+			<?php endif; ?>
+		</div>
+		<?php
+	}
+
+	/**
 	 * Flush rewrite rules once when the MCP public URL contract changes.
 	 */
 	public static function maybe_flush_rewrite_rules() {
@@ -277,4 +431,10 @@ class MCP_Server_Sync {
 
 add_action( 'mcp_catalog_refreshed', array( 'MCP_Server_Sync', 'sync_posts' ), 10, 2 );
 add_action( 'init', array( 'MCP_Server_Sync', 'maybe_schedule_initial_sync' ), 30 );
+add_action( 'init', array( 'MCP_Server_Sync', 'maybe_repair_payloads' ), 35 );
 add_action( 'init', array( 'MCP_Server_Sync', 'maybe_flush_rewrite_rules' ), 40 );
+add_filter( 'manage_mcp-server_posts_columns', array( 'MCP_Server_Sync', 'admin_columns' ) );
+add_action( 'manage_mcp-server_posts_custom_column', array( 'MCP_Server_Sync', 'render_admin_column' ), 10, 2 );
+add_filter( 'post_row_actions', array( 'MCP_Server_Sync', 'remove_admin_row_actions' ), 10, 2 );
+add_filter( 'bulk_actions-edit-mcp-server', array( 'MCP_Server_Sync', 'remove_admin_bulk_actions' ) );
+add_action( 'admin_notices', array( 'MCP_Server_Sync', 'render_admin_sync_notice' ) );

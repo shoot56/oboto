@@ -14,6 +14,7 @@
   - Public detail URLs use `/mcp-catalog/<yaml-filename>/`.
   - When that contract changes, bump `MCP_Server_Sync::REWRITE_VERSION`; the stored option is `oboto_mcp_server_rewrite_version`.
   - When the periodic schedule changes, bump `oboto_mcp_catalog_schedule_version` so obsolete events are cleared once.
+  - When the synchronized payload persistence model changes, bump `MCP_Server_Sync::DATA_VERSION`; the cached catalog will repair generated post meta once after deployment.
 
 ## Safe extension guidelines (practical)
 
