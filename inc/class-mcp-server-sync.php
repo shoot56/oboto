@@ -122,7 +122,10 @@ class MCP_Server_Sync {
 					++$created;
 				}
 
-				update_post_meta( $post_id, self::PAYLOAD_META_KEY, wp_slash( $payload_json ) );
+				$payload_saved = update_post_meta( $post_id, self::PAYLOAD_META_KEY, wp_slash( $payload_json ) );
+				if ( false === $payload_saved && (string) get_post_meta( $post_id, self::PAYLOAD_META_KEY, true ) !== $payload_json ) {
+					$errors[] = sprintf( '%s: Could not save the catalog payload.', $source_file );
+				}
 				update_post_meta( $post_id, self::ENTRY_KEY_META_KEY, $entry_key );
 				update_post_meta( $post_id, self::SOURCE_FILE_META_KEY, $source_file );
 				update_post_meta( $post_id, self::SOURCE_SHA_META_KEY, $source_sha );
@@ -176,12 +179,53 @@ class MCP_Server_Sync {
 	 */
 	public static function get_payload( $post_id ) {
 		$json = get_post_meta( $post_id, self::PAYLOAD_META_KEY, true );
-		if ( ! is_string( $json ) || '' === $json ) {
+		if ( is_string( $json ) && '' !== $json ) {
+			$payload = json_decode( $json, true );
+			if ( is_array( $payload ) ) {
+				return $payload;
+			}
+
+			$payload = json_decode( wp_unslash( $json ), true );
+			if ( is_array( $payload ) ) {
+				return $payload;
+			}
+		}
+
+		return self::get_catalog_payload_by_slug( get_post_field( 'post_name', $post_id ) );
+	}
+
+	/**
+	 * Find a server in the last successful catalog when post meta is unavailable.
+	 *
+	 * This keeps public pages usable after an interrupted post synchronization and
+	 * does not perform a blocking GitHub request during the page render.
+	 *
+	 * @param string $slug Public MCP server slug.
+	 * @return array Catalog payload or an empty array.
+	 */
+	public static function get_catalog_payload_by_slug( $slug ) {
+		$slug = sanitize_title( (string) $slug );
+		if ( ! $slug ) {
 			return array();
 		}
 
-		$payload = json_decode( $json, true );
-		return is_array( $payload ) ? $payload : array();
+		$catalog = MCP_Catalog_Fetcher::get_catalog( 24 );
+		foreach ( $catalog as $server ) {
+			if ( ! is_array( $server ) || ! MCP_Catalog_Fetcher::is_github_url( isset( $server['external_url'] ) ? $server['external_url'] : '' ) ) {
+				continue;
+			}
+
+			$server_slug = isset( $server['slug'] ) ? sanitize_title( (string) $server['slug'] ) : '';
+			if ( ! $server_slug && ! empty( $server['source_file'] ) ) {
+				$server_slug = sanitize_title( str_replace( '_', '-', pathinfo( (string) $server['source_file'], PATHINFO_FILENAME ) ) );
+			}
+
+			if ( $slug === $server_slug ) {
+				return $server;
+			}
+		}
+
+		return array();
 	}
 
 	/**
