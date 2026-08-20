@@ -140,11 +140,6 @@ $has_any      = ( $has_hero || $has_features || $callouts || $has_selfhost );
 ?>
 <div id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?>>
 
-	<?php if ( $has_hero || $has_features ) : ?>
-	<?php /* Hero and features share one `is-style-has-overlay` glow so there is no seam between them. */ ?>
-	<div class="cloud-trial__glow is-style-has-overlay">
-	<?php endif; ?>
-
 	<?php if ( $has_hero ) : ?>
 		<section class="cloud-trial__hero">
 			<div class="cloud-trial__hero-inner">
@@ -251,10 +246,6 @@ $has_any      = ( $has_hero || $has_features || $callouts || $has_selfhost );
 				<?php endif; ?>
 			</div>
 		</section>
-	<?php endif; ?>
-
-	<?php if ( $has_hero || $has_features ) : ?>
-	</div>
 	<?php endif; ?>
 
 	<?php if ( $callouts ) : ?>
