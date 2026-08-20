@@ -9,15 +9,54 @@
  * @param array $block ACF block settings.
  */
 
+$acf_post_id    = isset( $post_id ) ? absint( $post_id ) : 0;
+$post_id        = 0;
+$server         = array();
 $queried_object = get_queried_object();
-$post_id        = $queried_object instanceof WP_Post && MCP_Server_Sync::POST_TYPE === $queried_object->post_type
-	? (int) $queried_object->ID
-	: get_the_ID();
-$server  = class_exists( 'MCP_Server_Sync' ) ? MCP_Server_Sync::get_payload( $post_id ) : array();
+$candidate_ids  = array_filter(
+	array_unique(
+		array(
+			get_queried_object_id(),
+			$queried_object instanceof WP_Post ? (int) $queried_object->ID : 0,
+			$acf_post_id,
+			get_the_ID(),
+		)
+	)
+);
 
-if ( empty( $server ) || MCP_Server_Sync::POST_TYPE !== get_post_type( $post_id ) ) {
+if ( class_exists( 'MCP_Server_Sync' ) ) {
+	foreach ( $candidate_ids as $candidate_id ) {
+		$candidate_post = get_post( $candidate_id );
+		if ( $candidate_post instanceof WP_Post && MCP_Server_Sync::POST_TYPE === $candidate_post->post_type ) {
+			$post_id = (int) $candidate_post->ID;
+			$server  = MCP_Server_Sync::get_payload( $post_id );
+			break;
+		}
+	}
+
+	if ( empty( $server ) ) {
+		$request_path    = isset( $_SERVER['REQUEST_URI'] ) ? wp_parse_url( wp_unslash( $_SERVER['REQUEST_URI'] ), PHP_URL_PATH ) : '';
+		$request_slug    = $request_path ? sanitize_title( basename( untrailingslashit( $request_path ) ) ) : '';
+		$query_slug      = sanitize_title( (string) get_query_var( MCP_Server_Sync::POST_TYPE ) );
+		$name_slug       = sanitize_title( (string) get_query_var( 'name' ) );
+		$slug_candidates = array_filter( array_unique( array( $query_slug, $name_slug, $request_slug ) ) );
+
+		foreach ( $slug_candidates as $slug_candidate ) {
+			$server = MCP_Server_Sync::get_catalog_payload_by_slug( $slug_candidate );
+			if ( ! empty( $server ) ) {
+				$resolved_post = get_page_by_path( $slug_candidate, OBJECT, MCP_Server_Sync::POST_TYPE );
+				$post_id      = $resolved_post instanceof WP_Post ? (int) $resolved_post->ID : 0;
+				break;
+			}
+		}
+	}
+}
+
+if ( empty( $server ) ) {
 	if ( is_admin() ) {
 		echo '<p>' . esc_html__( 'MCP server details are generated after the catalog synchronization runs.', 'oboto' ) . '</p>';
+	} else {
+		echo '<!-- MCP server detail payload is unavailable. -->';
 	}
 	return;
 }
@@ -121,29 +160,26 @@ if ( $has_configuration ) {
 }
 
 $related = array();
-if ( $categories ) {
-	$related_ids = get_posts(
-		array(
-			'post_type'              => MCP_Server_Sync::POST_TYPE,
-			'post_status'            => 'publish',
-			'posts_per_page'         => -1,
-			'post__not_in'           => array( $post_id ),
-			'fields'                 => 'ids',
-			'no_found_rows'          => true,
-			'update_post_meta_cache' => true,
-			'update_post_term_cache' => false,
-		)
-	);
-	foreach ( $related_ids as $related_id ) {
-		$related_server     = MCP_Server_Sync::get_payload( $related_id );
+if ( $categories && class_exists( 'MCP_Catalog_Fetcher' ) ) {
+	$current_slug = isset( $server['slug'] ) ? sanitize_title( (string) $server['slug'] ) : '';
+	foreach ( MCP_Catalog_Fetcher::get_catalog( 24 ) as $related_server ) {
+		if ( ! is_array( $related_server ) || ! MCP_Catalog_Fetcher::is_github_url( isset( $related_server['external_url'] ) ? $related_server['external_url'] : '' ) ) {
+			continue;
+		}
+
+		$related_slug = isset( $related_server['slug'] ) ? sanitize_title( (string) $related_server['slug'] ) : '';
+		if ( ! $related_slug || $current_slug === $related_slug ) {
+			continue;
+		}
+
 		$related_categories = isset( $related_server['categories'] ) && is_array( $related_server['categories'] ) ? $related_server['categories'] : array();
 		$shared_categories  = array_intersect( $categories, $related_categories );
 		if ( $shared_categories ) {
 			$related[] = array(
-				'id'     => (int) $related_id,
 				'score'  => count( $shared_categories ),
-				'name'   => isset( $related_server['name'] ) ? (string) $related_server['name'] : get_the_title( $related_id ),
+				'name'   => isset( $related_server['name'] ) ? (string) $related_server['name'] : '',
 				'icon'   => isset( $related_server['icon'] ) ? (string) $related_server['icon'] : '',
+				'server' => $related_server,
 			);
 		}
 	}
@@ -156,7 +192,19 @@ if ( $categories ) {
 			return $right['score'] <=> $left['score'];
 		}
 	);
-	$related = array_slice( $related, 0, 4 );
+	$related_candidates = array_slice( $related, 0, 12 );
+	$related            = array();
+	foreach ( $related_candidates as $related_candidate ) {
+		$related_url = MCP_Server_Sync::get_internal_url( $related_candidate['server'] );
+		if ( $related_url ) {
+			$related_candidate['url'] = $related_url;
+			unset( $related_candidate['server'] );
+			$related[] = $related_candidate;
+		}
+		if ( 4 === count( $related ) ) {
+			break;
+		}
+	}
 }
 
 $header_button = function_exists( 'get_field' ) ? get_field( 'header_button', 'option' ) : array();
@@ -327,7 +375,7 @@ $wrapper       = get_block_wrapper_attributes( array( 'class' => 'mcp-server-sin
 					<div class="mcp-server-single__side-card">
 						<h2><?php esc_html_e( 'Related servers', 'oboto' ); ?></h2>
 						<ul class="mcp-server-single__related">
-							<?php foreach ( $related as $related_item ) : ?><li><a href="<?php echo esc_url( get_permalink( $related_item['id'] ) ); ?>"><?php if ( $related_item['icon'] ) : ?><img src="<?php echo esc_url( $related_item['icon'] ); ?>" alt="" loading="lazy" aria-hidden="true"><?php endif; ?><span><?php echo esc_html( $related_item['name'] ); ?></span></a></li><?php endforeach; ?>
+							<?php foreach ( $related as $related_item ) : ?><li><a href="<?php echo esc_url( $related_item['url'] ); ?>"><?php if ( $related_item['icon'] ) : ?><img src="<?php echo esc_url( $related_item['icon'] ); ?>" alt="" loading="lazy" aria-hidden="true"><?php endif; ?><span><?php echo esc_html( $related_item['name'] ); ?></span></a></li><?php endforeach; ?>
 						</ul>
 					</div>
 				<?php endif; ?>
