@@ -133,11 +133,17 @@ if ( is_string( $selfhost_button ) && '' !== trim( $selfhost_button ) ) {
 $has_selfhost_button = is_array( $selfhost_button ) && ! empty( $selfhost_button['url'] );
 $has_selfhost        = ( '' !== $selfhost_title || '' !== $selfhost_text || '' !== $selfhost_note || $has_selfhost_button );
 
-$has_hero = ( '' !== $hero_badge || '' !== $hero_title || '' !== $hero_text || $hero_points || '' !== $hero_note || $has_form );
-$has_any  = ( $has_hero || $features || '' !== $features_title || $callouts || $has_selfhost );
+$has_hero     = ( '' !== $hero_badge || '' !== $hero_title || '' !== $hero_text || $hero_points || '' !== $hero_note || $has_form );
+$has_features = ( $features || '' !== $features_title || '' !== $features_eyebrow );
+$has_any      = ( $has_hero || $has_features || $callouts || $has_selfhost );
 
 ?>
 <div id="<?php echo esc_attr( $id ); ?>" <?php echo $wrapper_attributes; ?>>
+
+	<?php if ( $has_hero || $has_features ) : ?>
+	<?php /* Hero and features share one `is-style-has-overlay` glow so there is no seam between them. */ ?>
+	<div class="cloud-trial__glow is-style-has-overlay">
+	<?php endif; ?>
 
 	<?php if ( $has_hero ) : ?>
 		<section class="cloud-trial__hero">
@@ -218,7 +224,7 @@ $has_any  = ( $has_hero || $features || '' !== $features_title || $callouts || $
 		</section>
 	<?php endif; ?>
 
-	<?php if ( $features || '' !== $features_title || '' !== $features_eyebrow ) : ?>
+	<?php if ( $has_features ) : ?>
 		<section class="cloud-trial__features">
 			<div class="cloud-trial__inner">
 				<?php if ( '' !== $features_eyebrow || '' !== $features_title ) : ?>
@@ -245,6 +251,10 @@ $has_any  = ( $has_hero || $features || '' !== $features_title || $callouts || $
 				<?php endif; ?>
 			</div>
 		</section>
+	<?php endif; ?>
+
+	<?php if ( $has_hero || $has_features ) : ?>
+	</div>
 	<?php endif; ?>
 
 	<?php if ( $callouts ) : ?>
