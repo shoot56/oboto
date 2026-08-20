@@ -1,0 +1,16 @@
+{
+  "name": "oboto/mcp-server-single",
+  "title": "MCP Server Single",
+  "description": "Read-only detail page for a synchronized MCP server.",
+  "category": "theme_block_category",
+  "icon": "database",
+  "keywords": ["mcp", "server", "catalog"],
+  "acf": {
+    "mode": "preview",
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": ["full"]
+  },
+  "style": ["mcp-server-single"]
+}

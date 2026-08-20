@@ -9,7 +9,9 @@
   - `functions.php`: theme supports, global assets, rewrite rules, plugin filters, and module includes.
   - `inc/helpers.php`: block registration and editor block style registration.
 - **Domain/content layer**
-  - `inc/custom-post-type.php`: registers `learning-center` CPT and `learning-center-category` taxonomy and rewrites.
+  - `inc/custom-post-type.php`: registers `learning-center`, its taxonomy, and the hidden read-only `mcp-server` CPT and rewrites.
+  - `inc/class-mcp-catalog-fetcher.php`: fetches, normalizes, and atomically caches the upstream MCP YAML catalog.
+  - `inc/class-mcp-server-sync.php`: materializes only GitHub-backed catalog entries as published internal pages.
   - WordPress DB provides persistence for posts, terms, options.
 - **Presentation layer**
   - `templates/*.html`, `parts/*.html`: FSE layout composition.
@@ -41,6 +43,12 @@
   - `oboto/navigation` block (`blocks/navigation/*`)
   - Custom walker: `Header_Menu_Walker` (`inc/navigations-functions.php`)
   - Depends on ACF fields on menu items (e.g. `icon`, `item_type`, `open_in_new_tab`).
+- **MCP Catalog**
+  - Source: root YAML files in `obot-platform/mcp-catalog`.
+  - Listing: `oboto/mcp-list` uses cached normalized data; GitHub entries resolve to internal pages and other resources preserve their external URLs.
+  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a JSON snapshot stored in post meta.
+  - Persistence: transient current cache, last-successful option fallback, hidden `mcp-server` posts, and synchronization status options.
+  - Refresh: daily WP-Cron plus asynchronous stale-cache refresh; posts are updated only after a complete successful catalog fetch.
 - **Blog URL shaping**
   - Permalink override for posts in category `blog` and redirect/canonical alignment (`functions.php`)
 - **Forms**
@@ -85,6 +93,10 @@ graph TD
   ACF[ACF plugin] --> BR
   ACF --> INC
   ACF --> AJ[acf-json/*.json]
+  GH[GitHub MCP Catalog] --> MCF[inc/class-mcp-catalog-fetcher.php]
+  MCF --> MCS[inc/class-mcp-server-sync.php]
+  MCS --> DB[(WP mcp-server posts)]
+  DB --> BR
 ```
 
 ## Request/response flow (page render)
@@ -129,4 +141,4 @@ sequenceDiagram
 ## TODO: Clarify with tech lead
 
 - Whether any blocks rely on additional plugins beyond ACF + CF7 + Yoast + WP All Import + GitHub Updater (only these are directly referenced in code).
-- Expected WordPress and PHP version targets for this theme.
+- Expected WordPress version target for this theme. PHP 8.1+ is required by Composer dependencies.

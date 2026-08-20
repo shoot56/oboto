@@ -1,7 +1,7 @@
 ## Project summary
 
 - **What this is**: A WordPress **block theme** (`theme.json`, `templates/*.html`, `parts/*.html`, `patterns/*.php`) named **`obot`** (`style.css`).
-- **Goal (as implemented)**: Provide the site UI using custom blocks under `blocks/*` and theme templates/parts; includes a dedicated **Learning Center** content area via a custom post type and taxonomy.
+- **Goal (as implemented)**: Provide the site UI using custom blocks under `blocks/*` and theme templates/parts; includes dedicated **Learning Center** content and an automatically synchronized **MCP Catalog**.
 - **Primary audiences**
   - **Content editors** using the WordPress Site Editor / block editor to build pages and manage content.
   - **Theme developers** extending blocks, templates, styles, and WordPress hooks in this theme.
@@ -10,7 +10,7 @@
 
 - **Backend/runtime**
   - **WordPress** (PHP) theme code (`functions.php`, `inc/*.php`, `blocks/*/*.php`).
-  - **Custom Post Type + Taxonomy**: `learning-center` and `learning-center-category` (`inc/custom-post-type.php`).
+  - **Custom content types**: editable `learning-center` content plus hidden, read-only `mcp-server` records synchronized from GitHub (`inc/custom-post-type.php`).
   - **ACF (Advanced Custom Fields)** is used extensively:
     - `get_field(...)` in block renders and menu walker (`blocks/navigation/block-render.php`, `inc/navigations-functions.php`).
     - Options page via `acf_add_options_page(...)` (`functions.php`).
@@ -25,8 +25,8 @@
 ## Runtime environments
 
 - **Runs inside WordPress** as a theme (executed by WP on every request via `functions.php`).
-- **PHP version**: TODO: Clarify with tech lead (not specified in repo).
-- **Build/tooling**: There is `scss/` and compiled `css/`, but **no package/build config** (no `package.json` / `composer.json` in this repo).
+- **PHP version**: PHP 8.1 or newer is required by the locked Symfony YAML dependency.
+- **Build/tooling**: There is `scss/` and compiled `css/`, no `package.json`, and a `composer.json` for the MCP YAML/Markdown runtime dependencies. Production deployments must include `vendor/` or run `composer install --no-dev --optimize-autoloader`.
   - **TODO: Clarify with tech lead**: how SCSS is compiled into `css/*.css` in this project (CI step? local tooling? external repo?).
 
 ## Main entrypoints
@@ -53,6 +53,12 @@
 - **HTTP request** → WordPress resolves route → selects an FSE template (`templates/*.html`).
 - Template composes **template parts** (`parts/header.html`, `parts/footer.html`) and custom blocks (e.g. `wp:oboto/learning-center-archive`).
 - Custom blocks render via PHP templates (`blocks/*/block-render.php`), commonly reading ACF fields via `get_field(...)` and querying WP content via `WP_Query`.
+
+### MCP catalog sync → virtualized detail pages
+
+- WP-Cron refreshes the upstream `obot-platform/mcp-catalog` YAML manifest daily.
+- The theme keeps a last-successful cache and only downloads YAML files whose Git blob SHA changed.
+- GitHub-backed entries are synchronized into hidden `mcp-server` posts and rendered at `/mcp-catalog/<yaml-filename>/`; non-GitHub entries remain direct external links.
 
 ### AJAX request → content fragments
 

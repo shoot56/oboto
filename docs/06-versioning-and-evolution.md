@@ -1,6 +1,6 @@
 ## Versioning (current state)
 
-- **Theme version**: maintained in `style.css` (`Version: 1.1.9`).
+- **Theme version**: maintained in `style.css` (currently `Version: 1.2.23.0`).
 - **Update channel**: theme includes GitHub Updater headers (`GitHub Theme URI`, `Primary Branch`) and sets `gu_ignore_dot_org` to true in `functions.php`.
   - **TODO: Clarify with tech lead**: the exact release process used (tags? zip builds? direct main branch deploy?).
 
@@ -10,6 +10,10 @@
   - When changing CPT/taxonomy rewrite rules, bump the `$rewrite_version` string in `functions.php` (Learning Center rewrite flush block).
   - This triggers a one-time `flush_rewrite_rules(false)` and stores the new version in `oboto_learning_center_rewrite_flushed`.
   - A fallback taxonomy rewrite is also inserted via `option_rewrite_rules`; changes there should be treated as contract-level routing changes.
+- **MCP Server rewrites**
+  - Public detail URLs use `/mcp-catalog/<yaml-filename>/`.
+  - When that contract changes, bump `MCP_Server_Sync::REWRITE_VERSION`; the stored option is `oboto_mcp_server_rewrite_version`.
+  - When the periodic schedule changes, bump `oboto_mcp_catalog_schedule_version` so obsolete events are cleared once.
 
 ## Safe extension guidelines (practical)
 

@@ -44,8 +44,11 @@ if ( 'manual' === $data_src && have_rows( 'servers' ) ) {
 			'name'              => isset( $row['name'] ) ? (string) $row['name'] : '',
 			'short_description' => isset( $row['short_description'] ) ? (string) $row['short_description'] : '',
 			'icon'              => isset( $row['icon'] ) ? (string) $row['icon'] : '',
-			'link'              => isset( $row['link'] ) ? (string) $row['link'] : '',
+			'link'              => isset( $row['external_url'] ) ? (string) $row['external_url'] : ( isset( $row['link'] ) ? (string) $row['link'] : '' ),
 			'categories'        => isset( $row['categories'] ) && is_array( $row['categories'] ) ? $row['categories'] : array(),
+			'entry_key'         => isset( $row['entry_key'] ) ? (string) $row['entry_key'] : '',
+			'slug'              => isset( $row['slug'] ) ? (string) $row['slug'] : '',
+			'external_url'      => isset( $row['external_url'] ) ? (string) $row['external_url'] : '',
 		);
 	}
 }
@@ -131,11 +134,13 @@ if ( isset( $block['data']['preview_image_help'] ) ) {
 		<div class="mcp-list__grid" data-mcp-list-grid>
 			<?php foreach ( $servers as $s ) : ?>
 				<?php
-				$link = $s['link'] ? $s['link'] : $catalog_url;
+				$internal_link = class_exists( 'MCP_Server_Sync' ) ? MCP_Server_Sync::get_internal_url( $s ) : '';
+				$link          = $internal_link ? $internal_link : ( $s['link'] ? $s['link'] : $catalog_url );
+				$is_external   = ! $internal_link;
 				$cat_attr = implode( '|', array_map( 'esc_attr', $s['categories'] ) );
 				$search_text = $s['name'] . ' ' . $s['short_description'];
 				?>
-				<a class="mcp-list__card" href="<?php echo esc_url( $link ); ?>" data-category="<?php echo esc_attr( $cat_attr ); ?>" data-search="<?php echo esc_attr( $search_text ); ?>" target="_blank" rel="noopener noreferrer">
+				<a class="mcp-list__card" href="<?php echo esc_url( $link ); ?>" data-category="<?php echo esc_attr( $cat_attr ); ?>" data-search="<?php echo esc_attr( $search_text ); ?>"<?php echo $is_external ? ' target="_blank" rel="noopener noreferrer"' : ''; ?>>
 					<figure class="mcp-list__card-figure">
 						<?php if ( $s['icon'] ) : ?>
 							<img src="<?php echo esc_url( $s['icon'] ); ?>" alt="" loading="lazy">

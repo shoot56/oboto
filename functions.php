@@ -114,7 +114,17 @@ if (function_exists('acf_add_options_page')) {
 /**
  * Helpers Functions
  */
+$theme_autoloader = get_template_directory() . '/vendor/autoload.php';
+if ( file_exists( $theme_autoloader ) ) {
+    require_once $theme_autoloader;
+}
+
 require get_template_directory() . '/inc/helpers.php';
+
+/**
+ * GitHub-backed MCP server synchronization.
+ */
+require_once get_template_directory() . '/inc/class-mcp-server-sync.php';
 
 /**
  * Register Custom Post Type

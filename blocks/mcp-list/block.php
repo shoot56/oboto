@@ -50,11 +50,21 @@ function mcp_list_editor_styles() {
 add_action( 'init', 'mcp_list_editor_styles' );
 
 /**
- * Schedule WP Cron to refresh MCP catalog cache hourly (if not already scheduled).
+ * Schedule WP-Cron to refresh the MCP catalog once a day.
+ *
+ * The schedule version clears the previous hourly event once after deployment.
  */
 function mcp_list_schedule_cron() {
+	$schedule_version = 'mcp_catalog_daily_v1';
+	$schedule_option  = 'oboto_mcp_catalog_schedule_version';
+
+	if ( $schedule_version !== get_option( $schedule_option ) ) {
+		wp_clear_scheduled_hook( MCP_Catalog_Fetcher::CRON_HOOK );
+		update_option( $schedule_option, $schedule_version, false );
+	}
+
 	if ( ! wp_next_scheduled( MCP_Catalog_Fetcher::CRON_HOOK ) ) {
-		wp_schedule_event( time(), 'hourly', MCP_Catalog_Fetcher::CRON_HOOK );
+		wp_schedule_event( time() + MINUTE_IN_SECONDS, 'daily', MCP_Catalog_Fetcher::CRON_HOOK );
 	}
 }
 add_action( 'init', 'mcp_list_schedule_cron' );

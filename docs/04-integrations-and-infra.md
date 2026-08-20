@@ -46,6 +46,15 @@ All of these are enqueued in `functions.php`:
 - **GSAP + ScrollTrigger** (`cdn.jsdelivr.net`) — JS
 - **Lottie player** (`unpkg.com`) — JS
 
+### MCP catalog source and PHP libraries
+
+- **Obot MCP Catalog** (`github.com/obot-platform/mcp-catalog` and `raw.githubusercontent.com`)
+  - The GitHub Contents API supplies root YAML filenames and blob SHAs.
+  - Changed YAML files are downloaded from the raw host; an incomplete refresh never replaces the last successful catalog.
+  - `repoURL` values on `github.com` become internal detail pages. All other hosts continue to be linked directly.
+- **Symfony YAML** (Composer) parses the upstream YAML documents.
+- **Parsedown** (Composer, safe mode enabled) renders the catalog descriptions as sanitized HTML.
+
 ### Social share endpoints (client-opened URLs)
 
 - Learning Center single block includes share links opened in a popup:
@@ -64,6 +73,8 @@ All of these are enqueued in `functions.php`:
 - Learning Center rewrite flush uses a stored version key:
   - Option key: `oboto_learning_center_rewrite_flushed` (`functions.php`)
   - Value: string version like `lc_rewrite_v3_resources_learning_center_and_taxonomy`
+- MCP catalog operational state uses `mcp_catalog_sync_status`, `mcp_server_post_sync_status`, and `mcp_catalog_last_successful_data`.
+- MCP catalog refresh uses the `mcp_catalog_refresh` daily WP-Cron hook and an immediate single-event hook for stale/initial data. WP-Cron is request-driven, so environments with low traffic may need the host scheduler to call `wp-cron.php`.
 
 ### Environment variables
 
