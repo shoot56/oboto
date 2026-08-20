@@ -1,7 +1,8 @@
 /* Obot Cloud Trial — full landing page block. */
 
 .cloud-trial {
-	--cloud-trial-bg: #05070f;
+	/* Base tokens taken from the live trial page (obot.ai/obot-cloud-trial). */
+	--cloud-trial-bg: #000000;
 	--cloud-trial-blue: #4f7ef3;
 	--cloud-trial-green: #06eaa7;
 	--cloud-trial-text: #d4d4d8;
@@ -47,6 +48,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-cloud-trial.cloud-
 
 .cloud-trial__inner {
 	position: relative;
+	z-index: 1;
 	width: 100%;
 	max-width: var(--cloud-trial-inner);
 	margin: 0 auto;
@@ -54,18 +56,25 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-cloud-trial.cloud-
 
 /* ---------------------------------------------------------------- Hero -- */
 
-.cloud-trial__hero {
+/* Hero + features sit inside one `is-style-has-overlay` wrapper (theme block
+   style, scss/global.scss) so the blue glow runs across both without a seam.
+   That style owns ::before on the wrapper; the hero grid uses ::after. */
+.cloud-trial__glow {
 	position: relative;
-	padding: 84px 48px 96px;
 	overflow: hidden;
 }
 
-.cloud-trial__hero::before {
+.cloud-trial__hero {
+	position: relative;
+	padding: 84px 48px 96px;
+}
+
+.cloud-trial__hero::after {
 	position: absolute;
 	inset: 0;
 	background-image:
-		linear-gradient(rgba(255, 255, 255, 0.06) 1px, transparent 1px),
-		linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px);
+		linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+		linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
 	background-size: 64px 64px;
 	content: "";
 	-webkit-mask-image: radial-gradient(120% 80% at 50% 0%, #000 25%, transparent 75%);
@@ -75,6 +84,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-cloud-trial.cloud-
 
 .cloud-trial__hero-inner {
 	position: relative;
+	z-index: 1;
 	display: grid;
 	width: 100%;
 	max-width: var(--cloud-trial-inner);
@@ -295,7 +305,20 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-cloud-trial.cloud-
 /* ------------------------------------------------------------ Features -- */
 
 .cloud-trial__features {
+	position: relative;
 	padding: 84px 48px 88px;
+}
+
+/* Softens the bottom edge where the glow wrapper is clipped. */
+.cloud-trial__features::after {
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	height: 180px;
+	background-image: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, var(--cloud-trial-bg) 100%);
+	content: "";
+	pointer-events: none;
 }
 
 .cloud-trial__features-header {
