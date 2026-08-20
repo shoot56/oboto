@@ -9,7 +9,10 @@
  * @param array $block ACF block settings.
  */
 
-$post_id = get_the_ID();
+$queried_object = get_queried_object();
+$post_id        = $queried_object instanceof WP_Post && MCP_Server_Sync::POST_TYPE === $queried_object->post_type
+	? (int) $queried_object->ID
+	: get_the_ID();
 $server  = class_exists( 'MCP_Server_Sync' ) ? MCP_Server_Sync::get_payload( $post_id ) : array();
 
 if ( empty( $server ) || MCP_Server_Sync::POST_TYPE !== get_post_type( $post_id ) ) {

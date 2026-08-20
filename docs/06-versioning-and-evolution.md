@@ -1,6 +1,6 @@
 ## Versioning (current state)
 
-- **Theme version**: maintained in `style.css` (currently `Version: 1.2.23.0`).
+- **Theme version**: maintained in `style.css` (currently `Version: 1.2.22.5`).
 - **Update channel**: theme includes GitHub Updater headers (`GitHub Theme URI`, `Primary Branch`) and sets `gu_ignore_dot_org` to true in `functions.php`.
   - **TODO: Clarify with tech lead**: the exact release process used (tags? zip builds? direct main branch deploy?).
 

@@ -46,7 +46,7 @@
 - **MCP Catalog**
   - Source: root YAML files in `obot-platform/mcp-catalog`.
   - Listing: `oboto/mcp-list` uses cached normalized data; GitHub entries resolve to internal pages and other resources preserve their external URLs.
-  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a JSON snapshot stored in post meta.
+  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a JSON snapshot stored in post meta, with a last-successful-catalog fallback by slug when that meta is missing or invalid.
   - Persistence: transient current cache, last-successful option fallback, hidden `mcp-server` posts, and synchronization status options.
   - Refresh: daily WP-Cron plus asynchronous stale-cache refresh; posts are updated only after a complete successful catalog fetch.
 - **Blog URL shaping**
