@@ -22,7 +22,31 @@ $wrapper_attributes = get_block_wrapper_attributes([
     'class' => $classes
 ]);
 
+/**
+ * Share row: blog posts show the GitHub star button instead of the Facebook share icon.
+ *
+ * The "blog" category is the same condition that drives the /blog/{slug}/ permalink
+ * contract in functions.php, so this keeps the button scoped to /blog/ posts only.
+ */
+$blog_category_slug = 'blog';
+$show_github_star   = get_post_type() === 'post' && has_category($blog_category_slug, get_the_ID());
 
+// GitHub star button widget (https://buttons.github.io/), large variant.
+$github_star_repo_owner    = 'obot-platform';
+$github_star_repo_name     = 'obot';
+$github_star_button_width  = 170;
+$github_star_button_height = 30;
+
+$github_star_button_url = add_query_arg(
+    [
+        'user'  => $github_star_repo_owner,
+        'repo'  => $github_star_repo_name,
+        'type'  => 'star',
+        'count' => 'true',
+        'size'  => 'large',
+    ],
+    'https://ghbtns.com/github-btn.html'
+);
 
 ?>
 <?php if (isset($block['data']['preview_image_help'])) : ?>
@@ -122,15 +146,29 @@ $wrapper_attributes = get_block_wrapper_attributes([
                     </svg>
                 </a>
             </li>
-            <li>
-                <a onClick="javascript:open('https://www.facebook.com/sharer/sharer.php?u=<?= get_permalink() ?>', '', 'height=500,width=500')">
+            <?php if ($show_github_star) : ?>
+                <li class="share-links_github">
+                    <iframe
+                        class="github-star-button"
+                        src="<?php echo esc_url($github_star_button_url); ?>"
+                        width="<?php echo esc_attr($github_star_button_width); ?>"
+                        height="<?php echo esc_attr($github_star_button_height); ?>"
+                        frameborder="0"
+                        scrolling="0"
+                        loading="lazy"
+                        title="<?php echo esc_attr(sprintf('Star %s/%s on GitHub', $github_star_repo_owner, $github_star_repo_name)); ?>"></iframe>
+                </li>
+            <?php else : ?>
+                <li>
+                    <a onClick="javascript:open('https://www.facebook.com/sharer/sharer.php?u=<?= get_permalink() ?>', '', 'height=500,width=500')">
 
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" height="24" fill="#fff">
-                        <path d="M240 363.3L240 576L356 576L356 363.3L442.5 363.3L460.5 265.5L356 265.5L356 230.9C356 179.2 376.3 159.4 428.7 159.4C445 159.4 458.1 159.8 465.7 160.6L465.7 71.9C451.4 68 416.4 64 396.2 64C289.3 64 240 114.5 240 223.4L240 265.5L174 265.5L174 363.3L240 363.3z" />
-                    </svg>
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" height="24" fill="#fff">
+                            <path d="M240 363.3L240 576L356 576L356 363.3L442.5 363.3L460.5 265.5L356 265.5L356 230.9C356 179.2 376.3 159.4 428.7 159.4C445 159.4 458.1 159.8 465.7 160.6L465.7 71.9C451.4 68 416.4 64 396.2 64C289.3 64 240 114.5 240 223.4L240 265.5L174 265.5L174 363.3L240 363.3z" />
+                        </svg>
 
-                </a>
-            </li>
+                    </a>
+                </li>
+            <?php endif; ?>
         </ul>
     </section>
 

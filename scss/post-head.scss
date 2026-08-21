@@ -100,5 +100,19 @@
         height: 24px;
       }
     }
+
+    // GitHub star button (ghbtns.com widget) shown in place of the Facebook share icon.
+    &_github {
+      display: flex;
+      align-items: center;
+    }
+
+    .github-star-button {
+      display: block;
+      border: 0;
+      max-width: 100%;
+      // The widget ships its own light theme; keep it from inheriting the dark page scheme.
+      color-scheme: light;
+    }
   }
 }
