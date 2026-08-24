@@ -7,6 +7,7 @@
   "keywords": ["team", "members", "people", "staff"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "example": {

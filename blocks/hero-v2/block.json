@@ -7,6 +7,7 @@
   "keywords": ["hero", "homepage", "security", "animation", "cta"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "attributes": {

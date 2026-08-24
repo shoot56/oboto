@@ -7,6 +7,7 @@
   "keywords": ["blog", "archive", "posts"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "supports": {

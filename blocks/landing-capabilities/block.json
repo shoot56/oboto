@@ -7,6 +7,7 @@
   "keywords": ["landing", "capabilities", "tabs", "features", "mcp"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "attributes": {

@@ -7,6 +7,7 @@
   "keywords": ["landing", "cta", "hubspot", "fillout", "form", "mcp"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "attributes": {

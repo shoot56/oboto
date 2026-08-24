@@ -7,6 +7,7 @@
   "keywords": ["product", "feature", "media", "video", "html"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "attributes": {

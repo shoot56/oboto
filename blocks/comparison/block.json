@@ -7,6 +7,7 @@
   "keywords": ["comparison", "table", "features", "product"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "attributes": {

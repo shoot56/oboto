@@ -7,6 +7,7 @@
   "keywords": ["latest posts", "blog", "news", "homepage"],
   "acf": {
     "mode": "preview",
+    "blockVersion": 3,
     "renderTemplate": "block-render.php"
   },
   "attributes": {
