@@ -194,6 +194,23 @@ pre {
     }
   }
 
+  // Inverted counterpart of `--primary`, intended for light backgrounds.
+  // On hover the icon circle switches to a translucent white so it stays
+  // visible once the button background turns blue.
+  &--dark {
+    background: $main-black;
+    color: #fff;
+
+    &:hover {
+      background-color: $blue-main;
+      color: #fff;
+
+      .icon {
+        background-color: rgba(255, 255, 255, 0.16);
+      }
+    }
+  }
+
   &--no-border {
     background: transparent;
     color: #fff;

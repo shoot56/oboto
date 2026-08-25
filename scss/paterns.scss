@@ -76,3 +76,394 @@
     gap: 4px;
   }
 }
+
+// ---------------------------------------------------------------------------
+// In-post CTA patterns
+//
+// Card CTA — built in the editor from a Quote block that wraps a Columns block:
+//
+//   blockquote.cta-card.cta-card--focus      outer frame (border + background
+//                                            come from the block settings)
+//     .wp-block-columns
+//       .wp-block-column
+//         blockquote                         nested Quote, visually neutralised
+//           p.cta-card__title
+//           p.cta-card__text                 optional
+//           p.cta-card__actions              holds the links
+//       .wp-block-column
+//         figure.cta-card__media > img
+//
+// Variants: --focus | --glow | --bar
+//
+// Element selectors are nested as descendants of their block rather than written
+// flat. The Quote blocks carry a link colour from their own block settings —
+// `.wp-elements-N a:where(:not(.wp-element-button))` — and a flat BEM class
+// cannot outweigh it.
+//
+// Strip CTA — authored as HTML in the `cta_*` WYSIWYG fields on Theme Settings:
+//
+//   .cta-strip + one variant: --accent | --quiet | --outline
+//     .cta-strip__text
+//     .cta-strip__actions > a.cta-strip__action (+ .is-primary)
+// ---------------------------------------------------------------------------
+
+// Brand values duplicated as raw hex because rgba() and gradients cannot consume
+// the CSS custom properties exposed by theme.json.
+$cta-blue: #4F7DF3; // --wp--preset--color--blue-main
+$cta-teal: #78E7F1; // --wp--preset--color--teal-200
+
+$cta-card-radius: 20px;
+$cta-card-padding: 32px;
+$cta-card-padding-compact: 22px;
+$cta-card-gap: 24px;
+$cta-action-gap: 10px;
+$cta-strip-radius: 14px;
+$cta-strip-padding: 18px 24px;
+$cta-strip-padding-mobile: 16px 18px;
+$cta-strip-bar-width: 3px;
+$cta-pill-height: 44px;
+$cta-pill-height-small: 38px;
+$cta-robot-width: 180px;
+$cta-robot-width-small: 46px;
+$cta-watermark-width: 280px;
+$cta-watermark-opacity: 0.09;
+
+@mixin cta-pill($height: $cta-pill-height) {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: $height;
+  padding: 0 22px;
+  border: 1px solid transparent;
+  border-radius: $height;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.24;
+  text-decoration: none;
+  white-space: nowrap;
+  box-sizing: border-box;
+  transition: all 0.3s ease-in-out;
+}
+
+// Secondary action: readable on dark, clearly clickable, never louder than the
+// primary one.
+@mixin cta-action-ghost {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+
+  // Link colour on these CTAs is set per block and carries a visited state, so
+  // both link states are pinned explicitly rather than relying on inheritance.
+  &,
+  &:link,
+  &:visited {
+    color: #fff;
+  }
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.16);
+    border-color: rgba(255, 255, 255, 0.32);
+    color: #fff;
+  }
+}
+
+@mixin cta-action-solid($label: #000) {
+  background: #fff;
+  border-color: #fff;
+
+  &,
+  &:link,
+  &:visited {
+    color: $label;
+  }
+
+  &:hover {
+    background: $blue-main;
+    border-color: $blue-main;
+    color: #fff;
+  }
+}
+
+.cta-card {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+  padding: $cta-card-padding;
+  border-radius: $cta-card-radius;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  @include mobile {
+    padding: $cta-card-padding-compact;
+  }
+
+  // The card wraps a second, nested Quote block which brings its own left rule,
+  // padding and radius. Neutralise it so the card reads as a single frame.
+  blockquote {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+  }
+
+  .wp-block-columns {
+    align-items: center;
+    gap: $cta-card-gap;
+    margin: 0;
+  }
+
+  .wp-block-column {
+    min-width: 0;
+  }
+
+  .cta-card__title {
+    margin: 0;
+    color: #fff;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 1.25;
+
+    // The gap below the title is owned by `__actions`; the manual line breaks
+    // left in the paragraph would only double it.
+    br {
+      display: none;
+    }
+
+    @include mobile {
+      font-size: 20px;
+    }
+  }
+
+  .cta-card__text {
+    margin: 10px 0 0;
+    max-width: 54ch;
+    color: $grayscale300;
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .cta-card__actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: $cta-action-gap;
+    margin: 22px 0 0;
+    // Collapses the " · " separators typed between the links. `!important` is
+    // required because the paragraph carries its font size as an inline style.
+    font-size: 0 !important;
+
+    a {
+      @include cta-pill;
+      @include cta-action-ghost;
+      font-size: 14px;
+
+      // The leading link is the primary action.
+      &:first-child {
+        @include cta-action-solid;
+      }
+    }
+  }
+
+  .cta-card__media {
+    margin: 0;
+
+    img {
+      display: block;
+      height: auto;
+      margin-left: auto;
+    }
+  }
+}
+
+// Variant 1: content left, robot anchored right.
+.cta-card--focus {
+  .cta-card__media img {
+    width: $cta-robot-width;
+    max-width: 100%;
+  }
+
+  @include mobile {
+    .cta-card__media {
+      display: none;
+    }
+  }
+}
+
+// Variant 2: gradient frame, robot demoted to a background watermark.
+.cta-card--glow {
+  // The solid border colour comes from a block setting, so it has to be beaten.
+  border-color: transparent !important;
+  background:
+    linear-gradient($main-black, $main-black) padding-box,
+    linear-gradient(120deg, $cta-blue, $cta-teal) border-box;
+
+  .wp-block-columns {
+    display: block;
+  }
+
+  .cta-card__media {
+    position: absolute;
+    right: -34px;
+    bottom: -34px;
+    width: $cta-watermark-width;
+    opacity: $cta-watermark-opacity;
+    pointer-events: none;
+
+    img {
+      width: 100%;
+      max-width: none;
+    }
+  }
+
+  @include mobile {
+    .cta-card__media {
+      display: none;
+    }
+  }
+}
+
+// Variant 3: compact bar for the middle of a post.
+.cta-card--bar {
+  padding: $cta-card-padding-compact;
+
+  .cta-card__title {
+    font-size: 18px;
+  }
+
+  .cta-card__text {
+    display: none;
+  }
+
+  .cta-card__actions {
+    margin-top: 14px;
+  }
+
+  .cta-card__media img {
+    width: $cta-robot-width-small;
+  }
+}
+
+// The site styles every Quote block with a 4px rule, uneven padding and its own
+// radius. The strip wraps one, so it takes the frame over.
+blockquote.cta-strip {
+  border: 0;
+  padding: $cta-strip-padding;
+
+  @include mobile {
+    padding: $cta-strip-padding-mobile;
+  }
+}
+
+.cta-strip {
+  box-sizing: border-box;
+  border-radius: $cta-strip-radius;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  // wpautop can leave stray empty paragraphs around the authored markup.
+  p:empty {
+    display: none;
+  }
+
+  // The CTA Content block wraps the authored markup in a single div, so that
+  // div is the flex row rather than the Quote itself.
+  .cta-content {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 20px;
+  }
+
+  .cta-strip__text {
+    flex: 1 1 320px;
+    min-width: 0;
+    margin: 0;
+    color: #fff;
+    font-size: 15px;
+    line-height: 1.55;
+
+    strong {
+      font-weight: 600;
+    }
+  }
+
+  .cta-strip__actions {
+    flex: 0 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: $cta-action-gap;
+  }
+
+  .cta-strip__action {
+    @include cta-pill($cta-pill-height-small);
+    @include cta-action-ghost;
+
+    &.is-primary {
+      @include cta-action-solid;
+    }
+  }
+
+  @include mobile {
+    .cta-strip__actions {
+      width: 100%;
+    }
+  }
+}
+
+// Variant 1: solid brand blue. Highest contrast of the three.
+.cta-strip--accent {
+  background: $blue-main;
+
+  .cta-strip__action {
+    background: rgba(0, 0, 0, 0.24);
+    border-color: rgba(255, 255, 255, 0.4);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: #fff;
+    }
+
+    // Brand blue on white sits near 3:1, so the label stays near-black here.
+    &.is-primary {
+      @include cta-action-solid;
+
+      &:hover {
+        background: $main-black;
+        border-color: $main-black;
+        color: #fff;
+      }
+    }
+  }
+}
+
+// Variant 2: no box at all, just an accent rule. For mid-article placement.
+.cta-strip--quiet {
+  background: transparent;
+  border-radius: 0;
+
+  &.cta-strip {
+    padding: 2px 0 2px 20px;
+    border-left: $cta-strip-bar-width solid $blue-main;
+  }
+
+  .cta-strip__text {
+    color: $grayscale300;
+  }
+}
+
+// Variant 3: dark card with a blue outline, matching the card CTA family.
+.cta-strip--outline {
+  background: $main-black;
+
+  &.cta-strip {
+    border: 1px solid rgba(79, 125, 243, 0.48);
+  }
+
+  .cta-strip__text {
+    color: $grayscale200;
+  }
+}

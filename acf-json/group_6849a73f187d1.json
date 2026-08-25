@@ -17,7 +17,8 @@
                 "id": ""
             },
             "choices": {
-                "primary": "Primary",
+                "primary": "Primary (light button)",
+                "dark": "Dark (for light backgrounds)",
                 "secondary": "Secondary",
                 "outline": "Outline",
                 "no-border": "No Border"
@@ -90,5 +91,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1754424927
+    "modified": 1787666301
 }
