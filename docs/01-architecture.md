@@ -44,7 +44,7 @@
   - Custom walker: `Header_Menu_Walker` (`inc/navigations-functions.php`)
   - Depends on ACF fields on menu items (e.g. `icon`, `item_type`, `open_in_new_tab`).
 - **MCP Catalog**
-  - Source: root YAML files in `obot-platform/mcp-catalog`.
+  - Source: YAML files in the `remotes`, `obot-remotes`, and `obot-images` directories of `obot-platform/mcp-catalog`.
   - Listing: `oboto/mcp-list` uses cached normalized data; GitHub entries resolve to internal pages and other resources preserve their external URLs.
   - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a normalized array snapshot stored in post meta. The renderer resolves FSE/ACF post context defensively and retains legacy JSON plus last-successful-catalog fallbacks by slug.
   - Persistence: transient current cache, last-successful option fallback, generated `mcp-server` posts, and synchronization status options. Administrators can inspect records and payload health in a read-only wp-admin list.

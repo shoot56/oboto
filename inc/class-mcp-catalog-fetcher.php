@@ -24,10 +24,11 @@ class MCP_Catalog_Fetcher {
 	const GITHUB_OWNER           = 'obot-platform';
 	const GITHUB_REPO            = 'mcp-catalog';
 	const GITHUB_BRANCH          = 'main';
+	const CATALOG_DIRECTORIES    = array( 'remotes', 'obot-remotes', 'obot-images' );
 	const REQUEST_TIMEOUT        = 5;
 	const MAX_FETCH_DURATION     = 90;
 	const REFRESH_LOCK_TTL       = 300;
-	const NORMALIZATION_VERSION = 3;
+	const NORMALIZATION_VERSION = 4;
 
 	/**
 	 * Most recent fetch error for the current request.
@@ -45,7 +46,7 @@ class MCP_Catalog_Fetcher {
 	public static function get_catalog( $cache_hours = 24 ) {
 		$cached = get_transient( self::TRANSIENT_KEY );
 
-		if ( false !== $cached && is_array( $cached ) ) {
+		if ( false !== $cached && is_array( $cached ) && self::uses_current_normalization( $cached ) ) {
 			$stale = get_option( self::STALE_OPTION_KEY, array() );
 			if ( ! is_array( $stale ) || empty( $stale ) ) {
 				update_option( self::STALE_OPTION_KEY, $cached, false );
@@ -56,7 +57,35 @@ class MCP_Catalog_Fetcher {
 		self::schedule_refresh( $cache_hours );
 
 		$stale = get_option( self::STALE_OPTION_KEY, array() );
-		return is_array( $stale ) ? $stale : array();
+		if ( is_array( $stale ) && self::uses_current_normalization( $stale ) ) {
+			return $stale;
+		}
+
+		return array();
+	}
+
+	/**
+	 * Check whether every cached entry uses the current normalization contract.
+	 *
+	 * @param array $catalog Cached catalog entries.
+	 * @return bool True when the cache can be used without a refresh.
+	 */
+	private static function uses_current_normalization( $catalog ) {
+		if ( empty( $catalog ) ) {
+			return false;
+		}
+
+		foreach ( $catalog as $entry ) {
+			if (
+				! is_array( $entry ) ||
+				! isset( $entry['normalization_version'] ) ||
+				self::NORMALIZATION_VERSION !== (int) $entry['normalization_version']
+			) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	/**
@@ -162,9 +191,9 @@ class MCP_Catalog_Fetcher {
 		}
 
 		foreach ( $files as $file ) {
-			$filename = $file['name'];
-			$sha      = $file['sha'];
-			$old      = isset( $previous_by_file[ $filename ] ) ? $previous_by_file[ $filename ] : array();
+			$source_file = $file['path'];
+			$sha         = $file['sha'];
+			$old         = isset( $previous_by_file[ $source_file ] ) ? $previous_by_file[ $source_file ] : array();
 
 			if (
 				! empty( $old ) &&
@@ -182,17 +211,17 @@ class MCP_Catalog_Fetcher {
 				return array();
 			}
 
-			$url     = $raw_base . rawurlencode( $filename );
+			$url     = $raw_base . self::encode_path( $source_file );
 			$timeout = min( self::REQUEST_TIMEOUT, max( 1, (int) ceil( $remaining_time ) ) );
 			$content = self::fetch_url( $url, false, $timeout );
 			if ( '' === $content ) {
 				return array();
 			}
 
-			$parsed = self::parse_yaml_server( $content, $filename, $sha );
+			$parsed = self::parse_yaml_server( $content, $source_file, $sha );
 			if ( empty( $parsed ) ) {
 				if ( ! self::$last_error ) {
-					self::$last_error = sprintf( 'Could not normalize %s.', $filename );
+					self::$last_error = sprintf( 'Could not normalize %s.', $source_file );
 				}
 				return array();
 			}
@@ -204,51 +233,105 @@ class MCP_Catalog_Fetcher {
 	}
 
 	/**
-	 * List root-level YAML files in the catalog repository.
+	 * List YAML files from every configured catalog directory.
 	 *
-	 * @return array List of arrays containing name and Git blob SHA.
+	 * @return array List of arrays containing repository path and Git blob SHA.
 	 */
 	private static function list_yaml_files() {
-		$url = sprintf(
-			'https://api.github.com/repos/%s/%s/contents/?ref=%s',
-			self::GITHUB_OWNER,
-			self::GITHUB_REPO,
-			rawurlencode( self::GITHUB_BRANCH )
-		);
-		$body = self::fetch_url( $url, true, self::REQUEST_TIMEOUT );
-		if ( '' === $body ) {
-			return array();
-		}
-
-		$json = json_decode( $body, true );
-		if ( ! is_array( $json ) ) {
-			self::$last_error = 'GitHub returned an invalid catalog file listing.';
-			return array();
-		}
-
 		$files = array();
-		foreach ( $json as $item ) {
-			if (
-				is_array( $item ) &&
-				isset( $item['name'], $item['sha'], $item['type'] ) &&
-				'file' === $item['type'] &&
-				preg_match( '/\.ya?ml$/i', $item['name'] )
-			) {
-				$files[] = array(
-					'name' => sanitize_file_name( $item['name'] ),
-					'sha'  => sanitize_text_field( $item['sha'] ),
-				);
+		foreach ( self::CATALOG_DIRECTORIES as $directory ) {
+			$url = sprintf(
+				'https://api.github.com/repos/%s/%s/contents/%s?ref=%s',
+				self::GITHUB_OWNER,
+				self::GITHUB_REPO,
+				rawurlencode( $directory ),
+				rawurlencode( self::GITHUB_BRANCH )
+			);
+			$body = self::fetch_url( $url, true, self::REQUEST_TIMEOUT );
+			if ( '' === $body ) {
+				return array();
+			}
+
+			$json = json_decode( $body, true );
+			if ( ! is_array( $json ) ) {
+				self::$last_error = sprintf( 'GitHub returned an invalid file listing for %s.', $directory );
+				return array();
+			}
+
+			foreach ( $json as $item ) {
+				if (
+					is_array( $item ) &&
+					isset( $item['name'], $item['sha'], $item['type'] ) &&
+					'file' === $item['type'] &&
+					preg_match( '/\.ya?ml$/i', $item['name'] )
+				) {
+					$filename = sanitize_file_name( $item['name'] );
+					$files[]  = array(
+						'path' => $directory . '/' . $filename,
+						'sha'  => sanitize_text_field( $item['sha'] ),
+					);
+				}
 			}
 		}
 
 		usort(
 			$files,
 			static function ( $first, $second ) {
-				return strcasecmp( $first['name'], $second['name'] );
+				return strcasecmp( $first['path'], $second['path'] );
 			}
 		);
 
 		return $files;
+	}
+
+	/**
+	 * Build a GitHub source URL for a catalog file.
+	 *
+	 * @param string $source_file Repository-relative source path.
+	 * @return string Source file URL, or the catalog repository URL as fallback.
+	 */
+	public static function get_source_url( $source_file ) {
+		$repository_url = sprintf( 'https://github.com/%s/%s', self::GITHUB_OWNER, self::GITHUB_REPO );
+		$source_file    = self::sanitize_source_path( $source_file );
+		if ( '' === $source_file ) {
+			return $repository_url;
+		}
+
+		return sprintf(
+			'%s/blob/%s/%s',
+			$repository_url,
+			rawurlencode( self::GITHUB_BRANCH ),
+			self::encode_path( $source_file )
+		);
+	}
+
+	/**
+	 * Sanitize a repository-relative catalog path without flattening directories.
+	 *
+	 * @param string $path Raw repository-relative path.
+	 * @return string Sanitized path.
+	 */
+	public static function sanitize_source_path( $path ) {
+		$segments = explode( '/', str_replace( '\\', '/', (string) $path ) );
+		$segments = array_filter(
+			array_map( 'sanitize_file_name', $segments ),
+			static function ( $segment ) {
+				return '' !== $segment && '.' !== $segment && '..' !== $segment;
+			}
+		);
+
+		return implode( '/', $segments );
+	}
+
+	/**
+	 * Encode each path segment while retaining repository path separators.
+	 *
+	 * @param string $path Repository-relative path.
+	 * @return string URL-encoded path.
+	 */
+	private static function encode_path( $path ) {
+		$path = self::sanitize_source_path( $path );
+		return implode( '/', array_map( 'rawurlencode', explode( '/', $path ) ) );
 	}
 
 	/**

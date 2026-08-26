@@ -122,6 +122,11 @@
       border-color: $blue-main;
       outline: none;
     }
+
+    option {
+      background-color: #fff;
+      color: $main-black;
+    }
   }
 
   &__count {
@@ -192,10 +197,14 @@
     justify-content: center;
     background-color: rgba(255, 255, 255, 0.1);
     border-radius: 100%;
+    overflow: hidden;
+    flex: 0 0 60px;
 
     img {
+      display: block;
       height: 36px;
-      width: auto;
+      width: 36px;
+      object-fit: contain;
       transition: all 0.3s linear;
     }
   }

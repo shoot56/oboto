@@ -73,9 +73,9 @@ $runtime           = isset( $server['runtime'] ) ? trim( (string) $server['runti
 $container_config  = isset( $server['containerized_config'] ) && is_array( $server['containerized_config'] ) ? $server['containerized_config'] : array();
 $remote_config     = isset( $server['remote_config'] ) && is_array( $server['remote_config'] ) ? $server['remote_config'] : array();
 $metadata          = isset( $server['metadata'] ) && is_array( $server['metadata'] ) ? $server['metadata'] : array();
-$source_file       = isset( $server['source_file'] ) ? sanitize_file_name( (string) $server['source_file'] ) : '';
+$source_file       = isset( $server['source_file'] ) && class_exists( 'MCP_Catalog_Fetcher' ) ? MCP_Catalog_Fetcher::sanitize_source_path( $server['source_file'] ) : '';
 $catalog_url       = home_url( '/mcp-catalog/' );
-$source_url        = $source_file ? 'https://github.com/obot-platform/mcp-catalog/blob/main/' . rawurlencode( $source_file ) : 'https://github.com/obot-platform/mcp-catalog';
+$source_url        = class_exists( 'MCP_Catalog_Fetcher' ) ? MCP_Catalog_Fetcher::get_source_url( $source_file ) : 'https://github.com/obot-platform/mcp-catalog';
 
 $format_value = static function ( $value ) {
 	if ( is_bool( $value ) ) {

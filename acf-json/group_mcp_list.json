@@ -24,7 +24,7 @@
       "name": "data_source",
       "aria-label": "",
       "type": "radio",
-      "instructions": "Manual: edit servers in the repeater below. Automatic: load from GitHub obot-platform/mcp-catalog.",
+      "instructions": "Manual: edit servers in the repeater below. Automatic: load from the remotes, obot-remotes, and obot-images directories in GitHub obot-platform/mcp-catalog.",
       "required": 1,
       "conditional_logic": 0,
       "wrapper": { "width": "", "class": "", "id": "" },
@@ -185,5 +185,5 @@
   "active": true,
   "description": "",
   "show_in_rest": 0,
-  "modified": 1739900000
+  "modified": 1787745012
 }
