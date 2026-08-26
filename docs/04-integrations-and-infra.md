@@ -49,8 +49,9 @@ All of these are enqueued in `functions.php`:
 ### MCP catalog source and PHP libraries
 
 - **Obot MCP Catalog** (`github.com/obot-platform/mcp-catalog` and `raw.githubusercontent.com`)
-  - The GitHub Contents API supplies root YAML filenames and blob SHAs.
+  - The GitHub Contents API supplies YAML paths and blob SHAs from `remotes`, `obot-remotes`, and `obot-images`.
   - Changed YAML files are downloaded from the raw host; an incomplete refresh never replaces the last successful catalog.
+  - Directory-qualified source paths are cached so detail-page source links continue to resolve after the repository reorganization.
   - `repoURL` values on `github.com` become internal detail pages. All other hosts continue to be linked directly.
 - **Symfony YAML** (Composer) parses the upstream YAML documents.
 - **Parsedown** (Composer, safe mode enabled) renders the catalog descriptions as sanitized HTML.
