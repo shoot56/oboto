@@ -263,6 +263,14 @@ $cta-watermark-opacity: 0.09;
       &:first-child {
         @include cta-action-solid;
       }
+
+      // Keep the three actions visually consistent on mouseover. The first
+      // action already used the brand blue; the secondary actions now match it.
+      &:hover {
+        background: $blue-main;
+        border-color: $blue-main;
+        color: #fff;
+      }
     }
   }
 
@@ -414,9 +422,9 @@ blockquote.cta-strip {
   }
 }
 
-// Variant 1: solid brand blue. Highest contrast of the three.
+// Variant 1: a dark brand gradient inspired by the earlier editorial CTA.
 .cta-strip--accent {
-  background: $blue-main;
+  background: linear-gradient(120deg, #3158bd 0%, #175a83 55%, #0b5266 100%);
 
   .cta-strip__action {
     background: rgba(0, 0, 0, 0.24);
