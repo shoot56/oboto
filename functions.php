@@ -122,7 +122,7 @@ if ( file_exists( $theme_autoloader ) ) {
 require get_template_directory() . '/inc/helpers.php';
 
 /**
- * GitHub-backed MCP server synchronization.
+ * MCP catalog server synchronization.
  */
 require_once get_template_directory() . '/inc/class-mcp-server-sync.php';
 

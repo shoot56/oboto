@@ -58,7 +58,7 @@
 
 - WP-Cron refreshes YAML entries from the upstream `obot-platform/mcp-catalog` directories `remotes`, `obot-remotes`, and `obot-images` daily.
 - The theme keeps a last-successful cache and only downloads YAML files whose Git blob SHA changed.
-- GitHub-backed entries are synchronized into read-only `mcp-server` posts and rendered at `/mcp-catalog/<yaml-filename>/`; non-GitHub entries remain direct external links. The directory-qualified source path is retained for cache identity and source links while public slugs remain based on the YAML filename.
+- Every catalog entry is synchronized into a read-only `mcp-server` post and rendered at `/mcp-catalog/<yaml-filename>/`, regardless of the host used by `repoURL`. The directory-qualified source path is retained for cache identity and GitHub source links while public slugs remain based on the YAML filename.
 
 ### AJAX request → content fragments
 
