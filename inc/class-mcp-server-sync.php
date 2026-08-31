@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Synchronizes GitHub-backed MCP catalog entries into read-only WordPress posts.
+ * Synchronizes MCP catalog entries into read-only WordPress posts.
  *
  * @package Oboto
  */
@@ -22,7 +22,7 @@ class MCP_Server_Sync {
 	const SOURCE_SHA_META_KEY  = '_mcp_catalog_source_sha';
 	const SYNC_STATUS_OPTION   = 'mcp_server_post_sync_status';
 	const DATA_VERSION_OPTION  = 'oboto_mcp_server_data_version';
-	const DATA_VERSION         = 'mcp_server_payload_array_v1';
+	const DATA_VERSION         = 'mcp_server_payload_array_v2_all_catalog_entries';
 	const REPAIR_LOCK_KEY      = 'oboto_mcp_server_data_repair_lock';
 	const REPAIR_LOCK_TTL      = 5 * MINUTE_IN_SECONDS;
 	const REWRITE_OPTION       = 'oboto_mcp_server_rewrite_version';
@@ -73,7 +73,7 @@ class MCP_Server_Sync {
 		$updated  = 0;
 
 		foreach ( $catalog as $server ) {
-			if ( ! is_array( $server ) || ! MCP_Catalog_Fetcher::is_github_url( isset( $server['external_url'] ) ? $server['external_url'] : '' ) ) {
+			if ( ! is_array( $server ) ) {
 				continue;
 			}
 
@@ -227,7 +227,7 @@ class MCP_Server_Sync {
 
 		$catalog = MCP_Catalog_Fetcher::get_catalog( 24 );
 		foreach ( $catalog as $server ) {
-			if ( ! is_array( $server ) || ! MCP_Catalog_Fetcher::is_github_url( isset( $server['external_url'] ) ? $server['external_url'] : '' ) ) {
+			if ( ! is_array( $server ) ) {
 				continue;
 			}
 
@@ -251,7 +251,7 @@ class MCP_Server_Sync {
 	 * @return string Internal URL or an empty string.
 	 */
 	public static function get_internal_url( $server ) {
-		if ( ! is_array( $server ) || ! MCP_Catalog_Fetcher::is_github_url( isset( $server['external_url'] ) ? $server['external_url'] : '' ) ) {
+		if ( ! is_array( $server ) ) {
 			return '';
 		}
 

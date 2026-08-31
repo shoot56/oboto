@@ -11,7 +11,7 @@
 - **Domain/content layer**
   - `inc/custom-post-type.php`: registers `learning-center`, its taxonomy, and the generated read-only `mcp-server` CPT and rewrites.
   - `inc/class-mcp-catalog-fetcher.php`: fetches, normalizes, and atomically caches the upstream MCP YAML catalog.
-  - `inc/class-mcp-server-sync.php`: materializes only GitHub-backed catalog entries as published internal pages.
+  - `inc/class-mcp-server-sync.php`: materializes every catalog entry as a published internal page.
   - WordPress DB provides persistence for posts, terms, options.
 - **Presentation layer**
   - `templates/*.html`, `parts/*.html`: FSE layout composition.
@@ -45,8 +45,8 @@
   - Depends on ACF fields on menu items (e.g. `icon`, `item_type`, `open_in_new_tab`).
 - **MCP Catalog**
   - Source: YAML files in the `remotes`, `obot-remotes`, and `obot-images` directories of `obot-platform/mcp-catalog`.
-  - Listing: `oboto/mcp-list` uses cached normalized data; GitHub entries resolve to internal pages and other resources preserve their external URLs.
-  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a normalized array snapshot stored in post meta. The renderer resolves FSE/ACF post context defensively and retains legacy JSON plus last-successful-catalog fallbacks by slug.
+  - Listing: `oboto/mcp-list` uses cached normalized data; every automatic catalog card resolves to its synchronized internal page.
+  - Detail route: `templates/single-mcp-server.html` renders `oboto/mcp-server-single` from a normalized array snapshot stored in post meta. The renderer resolves FSE/ACF post context defensively and retains legacy JSON plus last-successful-catalog fallbacks by slug. It shows About and conditional Configuration sections, plus the official provider page (`repoURL`), remote MCP endpoint, and constructed GitHub catalog-source link.
   - Persistence: transient current cache, last-successful option fallback, generated `mcp-server` posts, and synchronization status options. Administrators can inspect records and payload health in a read-only wp-admin list.
   - Deployment repair: a versioned one-time synchronization matches existing records by catalog identity or public slug and rewrites payload meta from the cached catalog without waiting for WP-Cron or a new GitHub request.
   - Refresh: daily WP-Cron plus asynchronous stale-cache refresh; posts are updated only after a complete successful catalog fetch.

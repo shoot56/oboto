@@ -65,9 +65,8 @@ $name              = isset( $server['name'] ) ? trim( (string) $server['name'] )
 $short_description = isset( $server['short_description'] ) ? trim( (string) $server['short_description'] ) : '';
 $description       = isset( $server['description'] ) ? (string) $server['description'] : '';
 $icon              = isset( $server['icon'] ) ? (string) $server['icon'] : '';
-$repository_url    = isset( $server['external_url'] ) ? (string) $server['external_url'] : '';
+$official_url      = isset( $server['external_url'] ) ? (string) $server['external_url'] : '';
 $categories        = isset( $server['categories'] ) && is_array( $server['categories'] ) ? array_values( array_filter( array_map( 'strval', $server['categories'] ) ) ) : array();
-$tools             = isset( $server['tool_preview'] ) && is_array( $server['tool_preview'] ) ? $server['tool_preview'] : array();
 $environment       = isset( $server['env'] ) && is_array( $server['env'] ) ? $server['env'] : array();
 $runtime           = isset( $server['runtime'] ) ? trim( (string) $server['runtime'] ) : '';
 $container_config  = isset( $server['containerized_config'] ) && is_array( $server['containerized_config'] ) ? $server['containerized_config'] : array();
@@ -76,6 +75,24 @@ $metadata          = isset( $server['metadata'] ) && is_array( $server['metadata
 $source_file       = isset( $server['source_file'] ) && class_exists( 'MCP_Catalog_Fetcher' ) ? MCP_Catalog_Fetcher::sanitize_source_path( $server['source_file'] ) : '';
 $catalog_url       = home_url( '/mcp-catalog/' );
 $source_url        = class_exists( 'MCP_Catalog_Fetcher' ) ? MCP_Catalog_Fetcher::get_source_url( $source_file ) : 'https://github.com/obot-platform/mcp-catalog';
+$official_host     = $official_url ? (string) wp_parse_url( $official_url, PHP_URL_HOST ) : '';
+$mcp_url           = '';
+$mcp_url_href      = '';
+
+foreach ( array( 'fixedURL', 'url', 'urlTemplate' ) as $remote_url_key ) {
+	if ( ! empty( $remote_config[ $remote_url_key ] ) && is_scalar( $remote_config[ $remote_url_key ] ) ) {
+		$mcp_url = trim( (string) $remote_config[ $remote_url_key ] );
+		break;
+	}
+}
+
+if ( ! $mcp_url && ! empty( $remote_config['hostname'] ) && is_scalar( $remote_config['hostname'] ) ) {
+	$mcp_url = 'https://' . ltrim( trim( (string) $remote_config['hostname'] ), '/' );
+}
+
+if ( $mcp_url && false === strpos( $mcp_url, '${' ) ) {
+	$mcp_url_href = esc_url_raw( $mcp_url );
+}
 
 $format_value = static function ( $value ) {
 	if ( is_bool( $value ) ) {
@@ -108,15 +125,8 @@ $truthy = static function ( $value ) {
 	return in_array( strtolower( trim( (string) $value ) ), array( '1', 'true', 'yes', 'on' ), true );
 };
 
-$user_type_labels = array(
-	'singleUser' => __( 'Single user', 'oboto' ),
-	'multiUser'  => __( 'Multiple users', 'oboto' ),
-);
-$server_user_type = isset( $server['server_user_type'] ) ? (string) $server['server_user_type'] : '';
-$user_type_label  = isset( $user_type_labels[ $server_user_type ] ) ? $user_type_labels[ $server_user_type ] : $server_user_type;
 $runtime_label    = 'containerized' === $runtime ? __( 'Containerized', 'oboto' ) : ( 'remote' === $runtime ? __( 'Remote', 'oboto' ) : ucfirst( $runtime ) );
 $deprecated       = isset( $metadata['deprecated'] ) && $truthy( $metadata['deprecated'] );
-$unsupported      = isset( $metadata['unsupportedTools'] ) ? $format_value( $metadata['unsupportedTools'] ) : '';
 
 $required_secrets = 0;
 foreach ( $environment as $variable ) {
@@ -132,15 +142,6 @@ if ( ! empty( $remote_config['headers'] ) && is_array( $remote_config['headers']
 	}
 }
 
-$repository_host = '';
-$repository_owner = '';
-if ( $repository_url ) {
-	$repository_host = (string) wp_parse_url( $repository_url, PHP_URL_HOST );
-	$repository_path = trim( (string) wp_parse_url( $repository_url, PHP_URL_PATH ), '/' );
-	$path_parts      = $repository_path ? explode( '/', $repository_path ) : array();
-	$repository_owner = isset( $path_parts[0] ) ? $path_parts[0] : '';
-}
-
 $sync_status = class_exists( 'MCP_Catalog_Fetcher' ) ? MCP_Catalog_Fetcher::get_sync_status() : array();
 $last_sync   = isset( $sync_status['last_success_gmt'] ) ? strtotime( (string) $sync_status['last_success_gmt'] ) : false;
 $last_sync_label = $last_sync
@@ -149,12 +150,8 @@ $last_sync_label = $last_sync
 
 $has_configuration = ! empty( $environment ) || ! empty( $container_config ) || ! empty( $remote_config );
 $section_links      = array(
-	'about'    => __( 'About', 'oboto' ),
-	'mcp-info' => __( 'MCP Info', 'oboto' ),
+	'about' => __( 'About', 'oboto' ),
 );
-if ( $tools ) {
-	$section_links['tools'] = __( 'Tools', 'oboto' );
-}
 if ( $has_configuration ) {
 	$section_links['configuration'] = __( 'Configuration', 'oboto' );
 }
@@ -163,7 +160,7 @@ $related = array();
 if ( $categories && class_exists( 'MCP_Catalog_Fetcher' ) ) {
 	$current_slug = isset( $server['slug'] ) ? sanitize_title( (string) $server['slug'] ) : '';
 	foreach ( MCP_Catalog_Fetcher::get_catalog( 24 ) as $related_server ) {
-		if ( ! is_array( $related_server ) || ! MCP_Catalog_Fetcher::is_github_url( isset( $related_server['external_url'] ) ? $related_server['external_url'] : '' ) ) {
+		if ( ! is_array( $related_server ) ) {
 			continue;
 		}
 
@@ -235,7 +232,6 @@ $wrapper       = get_block_wrapper_attributes( array( 'class' => 'mcp-server-sin
 					<div class="mcp-server-single__badges">
 						<?php if ( $deprecated ) : ?><span class="mcp-server-single__badge mcp-server-single__badge--warning"><?php esc_html_e( 'Deprecated', 'oboto' ); ?></span><?php endif; ?>
 						<?php if ( $required_secrets ) : ?><span class="mcp-server-single__badge"><?php echo esc_html( sprintf( _n( '%d required secret', '%d required secrets', $required_secrets, 'oboto' ), $required_secrets ) ); ?></span><?php endif; ?>
-						<?php if ( $user_type_label ) : ?><span class="mcp-server-single__badge"><?php echo esc_html( $user_type_label ); ?></span><?php endif; ?>
 					</div>
 					<h1><?php echo esc_html( $name ); ?></h1>
 					<?php if ( $short_description ) : ?><p class="mcp-server-single__lede"><?php echo esc_html( $short_description ); ?></p><?php endif; ?>
@@ -243,16 +239,15 @@ $wrapper       = get_block_wrapper_attributes( array( 'class' => 'mcp-server-sin
 			</div>
 
 			<div class="mcp-server-single__hero-meta" aria-label="<?php esc_attr_e( 'Server summary', 'oboto' ); ?>">
-				<?php if ( $tools ) : ?><span><strong><?php echo esc_html( count( $tools ) ); ?></strong> <?php esc_html_e( 'tools', 'oboto' ); ?></span><?php endif; ?>
 				<?php if ( $runtime_label ) : ?><span><?php echo esc_html( $runtime_label ); ?></span><?php endif; ?>
-				<?php if ( $repository_owner ) : ?><span><?php echo esc_html( $repository_owner ); ?></span><?php endif; ?>
 				<?php if ( $last_sync_label ) : ?><span><?php echo esc_html( sprintf( __( 'Updated %s', 'oboto' ), $last_sync_label ) ); ?></span><?php endif; ?>
 			</div>
 
 			<div class="mcp-server-single__actions">
-				<?php if ( $repository_url ) : ?>
-					<a class="mcp-server-single__button mcp-server-single__button--primary" href="<?php echo esc_url( $repository_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View on GitHub', 'oboto' ); ?><span aria-hidden="true">↗</span></a>
+				<?php if ( $official_url ) : ?>
+					<a class="mcp-server-single__button mcp-server-single__button--primary" href="<?php echo esc_url( $official_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'Official page', 'oboto' ); ?><span aria-hidden="true">↗</span></a>
 				<?php endif; ?>
+				<?php if ( $source_url ) : ?><a class="mcp-server-single__button" href="<?php echo esc_url( $source_url ); ?>" target="_blank" rel="noopener noreferrer"><?php esc_html_e( 'View catalog entry', 'oboto' ); ?><span aria-hidden="true">↗</span></a><?php endif; ?>
 				<a class="mcp-server-single__button" href="<?php echo esc_url( $catalog_url ); ?>"><?php esc_html_e( 'Back to catalog', 'oboto' ); ?></a>
 			</div>
 
@@ -273,45 +268,6 @@ $wrapper       = get_block_wrapper_attributes( array( 'class' => 'mcp-server-sin
 					<h2><?php esc_html_e( 'About', 'oboto' ); ?></h2>
 					<div class="mcp-server-single__prose"><?php echo $markdown_to_html( $description ? $description : $short_description ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?></div>
 				</section>
-
-				<section id="mcp-info" class="mcp-server-single__section">
-					<h2><?php esc_html_e( 'MCP Info', 'oboto' ); ?></h2>
-					<dl class="mcp-server-single__info-list">
-						<?php if ( $runtime_label ) : ?><div><dt><?php esc_html_e( 'Runtime', 'oboto' ); ?></dt><dd><?php echo esc_html( $runtime_label ); ?></dd></div><?php endif; ?>
-						<?php if ( $user_type_label ) : ?><div><dt><?php esc_html_e( 'User type', 'oboto' ); ?></dt><dd><?php echo esc_html( $user_type_label ); ?></dd></div><?php endif; ?>
-						<?php if ( $repository_host ) : ?><div><dt><?php esc_html_e( 'Repository host', 'oboto' ); ?></dt><dd><?php echo esc_html( $repository_host ); ?></dd></div><?php endif; ?>
-						<?php if ( $tools ) : ?><div><dt><?php esc_html_e( 'Documented tools', 'oboto' ); ?></dt><dd><?php echo esc_html( count( $tools ) ); ?></dd></div><?php endif; ?>
-						<?php if ( $unsupported ) : ?><div><dt><?php esc_html_e( 'Unsupported tools', 'oboto' ); ?></dt><dd><?php echo esc_html( $unsupported ); ?></dd></div><?php endif; ?>
-					</dl>
-				</section>
-
-				<?php if ( $tools ) : ?>
-					<section id="tools" class="mcp-server-single__section">
-						<div class="mcp-server-single__section-heading"><h2><?php esc_html_e( 'Tools', 'oboto' ); ?></h2><span><?php echo esc_html( count( $tools ) ); ?></span></div>
-						<div class="mcp-server-single__tools">
-							<?php foreach ( $tools as $tool ) : ?>
-								<?php
-								if ( ! is_array( $tool ) || empty( $tool['name'] ) ) {
-									continue;
-								}
-								$tool_params = isset( $tool['params'] ) && is_array( $tool['params'] ) ? $tool['params'] : array();
-								?>
-								<details class="mcp-server-single__tool">
-									<summary><code><?php echo esc_html( (string) $tool['name'] ); ?></code><span aria-hidden="true"></span></summary>
-									<div class="mcp-server-single__tool-body">
-										<?php if ( ! empty( $tool['description'] ) ) : ?><p><?php echo esc_html( (string) $tool['description'] ); ?></p><?php endif; ?>
-										<?php if ( $tool_params ) : ?>
-											<h3><?php esc_html_e( 'Parameters', 'oboto' ); ?></h3>
-											<dl class="mcp-server-single__params">
-												<?php foreach ( $tool_params as $param_name => $param_description ) : ?><div><dt><code><?php echo esc_html( (string) $param_name ); ?></code></dt><dd><?php echo esc_html( $format_value( $param_description ) ); ?></dd></div><?php endforeach; ?>
-											</dl>
-										<?php endif; ?>
-									</div>
-								</details>
-							<?php endforeach; ?>
-						</div>
-					</section>
-				<?php endif; ?>
 
 				<?php if ( $has_configuration ) : ?>
 					<section id="configuration" class="mcp-server-single__section">
@@ -362,13 +318,32 @@ $wrapper       = get_block_wrapper_attributes( array( 'class' => 'mcp-server-sin
 
 			<aside class="mcp-server-single__sidebar" aria-label="<?php esc_attr_e( 'Server details', 'oboto' ); ?>">
 				<div class="mcp-server-single__side-card">
-					<h2><?php esc_html_e( 'At a glance', 'oboto' ); ?></h2>
-					<dl>
-						<?php if ( $runtime_label ) : ?><div><dt><?php esc_html_e( 'Runtime', 'oboto' ); ?></dt><dd><?php echo esc_html( $runtime_label ); ?></dd></div><?php endif; ?>
-						<?php if ( $tools ) : ?><div><dt><?php esc_html_e( 'Tools', 'oboto' ); ?></dt><dd><?php echo esc_html( count( $tools ) ); ?></dd></div><?php endif; ?>
-						<?php if ( $required_secrets ) : ?><div><dt><?php esc_html_e( 'Secrets', 'oboto' ); ?></dt><dd><?php echo esc_html( $required_secrets ); ?></dd></div><?php endif; ?>
-						<?php if ( $repository_owner ) : ?><div><dt><?php esc_html_e( 'Publisher', 'oboto' ); ?></dt><dd><?php echo esc_html( $repository_owner ); ?></dd></div><?php endif; ?>
-					</dl>
+					<h2><?php esc_html_e( 'Server links', 'oboto' ); ?></h2>
+					<ul class="mcp-server-single__server-links">
+						<?php if ( $official_url ) : ?>
+							<li>
+								<span><?php esc_html_e( 'Official page', 'oboto' ); ?></span>
+								<a href="<?php echo esc_url( $official_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $official_host ? $official_host : $official_url ); ?><span aria-hidden="true">↗</span></a>
+							</li>
+						<?php endif; ?>
+						<?php if ( $mcp_url ) : ?>
+							<li>
+								<span><?php esc_html_e( 'MCP URL', 'oboto' ); ?></span>
+								<?php if ( $mcp_url_href ) : ?>
+									<a href="<?php echo esc_url( $mcp_url_href ); ?>" target="_blank" rel="noopener noreferrer"><code><?php echo esc_html( $mcp_url ); ?></code><span aria-hidden="true">↗</span></a>
+								<?php else : ?>
+									<code><?php echo esc_html( $mcp_url ); ?></code>
+								<?php endif; ?>
+							</li>
+						<?php endif; ?>
+						<?php if ( $source_url ) : ?>
+							<li>
+								<span><?php esc_html_e( 'Catalog entry', 'oboto' ); ?></span>
+								<a href="<?php echo esc_url( $source_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $source_file ? $source_file : __( 'MCP Catalog repository', 'oboto' ) ); ?><span aria-hidden="true">↗</span></a>
+							</li>
+						<?php endif; ?>
+					</ul>
+					<?php if ( $last_sync_label ) : ?><p><?php echo esc_html( sprintf( __( 'Catalog synchronized %s.', 'oboto' ), $last_sync_label ) ); ?></p><?php endif; ?>
 				</div>
 
 				<?php if ( $related ) : ?>
@@ -379,12 +354,6 @@ $wrapper       = get_block_wrapper_attributes( array( 'class' => 'mcp-server-sin
 						</ul>
 					</div>
 				<?php endif; ?>
-
-				<div class="mcp-server-single__side-card">
-					<h2><?php esc_html_e( 'Source', 'oboto' ); ?></h2>
-					<a class="mcp-server-single__source-link" href="<?php echo esc_url( $source_url ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $source_file ? $source_file : __( 'MCP Catalog repository', 'oboto' ) ); ?><span aria-hidden="true">↗</span></a>
-					<?php if ( $last_sync_label ) : ?><p><?php echo esc_html( sprintf( __( 'Catalog synchronized %s.', 'oboto' ), $last_sync_label ) ); ?></p><?php endif; ?>
-				</div>
 
 				<?php if ( is_array( $header_button ) && ! empty( $header_button['url'] ) && ! empty( $header_button['title'] ) ) : ?>
 					<div class="mcp-server-single__side-card mcp-server-single__side-card--cta">

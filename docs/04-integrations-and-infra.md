@@ -52,7 +52,8 @@ All of these are enqueued in `functions.php`:
   - The GitHub Contents API supplies YAML paths and blob SHAs from `remotes`, `obot-remotes`, and `obot-images`.
   - Changed YAML files are downloaded from the raw host; an incomplete refresh never replaces the last successful catalog.
   - Directory-qualified source paths are cached so detail-page source links continue to resolve after the repository reorganization.
-  - `repoURL` values on `github.com` become internal detail pages. All other hosts continue to be linked directly.
+  - Every YAML entry becomes an internal detail page. `repoURL` is treated as the provider's official documentation/page link and never as the condition for generating a page.
+  - The MCP endpoint is read from `remoteConfig.fixedURL`, `remoteConfig.url`, `remoteConfig.urlTemplate`, or `remoteConfig.hostname` when present. The Obot GitHub source URL is constructed independently from the directory-qualified YAML path.
 - **Symfony YAML** (Composer) parses the upstream YAML documents.
 - **Parsedown** (Composer, safe mode enabled) renders the catalog descriptions as sanitized HTML.
 
