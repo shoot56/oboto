@@ -105,6 +105,9 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/comparison`** — Comparison block.
   - **When to use**: Product or landing pages that need a responsive feature comparison table with configurable column headings and comparison rows.
   - **Note**: Uses ACF fields for title, feature/column headings, comparison rows, and optional check/cross/semicircle status icons in both comparison columns; the first comparison column is visually highlighted on desktop and mobile.
+- **`oboto/comparison-matrix`** — Comparison Matrix block.
+  - **When to use**: Blog posts, Learning Center pages, or landing pages that need a wide comparison table with two to ten columns.
+  - **Note**: Uses ACF fields for an eyebrow, title, introductory text, bottom note, selectable column count, column headings, highlighted rows, and neutral/yes/no cell statuses. The first column stays fixed while the remaining columns scroll horizontally on narrower screens.
 - **`oboto/landing-logos`** — Landing Logos block.
   - **When to use**: Obot landing pages that need the logo strip from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for the section title and a repeater of uploaded logo images.

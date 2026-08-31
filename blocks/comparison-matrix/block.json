@@ -1,0 +1,28 @@
+{
+  "name": "oboto/comparison-matrix",
+  "title": "Comparison Matrix",
+  "description": "Flexible comparison table with two to ten columns, highlighted rows, and semantic cell statuses.",
+  "category": "theme_block_category",
+  "icon": "editor-table",
+  "keywords": ["comparison", "matrix", "table", "features"],
+  "acf": {
+    "mode": "preview",
+    "blockVersion": 3,
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "wide"
+    }
+  },
+  "supports": {
+    "align": ["wide", "full"],
+    "anchor": true,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "style": ["comparison-matrix"]
+}

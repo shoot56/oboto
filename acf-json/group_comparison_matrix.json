@@ -1,0 +1,1614 @@
+{
+    "key": "group_comparison_matrix",
+    "title": "Block: Comparison Matrix",
+    "fields": [
+        {
+            "key": "field_comparison_matrix_content_tab",
+            "label": "Content",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_comparison_matrix_eyebrow",
+            "label": "Eyebrow",
+            "name": "eyebrow",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Gateway Comparison · 2026",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_title",
+            "label": "Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "MCP Gateway Comparison",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_text",
+            "label": "Text",
+            "name": "text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "A comparison of MCP management platforms and agent infrastructure gateways.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_comparison_matrix_bottom_text",
+            "label": "Bottom Text",
+            "name": "bottom_text",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Optional source, methodology, date, or explanatory note shown below the table.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 3,
+            "placeholder": "Compiled from public vendor documentation. Verify current details before publishing.",
+            "new_lines": ""
+        },
+        {
+            "key": "field_comparison_matrix_table_tab",
+            "label": "Table",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_comparison_matrix_column_count",
+            "label": "Number of Columns",
+            "name": "column_count",
+            "aria-label": "",
+            "type": "select",
+            "instructions": "Choose the total number of columns, including the fixed first column.",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "2": "2",
+                "3": "3",
+                "4": "4",
+                "5": "5",
+                "6": "6",
+                "7": "7",
+                "8": "8",
+                "9": "9",
+                "10": "10"
+            },
+            "default_value": "2",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_1_heading",
+            "label": "Column 1 Heading",
+            "name": "column_1_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Gateway",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_2_heading",
+            "label": "Column 2 Heading",
+            "name": "column_2_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 2",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_3_heading",
+            "label": "Column 3 Heading",
+            "name": "column_3_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "3"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "4"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "5"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "6"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "7"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "8"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 3",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_4_heading",
+            "label": "Column 4 Heading",
+            "name": "column_4_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "4"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "5"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "6"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "7"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "8"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 4",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_5_heading",
+            "label": "Column 5 Heading",
+            "name": "column_5_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "5"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "6"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "7"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "8"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 5",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_6_heading",
+            "label": "Column 6 Heading",
+            "name": "column_6_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "6"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "7"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "8"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 6",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_7_heading",
+            "label": "Column 7 Heading",
+            "name": "column_7_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "7"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "8"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 7",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_8_heading",
+            "label": "Column 8 Heading",
+            "name": "column_8_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "8"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 8",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_9_heading",
+            "label": "Column 9 Heading",
+            "name": "column_9_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "9"
+                    }
+                ],
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 9",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_column_10_heading",
+            "label": "Column 10 Heading",
+            "name": "column_10_heading",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_comparison_matrix_column_count",
+                        "operator": "==",
+                        "value": "10"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "20",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Column 10",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_comparison_matrix_rows_tab",
+            "label": "Rows",
+            "name": "",
+            "aria-label": "",
+            "type": "tab",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "placement": "top",
+            "endpoint": 0
+        },
+        {
+            "key": "field_comparison_matrix_rows",
+            "label": "Rows",
+            "name": "rows",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "Add table rows. Only cells within the selected number of columns are displayed.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "layout": "block",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add Row",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_comparison_matrix_highlighted",
+                    "label": "Highlighted",
+                    "name": "highlighted",
+                    "aria-label": "",
+                    "type": "true_false",
+                    "instructions": "Highlight neutral text in this row in white. Yes and No statuses keep their green and red colors.",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "message": "Highlight this row",
+                    "default_value": 0,
+                    "ui": 1,
+                    "ui_on_text": "Highlighted",
+                    "ui_off_text": "Standard",
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_1",
+                    "label": "Column 1 Cell",
+                    "name": "cell_1",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_1_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_1_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_2",
+                    "label": "Column 2 Cell",
+                    "name": "cell_2",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": 0,
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_2_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_2_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_3",
+                    "label": "Column 3 Cell",
+                    "name": "cell_3",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "3"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "4"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "5"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "6"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "7"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "8"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_3_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_3_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_4",
+                    "label": "Column 4 Cell",
+                    "name": "cell_4",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "4"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "5"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "6"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "7"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "8"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_4_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_4_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_5",
+                    "label": "Column 5 Cell",
+                    "name": "cell_5",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "5"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "6"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "7"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "8"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_5_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_5_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_6",
+                    "label": "Column 6 Cell",
+                    "name": "cell_6",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "6"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "7"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "8"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_6_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_6_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_7",
+                    "label": "Column 7 Cell",
+                    "name": "cell_7",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "7"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "8"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_7_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_7_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_8",
+                    "label": "Column 8 Cell",
+                    "name": "cell_8",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "8"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_8_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_8_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_9",
+                    "label": "Column 9 Cell",
+                    "name": "cell_9",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "9"
+                            }
+                        ],
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_9_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_9_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                },
+                {
+                    "key": "field_comparison_matrix_cell_10",
+                    "label": "Column 10 Cell",
+                    "name": "cell_10",
+                    "aria-label": "",
+                    "type": "group",
+                    "instructions": "",
+                    "required": 0,
+                    "conditional_logic": [
+                        [
+                            {
+                                "field": "field_comparison_matrix_column_count",
+                                "operator": "==",
+                                "value": "10"
+                            }
+                        ]
+                    ],
+                    "wrapper": {
+                        "width": "",
+                        "class": "",
+                        "id": ""
+                    },
+                    "layout": "block",
+                    "sub_fields": [
+                        {
+                            "key": "field_comparison_matrix_cell_10_text",
+                            "label": "Text",
+                            "name": "text",
+                            "aria-label": "",
+                            "type": "textarea",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "70",
+                                "class": "",
+                                "id": ""
+                            },
+                            "default_value": "",
+                            "maxlength": "",
+                            "rows": 2,
+                            "placeholder": "",
+                            "new_lines": ""
+                        },
+                        {
+                            "key": "field_comparison_matrix_cell_10_status",
+                            "label": "Status",
+                            "name": "status",
+                            "aria-label": "",
+                            "type": "select",
+                            "instructions": "",
+                            "required": 0,
+                            "conditional_logic": 0,
+                            "wrapper": {
+                                "width": "30",
+                                "class": "",
+                                "id": ""
+                            },
+                            "choices": {
+                                "neutral": "None (neutral text)",
+                                "yes": "Yes (green check)",
+                                "no": "No (red cross)"
+                            },
+                            "default_value": "neutral",
+                            "return_format": "value",
+                            "multiple": 0,
+                            "allow_null": 0,
+                            "ui": 0,
+                            "ajax": 0,
+                            "placeholder": ""
+                        }
+                    ],
+                    "parent_repeater": "field_comparison_matrix_rows"
+                }
+            ]
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "oboto/comparison-matrix"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1788186000
+}
