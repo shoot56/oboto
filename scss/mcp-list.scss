@@ -78,10 +78,10 @@
 
   &__search-label {
     display: block;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
     margin-bottom: 4px;
-    color: $grayscale600;
+    color: #fff;
   }
 
   &__search {
@@ -101,9 +101,9 @@
   }
 
   &__filter-label {
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 500;
-    color: $grayscale600;
+    color: #fff;
   }
 
   &__select {
