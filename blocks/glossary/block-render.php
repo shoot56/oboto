@@ -88,6 +88,7 @@ $show_counts        = $glossary_flag( 'show_counts', false );
 $link_terms         = $glossary_flag( 'link_terms', true );
 $browse_eyebrow     = $glossary_text( 'browse_eyebrow', __( 'Browse', 'oboto' ) );
 $browse_title       = $glossary_text( 'browse_title', __( 'All glossary terms', 'oboto' ) );
+$browse_description = $glossary_text( 'browse_description', __( 'Click any term below to browse related articles.', 'oboto' ) );
 $empty_text         = $glossary_text( 'empty_text', __( 'No terms match your search. Try a shorter phrase or another category.', 'oboto' ) );
 $enable_schema      = $glossary_flag( 'enable_schema', true );
 
@@ -334,6 +335,9 @@ $arrow_icon = '<svg class="glossary__arrow-icon" width="24" height="24" viewBox=
 						<p class="glossary__eyebrow"><?php echo esc_html( $browse_eyebrow ); ?></p>
 					<?php endif; ?>
 					<h2 class="glossary__section-title"><?php echo esc_html( $browse_title ); ?></h2>
+					<?php if ( '' !== $browse_description ) : ?>
+						<p class="glossary__section-desc"><?php echo esc_html( $browse_description ); ?></p>
+					<?php endif; ?>
 				</div>
 				<p
 					class="glossary__count"

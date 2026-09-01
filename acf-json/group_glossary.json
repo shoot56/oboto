@@ -185,6 +185,21 @@
             "append": ""
         },
         {
+            "key": "field_glossary_browse_description",
+            "label": "List description",
+            "name": "browse_description",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Short line under the list title.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "Click any term below to browse related articles.",
+            "placeholder": "Click any term below to browse related articles.",
+            "prepend": "",
+            "append": ""
+        },
+        {
             "key": "field_glossary_empty_text",
             "label": "No results text",
             "name": "empty_text",

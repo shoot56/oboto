@@ -325,6 +325,15 @@
   white-space: nowrap;
 }
 
+.glossary__section-desc {
+  margin: 10px 0 0;
+  max-width: 560px;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 160%;
+  color: var(--glossary-muted);
+}
+
 /* ------------------------------------------------------------ Featured --- */
 
 .glossary__featured {
@@ -545,12 +554,21 @@ a.glossary__term:hover .glossary__term-name {
 
 .glossary__term-arrow {
   position: absolute;
-  top: 20px;
-  right: 12px;
+  top: 18px;
+  right: 8px;
   display: inline-flex;
   color: var(--glossary-accent);
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
+}
+
+.glossary__term-arrow .glossary__arrow-icon {
+  width: 26px;
+  height: 26px;
+}
+
+.glossary__term-arrow .glossary__arrow-icon path {
+  stroke-width: 1.75;
 }
 
 a.glossary__term:hover .glossary__term-arrow,
@@ -755,7 +773,7 @@ a.glossary__term:focus-visible .glossary__term-arrow {
   }
 
   .glossary__term-arrow {
-    top: 20px;
+    top: 18px;
     right: 0;
     opacity: 1;
   }
