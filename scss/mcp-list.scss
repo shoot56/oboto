@@ -129,6 +129,124 @@
     }
   }
 
+  &__select--native {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  &__custom-select {
+    position: relative;
+    min-width: 212px;
+    max-width: 100%;
+
+    &.is-open {
+      z-index: 20;
+    }
+
+    &.is-above .mcp-list__select-dropdown {
+      top: auto;
+      bottom: calc(100% + 6px);
+    }
+  }
+
+  &__select-trigger {
+    width: 100%;
+    min-height: 36px;
+    padding: 8px 36px 8px 12px;
+    border: 1px solid $grayscale300;
+    border-radius: 8px;
+    background: rgba(255, 255, 255, 0.06);
+    color: inherit;
+    cursor: pointer;
+    box-sizing: border-box;
+    font: inherit;
+    font-size: 14px;
+    line-height: 1.3;
+    text-align: left;
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 13px;
+      width: 7px;
+      height: 7px;
+      border-right: 1.5px solid currentColor;
+      border-bottom: 1.5px solid currentColor;
+      transform: translateY(-70%) rotate(45deg);
+      transition: transform 0.2s ease;
+    }
+
+    &:focus-visible {
+      border-color: $blue-main;
+      outline: 2px solid rgba(79, 125, 243, 0.35);
+      outline-offset: 2px;
+    }
+  }
+
+  &__custom-select.is-open &__select-trigger::after {
+    transform: translateY(-25%) rotate(225deg);
+  }
+
+  &__select-value {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  &__select-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    width: 100%;
+    max-height: min(320px, 50vh);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    box-sizing: border-box;
+    padding: 6px;
+    border: 1px solid $grayscale300;
+    border-radius: 8px;
+    background: #fff;
+    color: $main-black;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+    z-index: 1;
+    scrollbar-gutter: stable;
+  }
+
+  &__custom-select.is-open &__select-dropdown {
+    display: block;
+  }
+
+  &__select-option {
+    padding: 9px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+
+    &:hover,
+    &:focus-visible {
+      background: rgba(79, 125, 243, 0.14);
+      outline: none;
+    }
+
+    &.is-selected {
+      background: $blue-main;
+      color: #fff;
+    }
+  }
+
   &__count {
     margin: 0;
     font-size: 14px;
