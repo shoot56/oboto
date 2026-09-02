@@ -111,6 +111,8 @@
 // the CSS custom properties exposed by theme.json.
 $cta-blue: #4F7DF3; // --wp--preset--color--blue-main
 $cta-teal: #78E7F1; // --wp--preset--color--teal-200
+$cta-gradient-blue: #4F7DF3; // brand blue, start of the blue-green fill
+$cta-gradient-green: #1CF255; // end of the blue-green fill
 
 $cta-card-radius: 20px;
 $cta-card-padding: 32px;
@@ -180,6 +182,31 @@ $cta-watermark-opacity: 0.09;
     background: $blue-main;
     border-color: $blue-main;
     color: #fff;
+  }
+}
+
+// Pill treatment for the strip variants that sit on a saturated fill, where the
+// surface is too busy for the default translucent-white pill.
+@mixin cta-strip-actions-on-fill {
+  .cta-strip__action {
+    background: rgba(0, 0, 0, 0.24);
+    border-color: rgba(255, 255, 255, 0.4);
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.4);
+      border-color: #fff;
+    }
+
+    // Brand blue on white sits near 3:1, so the label stays near-black here.
+    &.is-primary {
+      @include cta-action-solid;
+
+      &:hover {
+        background: $main-black;
+        border-color: $main-black;
+        color: #fff;
+      }
+    }
   }
 }
 
@@ -429,26 +456,17 @@ blockquote.cta-strip {
   background-color: transparent !important;
   background-image: linear-gradient(100deg, #3158bd 0%, #175a83 52%, rgba(23, 90, 131, 0.4) 100%);
 
-  .cta-strip__action {
-    background: rgba(0, 0, 0, 0.24);
-    border-color: rgba(255, 255, 255, 0.4);
+  @include cta-strip-actions-on-fill;
+}
 
-    &:hover {
-      background: rgba(0, 0, 0, 0.4);
-      border-color: #fff;
-    }
+// Variant 1b: the same shape as `--accent`, running from brand blue into green.
+// The angle keeps the copy over the blue end and the actions over the green one,
+// which is what holds the text contrast up.
+.cta-strip--accent-blue-green {
+  background-color: transparent !important;
+  background-image: linear-gradient(100deg, $cta-gradient-blue 0%, $cta-gradient-green 100%);
 
-    // Brand blue on white sits near 3:1, so the label stays near-black here.
-    &.is-primary {
-      @include cta-action-solid;
-
-      &:hover {
-        background: $main-black;
-        border-color: $main-black;
-        color: #fff;
-      }
-    }
-  }
+  @include cta-strip-actions-on-fill;
 }
 
 // Variant 2: no box at all, just an accent rule. For mid-article placement.
