@@ -157,7 +157,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`obot/cards`** — Cards block.
   - **When to use**: Card grids/lists.
 - **`oboto/mcp-list`** — MCP List block.
-  - **When to use**: Catalog of MCP servers (from [obot-platform/mcp-catalog](https://github.com/obot-platform/mcp-catalog)) with search and category filters. Supports manual or automatic data; every automatic catalog card links to its internal detail page.
+  - **When to use**: Catalog of MCP servers (from [obot-platform/mcp-catalog](https://github.com/obot-platform/mcp-catalog)) with search and category filters. Supports manual or automatic data; every automatic catalog card links to its internal detail page. The native category select progressively enhances into an anchored, scrollable listbox with keyboard navigation while retaining the native control as a no-JavaScript fallback.
 - **`oboto/mcp-server-single`** — MCP Server detail block.
   - **When to use**: Only in `templates/single-mcp-server.html`; it renders the synchronized description, conditional runtime configuration, related servers, official provider link, remote MCP endpoint, and GitHub catalog-source link.
 - **`obot/steps`** — Steps block.
