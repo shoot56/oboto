@@ -22,9 +22,12 @@ class MCP_Server_Sync {
 	const SOURCE_SHA_META_KEY  = '_mcp_catalog_source_sha';
 	const SYNC_STATUS_OPTION   = 'mcp_server_post_sync_status';
 	const DATA_VERSION_OPTION  = 'oboto_mcp_server_data_version';
-	const DATA_VERSION         = 'mcp_server_payload_array_v2_all_catalog_entries';
+	const DATA_VERSION         = 'mcp_server_payload_array_v3_duplicate_reconciliation';
 	const REPAIR_LOCK_KEY      = 'oboto_mcp_server_data_repair_lock';
 	const REPAIR_LOCK_TTL      = 5 * MINUTE_IN_SECONDS;
+	const SYNC_LOCK_OPTION     = 'oboto_mcp_server_post_sync_lock';
+	const SYNC_LOCK_TTL        = 10 * MINUTE_IN_SECONDS;
+	const CLEANUP_ACTION       = 'oboto_cleanup_mcp_duplicate_drafts';
 	const REWRITE_OPTION       = 'oboto_mcp_server_rewrite_version';
 	const REWRITE_VERSION      = 'mcp_server_rewrite_v1';
 
@@ -33,10 +36,15 @@ class MCP_Server_Sync {
 	 *
 	 * @param array $catalog Full normalized catalog.
 	 * @param array $catalog_status Catalog synchronization status.
+	 * @return bool Whether the synchronization completed without errors.
 	 */
 	public static function sync_posts( $catalog, $catalog_status = array() ) {
 		if ( ! is_array( $catalog ) || empty( $catalog ) ) {
-			return;
+			return false;
+		}
+
+		if ( ! self::acquire_sync_lock() ) {
+			return false;
 		}
 
 		$existing_ids = get_posts(
@@ -52,18 +60,21 @@ class MCP_Server_Sync {
 				'update_post_term_cache' => false,
 			)
 		);
-		$existing_by_identity = array();
-		$existing_by_slug     = array();
+		$existing_by_entry_key   = array();
+		$existing_by_source_file = array();
+		$existing_by_slug        = array();
 		foreach ( $existing_ids as $post_id ) {
 			$entry_key   = (string) get_post_meta( $post_id, self::ENTRY_KEY_META_KEY, true );
 			$source_file = (string) get_post_meta( $post_id, self::SOURCE_FILE_META_KEY, true );
-			$identity    = $entry_key ? $entry_key : $source_file;
 			$post_slug   = (string) get_post_field( 'post_name', $post_id );
-			if ( $identity ) {
-				$existing_by_identity[ $identity ] = (int) $post_id;
+			if ( $entry_key ) {
+				$existing_by_entry_key[ $entry_key ][] = (int) $post_id;
+			}
+			if ( $source_file ) {
+				$existing_by_source_file[ $source_file ][] = (int) $post_id;
 			}
 			if ( $post_slug ) {
-				$existing_by_slug[ $post_slug ] = (int) $post_id;
+				$existing_by_slug[ $post_slug ][] = (int) $post_id;
 			}
 		}
 
@@ -88,9 +99,14 @@ class MCP_Server_Sync {
 				continue;
 			}
 
-			$post_id         = isset( $existing_by_identity[ $identity ] )
-				? $existing_by_identity[ $identity ]
-				: ( isset( $existing_by_slug[ $slug ] ) ? $existing_by_slug[ $slug ] : 0 );
+			$post_id         = self::find_existing_post_id(
+				$slug,
+				$entry_key,
+				$source_file,
+				$existing_by_slug,
+				$existing_by_entry_key,
+				$existing_by_source_file
+			);
 			$source_sha      = isset( $server['source_sha'] ) ? (string) $server['source_sha'] : '';
 			$stored_sha      = $post_id ? (string) get_post_meta( $post_id, self::SOURCE_SHA_META_KEY, true ) : '';
 			$stored_payload  = $post_id ? get_post_meta( $post_id, self::PAYLOAD_META_KEY, true ) : null;
@@ -167,7 +183,7 @@ class MCP_Server_Sync {
 		$status          = array(
 			'state'             => empty( $errors ) ? 'success' : 'partial',
 			'last_attempt_gmt'  => gmdate( 'c' ),
-			'published_count'   => count( $seen_ids ),
+			'published_count'   => count( array_unique( $seen_ids ) ),
 			'created_count'     => $created,
 			'updated_count'     => $updated,
 			'deactivated_count' => $deactivated,
@@ -180,6 +196,73 @@ class MCP_Server_Sync {
 			$status['last_success_gmt'] = $previous_status['last_success_gmt'];
 		}
 		update_option( self::SYNC_STATUS_OPTION, $status, false );
+		delete_option( self::SYNC_LOCK_OPTION );
+
+		return empty( $errors );
+	}
+
+	/**
+	 * Acquire an atomic lock so overlapping refreshes cannot create duplicate posts.
+	 *
+	 * @return bool Whether the caller owns the lock.
+	 */
+	private static function acquire_sync_lock() {
+		$lock_time = (int) get_option( self::SYNC_LOCK_OPTION, 0 );
+		if ( $lock_time && $lock_time > time() - self::SYNC_LOCK_TTL ) {
+			return false;
+		}
+
+		if ( $lock_time ) {
+			delete_option( self::SYNC_LOCK_OPTION );
+		}
+
+		return add_option( self::SYNC_LOCK_OPTION, time(), '', false );
+	}
+
+	/**
+	 * Choose the existing record that should own a catalog entry.
+	 *
+	 * The exact public slug wins even when it is currently a draft. Publishing that
+	 * record restores the canonical URL while the old suffixed record is deactivated.
+	 *
+	 * @param string $slug Desired public slug.
+	 * @param string $entry_key Catalog entry identity.
+	 * @param string $source_file Directory-qualified YAML path.
+	 * @param array  $by_slug Existing records grouped by slug.
+	 * @param array  $by_entry_key Existing records grouped by entry key.
+	 * @param array  $by_source_file Existing records grouped by source file.
+	 * @return int Existing post ID or zero.
+	 */
+	private static function find_existing_post_id( $slug, $entry_key, $source_file, $by_slug, $by_entry_key, $by_source_file ) {
+		if ( isset( $by_slug[ $slug ] ) ) {
+			return self::prefer_published_post_id( $by_slug[ $slug ] );
+		}
+
+		$identity_ids = array();
+		if ( $entry_key && isset( $by_entry_key[ $entry_key ] ) ) {
+			$identity_ids = array_merge( $identity_ids, $by_entry_key[ $entry_key ] );
+		}
+		if ( $source_file && isset( $by_source_file[ $source_file ] ) ) {
+			$identity_ids = array_merge( $identity_ids, $by_source_file[ $source_file ] );
+		}
+
+		return self::prefer_published_post_id( array_unique( array_map( 'intval', $identity_ids ) ) );
+	}
+
+	/**
+	 * Prefer a published record from a list of possible matches.
+	 *
+	 * @param array $post_ids Candidate post IDs.
+	 * @return int Selected post ID or zero.
+	 */
+	private static function prefer_published_post_id( $post_ids ) {
+		foreach ( $post_ids as $post_id ) {
+			if ( 'publish' === get_post_status( $post_id ) ) {
+				return (int) $post_id;
+			}
+		}
+
+		return $post_ids ? (int) reset( $post_ids ) : 0;
 	}
 
 	/**
@@ -261,11 +344,40 @@ class MCP_Server_Sync {
 		}
 
 		$post = get_page_by_path( $slug, OBJECT, self::POST_TYPE );
-		if ( ! $post || 'publish' !== $post->post_status ) {
-			return '';
+		if ( $post && 'publish' === $post->post_status ) {
+			return get_permalink( $post );
 		}
 
-		return get_permalink( $post );
+		$identity_meta = array(
+			self::ENTRY_KEY_META_KEY   => isset( $server['entry_key'] ) ? (string) $server['entry_key'] : '',
+			self::SOURCE_FILE_META_KEY => isset( $server['source_file'] ) ? (string) $server['source_file'] : '',
+		);
+		foreach ( $identity_meta as $meta_key => $meta_value ) {
+			if ( ! $meta_value ) {
+				continue;
+			}
+
+			$post_ids = get_posts(
+				array(
+					'post_type'              => self::POST_TYPE,
+					'post_status'            => 'publish',
+					'posts_per_page'         => 1,
+					'fields'                 => 'ids',
+					'orderby'                => 'ID',
+					'order'                  => 'DESC',
+					'meta_key'               => $meta_key,
+					'meta_value'             => $meta_value,
+					'no_found_rows'          => true,
+					'update_post_meta_cache' => false,
+					'update_post_term_cache' => false,
+				)
+			);
+			if ( $post_ids ) {
+				return get_permalink( (int) reset( $post_ids ) );
+			}
+		}
+
+		return '';
 	}
 
 	/**
@@ -296,7 +408,11 @@ class MCP_Server_Sync {
 		}
 
 		set_transient( self::REPAIR_LOCK_KEY, 1, self::REPAIR_LOCK_TTL );
-		self::sync_posts( $catalog, MCP_Catalog_Fetcher::get_sync_status() );
+		$sync_complete = self::sync_posts( $catalog, MCP_Catalog_Fetcher::get_sync_status() );
+		if ( ! $sync_complete ) {
+			delete_transient( self::REPAIR_LOCK_KEY );
+			return;
+		}
 
 		$status = get_option( self::SYNC_STATUS_OPTION, array() );
 		if ( is_array( $status ) && 'success' === ( isset( $status['state'] ) ? $status['state'] : '' ) ) {
@@ -380,6 +496,108 @@ class MCP_Server_Sync {
 	}
 
 	/**
+	 * Find draft records that duplicate a published catalog identity.
+	 *
+	 * A draft that already owns the desired canonical slug is deliberately kept so
+	 * the versioned repair can promote it before a suffixed published duplicate.
+	 *
+	 * @return array Duplicate draft post IDs.
+	 */
+	private static function get_duplicate_draft_ids() {
+		$post_ids = get_posts(
+			array(
+				'post_type'              => self::POST_TYPE,
+				'post_status'            => array( 'publish', 'draft' ),
+				'posts_per_page'         => -1,
+				'fields'                 => 'ids',
+				'orderby'                => 'ID',
+				'order'                  => 'ASC',
+				'no_found_rows'          => true,
+				'update_post_meta_cache' => true,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		$published_identities = array();
+		$draft_records        = array();
+		foreach ( $post_ids as $post_id ) {
+			$entry_key   = (string) get_post_meta( $post_id, self::ENTRY_KEY_META_KEY, true );
+			$source_file = (string) get_post_meta( $post_id, self::SOURCE_FILE_META_KEY, true );
+			$identities  = array();
+			if ( $entry_key ) {
+				$identities[] = 'entry:' . $entry_key;
+			}
+			if ( $source_file ) {
+				$identities[] = 'source:' . $source_file;
+			}
+			if ( ! $identities ) {
+				continue;
+			}
+
+			if ( 'publish' === get_post_status( $post_id ) ) {
+				foreach ( $identities as $identity ) {
+					$published_identities[ $identity ] = true;
+				}
+				continue;
+			}
+
+			$payload      = self::get_payload( $post_id );
+			$desired_slug = isset( $payload['slug'] ) ? sanitize_title( (string) $payload['slug'] ) : '';
+			$current_slug = (string) get_post_field( 'post_name', $post_id );
+			if ( ! $desired_slug || $desired_slug === $current_slug ) {
+				continue;
+			}
+
+			$draft_records[ (int) $post_id ] = $identities;
+		}
+
+		$duplicate_ids = array();
+		foreach ( $draft_records as $post_id => $identities ) {
+			foreach ( $identities as $identity ) {
+				if ( isset( $published_identities[ $identity ] ) ) {
+					$duplicate_ids[] = (int) $post_id;
+					break;
+				}
+			}
+		}
+
+		return $duplicate_ids;
+	}
+
+	/**
+	 * Move safely identified MCP draft duplicates to the WordPress Trash.
+	 */
+	public static function handle_duplicate_draft_cleanup() {
+		if ( ! current_user_can( 'manage_options' ) ) {
+			wp_die( esc_html__( 'You are not allowed to clean MCP Server records.', 'oboto' ) );
+		}
+
+		check_admin_referer( self::CLEANUP_ACTION );
+
+		$trashed = 0;
+		$failed  = 0;
+		foreach ( self::get_duplicate_draft_ids() as $post_id ) {
+			if ( wp_trash_post( $post_id ) ) {
+				++$trashed;
+			} else {
+				++$failed;
+			}
+		}
+
+		$redirect_url = add_query_arg(
+			array(
+				'post_type'                    => self::POST_TYPE,
+				'mcp_duplicate_cleanup_done'   => 1,
+				'mcp_duplicate_drafts_trashed' => $trashed,
+				'mcp_duplicate_drafts_failed'  => $failed,
+			),
+			admin_url( 'edit.php' )
+		);
+		wp_safe_redirect( $redirect_url );
+		exit;
+	}
+
+	/**
 	 * Show the latest catalog and post synchronization state in wp-admin.
 	 */
 	public static function render_admin_sync_notice() {
@@ -394,6 +612,17 @@ class MCP_Server_Sync {
 		$post_state     = isset( $post_status['state'] ) ? (string) $post_status['state'] : __( 'not run', 'oboto' );
 		$published      = isset( $post_status['published_count'] ) ? (int) $post_status['published_count'] : 0;
 		$errors         = isset( $post_status['errors'] ) && is_array( $post_status['errors'] ) ? $post_status['errors'] : array();
+		$duplicate_ids  = current_user_can( 'manage_options' ) ? self::get_duplicate_draft_ids() : array();
+		$cleanup_done   = isset( $_GET['mcp_duplicate_cleanup_done'] ) && 1 === absint( wp_unslash( $_GET['mcp_duplicate_cleanup_done'] ) );
+		$trashed        = isset( $_GET['mcp_duplicate_drafts_trashed'] ) ? absint( wp_unslash( $_GET['mcp_duplicate_drafts_trashed'] ) ) : 0;
+		$cleanup_failed = isset( $_GET['mcp_duplicate_drafts_failed'] ) ? absint( wp_unslash( $_GET['mcp_duplicate_drafts_failed'] ) ) : 0;
+		if ( $cleanup_done ) :
+			?>
+			<div class="notice <?php echo $cleanup_failed ? 'notice-warning' : 'notice-success'; ?> is-dismissible">
+				<p><?php echo esc_html( sprintf( __( 'MCP duplicate cleanup moved %1$d draft records to Trash. Failed: %2$d.', 'oboto' ), $trashed, $cleanup_failed ) ); ?></p>
+			</div>
+			<?php
+		endif;
 		?>
 		<div class="notice notice-info">
 			<p>
@@ -411,6 +640,14 @@ class MCP_Server_Sync {
 			</p>
 			<?php if ( $errors ) : ?>
 				<p><strong><?php esc_html_e( 'Latest errors:', 'oboto' ); ?></strong> <?php echo esc_html( implode( ' | ', array_slice( array_map( 'strval', $errors ), 0, 5 ) ) ); ?></p>
+			<?php endif; ?>
+			<?php if ( $duplicate_ids ) : ?>
+				<p><?php echo esc_html( sprintf( _n( '%d duplicate draft can be safely cleaned.', '%d duplicate drafts can be safely cleaned.', count( $duplicate_ids ), 'oboto' ), count( $duplicate_ids ) ) ); ?></p>
+				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
+					<input type="hidden" name="action" value="<?php echo esc_attr( self::CLEANUP_ACTION ); ?>">
+					<?php wp_nonce_field( self::CLEANUP_ACTION ); ?>
+					<?php submit_button( __( 'Move duplicate drafts to Trash', 'oboto' ), 'secondary', 'submit', false ); ?>
+				</form>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -438,3 +675,4 @@ add_action( 'manage_mcp-server_posts_custom_column', array( 'MCP_Server_Sync', '
 add_filter( 'post_row_actions', array( 'MCP_Server_Sync', 'remove_admin_row_actions' ), 10, 2 );
 add_filter( 'bulk_actions-edit-mcp-server', array( 'MCP_Server_Sync', 'remove_admin_bulk_actions' ) );
 add_action( 'admin_notices', array( 'MCP_Server_Sync', 'render_admin_sync_notice' ) );
+add_action( 'admin_post_' . MCP_Server_Sync::CLEANUP_ACTION, array( 'MCP_Server_Sync', 'handle_duplicate_draft_cleanup' ) );

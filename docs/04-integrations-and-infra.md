@@ -75,8 +75,9 @@ All of these are enqueued in `functions.php`:
 - Learning Center rewrite flush uses a stored version key:
   - Option key: `oboto_learning_center_rewrite_flushed` (`functions.php`)
   - Value: string version like `lc_rewrite_v3_resources_learning_center_and_taxonomy`
-- MCP catalog operational state uses `mcp_catalog_sync_status`, `mcp_server_post_sync_status`, and `mcp_catalog_last_successful_data`.
+- MCP catalog operational state uses `mcp_catalog_sync_status`, `mcp_server_post_sync_status`, and `mcp_catalog_last_successful_data`. Generated-post synchronization uses the non-autoloaded, expiring `oboto_mcp_server_post_sync_lock` option to prevent overlapping runs.
 - MCP catalog refresh uses the `mcp_catalog_refresh` daily WP-Cron hook and an immediate single-event hook for stale/initial data. WP-Cron is request-driven, so environments with low traffic may need the host scheduler to call `wp-cron.php`.
+- The read-only MCP Server admin list can move duplicate drafts to Trash. A record qualifies only when it has a non-canonical slug and shares a catalog entry key or source path with a published record; canonical drafts and removed catalog entries are not included.
 
 ### Environment variables
 
