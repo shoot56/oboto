@@ -22,12 +22,11 @@ class MCP_Server_Sync {
 	const SOURCE_SHA_META_KEY  = '_mcp_catalog_source_sha';
 	const SYNC_STATUS_OPTION   = 'mcp_server_post_sync_status';
 	const DATA_VERSION_OPTION  = 'oboto_mcp_server_data_version';
-	const DATA_VERSION         = 'mcp_server_payload_array_v3_duplicate_reconciliation';
+	const DATA_VERSION         = 'mcp_server_payload_array_v4_automatic_stale_cleanup';
 	const REPAIR_LOCK_KEY      = 'oboto_mcp_server_data_repair_lock';
 	const REPAIR_LOCK_TTL      = 5 * MINUTE_IN_SECONDS;
 	const SYNC_LOCK_OPTION     = 'oboto_mcp_server_post_sync_lock';
 	const SYNC_LOCK_TTL        = 10 * MINUTE_IN_SECONDS;
-	const CLEANUP_ACTION       = 'oboto_cleanup_mcp_duplicate_drafts';
 	const REWRITE_OPTION       = 'oboto_mcp_server_rewrite_version';
 	const REWRITE_VERSION      = 'mcp_server_rewrite_v1';
 
@@ -50,7 +49,7 @@ class MCP_Server_Sync {
 		$existing_ids = get_posts(
 			array(
 				'post_type'              => self::POST_TYPE,
-				'post_status'            => array( 'publish', 'draft', 'pending', 'private' ),
+				'post_status'            => array( 'publish', 'draft', 'pending', 'private', 'trash' ),
 				'posts_per_page'         => -1,
 				'fields'                 => 'ids',
 				'orderby'                => 'ID',
@@ -161,20 +160,17 @@ class MCP_Server_Sync {
 			$seen_ids[] = $post_id;
 		}
 
-		$deactivated = 0;
-		foreach ( $existing_ids as $existing_id ) {
-			if ( ! in_array( (int) $existing_id, $seen_ids, true ) && 'draft' !== get_post_status( $existing_id ) ) {
-				$result = wp_update_post(
-					array(
-						'ID'          => (int) $existing_id,
-						'post_status' => 'draft',
-					),
-					true
-				);
-				if ( is_wp_error( $result ) ) {
-					$errors[] = sprintf( 'Post %1$d: %2$s', $existing_id, $result->get_error_message() );
+		$deleted = 0;
+		if ( empty( $errors ) ) {
+			foreach ( $existing_ids as $existing_id ) {
+				if ( in_array( (int) $existing_id, $seen_ids, true ) ) {
+					continue;
+				}
+
+				if ( wp_delete_post( (int) $existing_id, true ) ) {
+					++$deleted;
 				} else {
-					++$deactivated;
+					$errors[] = sprintf( __( 'Post %d could not be deleted.', 'oboto' ), $existing_id );
 				}
 			}
 		}
@@ -186,7 +182,7 @@ class MCP_Server_Sync {
 			'published_count'   => count( array_unique( $seen_ids ) ),
 			'created_count'     => $created,
 			'updated_count'     => $updated,
-			'deactivated_count' => $deactivated,
+			'deleted_count'     => $deleted,
 			'errors'            => $errors,
 			'manifest_hash'     => isset( $catalog_status['manifest_hash'] ) ? $catalog_status['manifest_hash'] : '',
 		);
@@ -223,7 +219,7 @@ class MCP_Server_Sync {
 	 * Choose the existing record that should own a catalog entry.
 	 *
 	 * The exact public slug wins even when it is currently a draft. Publishing that
-	 * record restores the canonical URL while the old suffixed record is deactivated.
+	 * record restores the canonical URL while the old suffixed record is removed.
 	 *
 	 * @param string $slug Desired public slug.
 	 * @param string $entry_key Catalog entry identity.
@@ -496,108 +492,6 @@ class MCP_Server_Sync {
 	}
 
 	/**
-	 * Find draft records that duplicate a published catalog identity.
-	 *
-	 * A draft that already owns the desired canonical slug is deliberately kept so
-	 * the versioned repair can promote it before a suffixed published duplicate.
-	 *
-	 * @return array Duplicate draft post IDs.
-	 */
-	private static function get_duplicate_draft_ids() {
-		$post_ids = get_posts(
-			array(
-				'post_type'              => self::POST_TYPE,
-				'post_status'            => array( 'publish', 'draft' ),
-				'posts_per_page'         => -1,
-				'fields'                 => 'ids',
-				'orderby'                => 'ID',
-				'order'                  => 'ASC',
-				'no_found_rows'          => true,
-				'update_post_meta_cache' => true,
-				'update_post_term_cache' => false,
-			)
-		);
-
-		$published_identities = array();
-		$draft_records        = array();
-		foreach ( $post_ids as $post_id ) {
-			$entry_key   = (string) get_post_meta( $post_id, self::ENTRY_KEY_META_KEY, true );
-			$source_file = (string) get_post_meta( $post_id, self::SOURCE_FILE_META_KEY, true );
-			$identities  = array();
-			if ( $entry_key ) {
-				$identities[] = 'entry:' . $entry_key;
-			}
-			if ( $source_file ) {
-				$identities[] = 'source:' . $source_file;
-			}
-			if ( ! $identities ) {
-				continue;
-			}
-
-			if ( 'publish' === get_post_status( $post_id ) ) {
-				foreach ( $identities as $identity ) {
-					$published_identities[ $identity ] = true;
-				}
-				continue;
-			}
-
-			$payload      = self::get_payload( $post_id );
-			$desired_slug = isset( $payload['slug'] ) ? sanitize_title( (string) $payload['slug'] ) : '';
-			$current_slug = (string) get_post_field( 'post_name', $post_id );
-			if ( ! $desired_slug || $desired_slug === $current_slug ) {
-				continue;
-			}
-
-			$draft_records[ (int) $post_id ] = $identities;
-		}
-
-		$duplicate_ids = array();
-		foreach ( $draft_records as $post_id => $identities ) {
-			foreach ( $identities as $identity ) {
-				if ( isset( $published_identities[ $identity ] ) ) {
-					$duplicate_ids[] = (int) $post_id;
-					break;
-				}
-			}
-		}
-
-		return $duplicate_ids;
-	}
-
-	/**
-	 * Move safely identified MCP draft duplicates to the WordPress Trash.
-	 */
-	public static function handle_duplicate_draft_cleanup() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_die( esc_html__( 'You are not allowed to clean MCP Server records.', 'oboto' ) );
-		}
-
-		check_admin_referer( self::CLEANUP_ACTION );
-
-		$trashed = 0;
-		$failed  = 0;
-		foreach ( self::get_duplicate_draft_ids() as $post_id ) {
-			if ( wp_trash_post( $post_id ) ) {
-				++$trashed;
-			} else {
-				++$failed;
-			}
-		}
-
-		$redirect_url = add_query_arg(
-			array(
-				'post_type'                    => self::POST_TYPE,
-				'mcp_duplicate_cleanup_done'   => 1,
-				'mcp_duplicate_drafts_trashed' => $trashed,
-				'mcp_duplicate_drafts_failed'  => $failed,
-			),
-			admin_url( 'edit.php' )
-		);
-		wp_safe_redirect( $redirect_url );
-		exit;
-	}
-
-	/**
 	 * Show the latest catalog and post synchronization state in wp-admin.
 	 */
 	public static function render_admin_sync_notice() {
@@ -611,18 +505,8 @@ class MCP_Server_Sync {
 		$catalog_state  = isset( $catalog_status['state'] ) ? (string) $catalog_status['state'] : __( 'not run', 'oboto' );
 		$post_state     = isset( $post_status['state'] ) ? (string) $post_status['state'] : __( 'not run', 'oboto' );
 		$published      = isset( $post_status['published_count'] ) ? (int) $post_status['published_count'] : 0;
+		$deleted        = isset( $post_status['deleted_count'] ) ? (int) $post_status['deleted_count'] : 0;
 		$errors         = isset( $post_status['errors'] ) && is_array( $post_status['errors'] ) ? $post_status['errors'] : array();
-		$duplicate_ids  = current_user_can( 'manage_options' ) ? self::get_duplicate_draft_ids() : array();
-		$cleanup_done   = isset( $_GET['mcp_duplicate_cleanup_done'] ) && 1 === absint( wp_unslash( $_GET['mcp_duplicate_cleanup_done'] ) );
-		$trashed        = isset( $_GET['mcp_duplicate_drafts_trashed'] ) ? absint( wp_unslash( $_GET['mcp_duplicate_drafts_trashed'] ) ) : 0;
-		$cleanup_failed = isset( $_GET['mcp_duplicate_drafts_failed'] ) ? absint( wp_unslash( $_GET['mcp_duplicate_drafts_failed'] ) ) : 0;
-		if ( $cleanup_done ) :
-			?>
-			<div class="notice <?php echo $cleanup_failed ? 'notice-warning' : 'notice-success'; ?> is-dismissible">
-				<p><?php echo esc_html( sprintf( __( 'MCP duplicate cleanup moved %1$d draft records to Trash. Failed: %2$d.', 'oboto' ), $trashed, $cleanup_failed ) ); ?></p>
-			</div>
-			<?php
-		endif;
 		?>
 		<div class="notice notice-info">
 			<p>
@@ -641,13 +525,8 @@ class MCP_Server_Sync {
 			<?php if ( $errors ) : ?>
 				<p><strong><?php esc_html_e( 'Latest errors:', 'oboto' ); ?></strong> <?php echo esc_html( implode( ' | ', array_slice( array_map( 'strval', $errors ), 0, 5 ) ) ); ?></p>
 			<?php endif; ?>
-			<?php if ( $duplicate_ids ) : ?>
-				<p><?php echo esc_html( sprintf( _n( '%d duplicate draft can be safely cleaned.', '%d duplicate drafts can be safely cleaned.', count( $duplicate_ids ), 'oboto' ), count( $duplicate_ids ) ) ); ?></p>
-				<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>">
-					<input type="hidden" name="action" value="<?php echo esc_attr( self::CLEANUP_ACTION ); ?>">
-					<?php wp_nonce_field( self::CLEANUP_ACTION ); ?>
-					<?php submit_button( __( 'Move duplicate drafts to Trash', 'oboto' ), 'secondary', 'submit', false ); ?>
-				</form>
+			<?php if ( $deleted ) : ?>
+				<p><?php echo esc_html( sprintf( _n( 'Automatically removed %d stale MCP Server record.', 'Automatically removed %d stale MCP Server records.', $deleted, 'oboto' ), $deleted ) ); ?></p>
 			<?php endif; ?>
 		</div>
 		<?php
@@ -675,4 +554,3 @@ add_action( 'manage_mcp-server_posts_custom_column', array( 'MCP_Server_Sync', '
 add_filter( 'post_row_actions', array( 'MCP_Server_Sync', 'remove_admin_row_actions' ), 10, 2 );
 add_filter( 'bulk_actions-edit-mcp-server', array( 'MCP_Server_Sync', 'remove_admin_bulk_actions' ) );
 add_action( 'admin_notices', array( 'MCP_Server_Sync', 'render_admin_sync_notice' ) );
-add_action( 'admin_post_' . MCP_Server_Sync::CLEANUP_ACTION, array( 'MCP_Server_Sync', 'handle_duplicate_draft_cleanup' ) );
