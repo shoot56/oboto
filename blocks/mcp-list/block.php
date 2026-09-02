@@ -18,7 +18,7 @@ function mcp_list_register_assets() {
 		'mcp-list-script',
 		$theme_uri . '/blocks/mcp-list/view-script.js',
 		array(),
-		filemtime( $theme_dir . '/blocks/mcp-list/view-script.js' ),
+		wp_get_theme()->get( 'Version' ),
 		true
 	);
 }
