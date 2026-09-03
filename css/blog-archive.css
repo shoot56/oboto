@@ -134,7 +134,7 @@ html .blog-archive .blog_categories {
 }
 
 .blog-archive .blog_image {
-  border-radius: 16px;
+  border-radius: 16px 16px 0 0;
   overflow: hidden;
   aspect-ratio: 1311/767;
 }
