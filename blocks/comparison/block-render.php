@@ -35,32 +35,36 @@ if ( $feature_column_heading === '' ) {
 	$feature_column_heading = __( 'Feature', 'oboto' );
 }
 
-$status_icons = array(
-	'none'       => '',
-	'check'      => __( 'Check', 'oboto' ),
-	'cross'      => __( 'Cross', 'oboto' ),
-	'semicircle' => __( 'Partial', 'oboto' ),
+$statuses = array(
+	'none' => '',
+	'yes'  => __( 'Yes', 'oboto' ),
+	'no'   => __( 'No', 'oboto' ),
 );
 
-$normalize_status_icon = static function ( $value ) use ( $status_icons ) {
+$normalize_status = static function ( $value ) use ( $statuses ) {
 	$value = sanitize_key( (string) $value );
 
-	if ( ! array_key_exists( $value, $status_icons ) || $value === 'none' ) {
-		return 'none';
+	$legacy_values = array(
+		'check' => 'yes',
+		'cross' => 'no',
+	);
+
+	if ( isset( $legacy_values[ $value ] ) ) {
+		$value = $legacy_values[ $value ];
 	}
 
-	return $value;
+	return array_key_exists( $value, $statuses ) ? $value : 'none';
 };
 
-$render_status_icon = static function ( $icon ) use ( $status_icons ) {
-	if ( $icon === 'none' ) {
+$render_status = static function ( $status ) use ( $statuses ) {
+	if ( $status === 'none' ) {
 		return '';
 	}
 
 	return sprintf(
-		'<span class="obot-comparison__status obot-comparison__status--%1$s" role="img" aria-label="%2$s"></span>',
-		esc_attr( $icon ),
-		esc_attr( $status_icons[ $icon ] )
+		'<span class="obot-comparison__status obot-comparison__status--%1$s">%2$s</span>',
+		esc_attr( $status ),
+		esc_html( $statuses[ $status ] )
 	);
 };
 
@@ -71,22 +75,22 @@ if ( is_array( $comparisons ) ) {
 			continue;
 		}
 
-		$feature            = isset( $row['feature'] ) ? trim( (string) $row['feature'] ) : '';
-		$first_column_text  = isset( $row['first_column_text'] ) ? trim( (string) $row['first_column_text'] ) : '';
-		$second_column_text = isset( $row['second_column_text'] ) ? trim( (string) $row['second_column_text'] ) : '';
-		$first_column_icon  = $normalize_status_icon( $row['first_column_icon'] ?? 'none' );
-		$second_column_icon = $normalize_status_icon( $row['second_column_icon'] ?? 'none' );
+		$feature              = isset( $row['feature'] ) ? trim( (string) $row['feature'] ) : '';
+		$first_column_text    = isset( $row['first_column_text'] ) ? trim( (string) $row['first_column_text'] ) : '';
+		$second_column_text   = isset( $row['second_column_text'] ) ? trim( (string) $row['second_column_text'] ) : '';
+		$first_column_status  = $normalize_status( $row['first_column_icon'] ?? 'none' );
+		$second_column_status = $normalize_status( $row['second_column_icon'] ?? 'none' );
 
-		if ( $feature === '' && $first_column_text === '' && $second_column_text === '' && $first_column_icon === 'none' && $second_column_icon === 'none' ) {
+		if ( $feature === '' && $first_column_text === '' && $second_column_text === '' && $first_column_status === 'none' && $second_column_status === 'none' ) {
 			continue;
 		}
 
 		$comparison_items[] = array(
-			'feature'            => $feature,
-			'first_column_text'  => $first_column_text,
-			'second_column_text' => $second_column_text,
-			'first_column_icon'  => $first_column_icon,
-			'second_column_icon' => $second_column_icon,
+			'feature'              => $feature,
+			'first_column_text'    => $first_column_text,
+			'second_column_text'   => $second_column_text,
+			'first_column_status'  => $first_column_status,
+			'second_column_status' => $second_column_status,
 		);
 	}
 }
@@ -123,7 +127,7 @@ if ( is_array( $comparisons ) ) {
 								</th>
 								<td class="obot-comparison__primary" data-label="<?php echo esc_attr( $first_column_heading ); ?>">
 									<div class="obot-comparison__cell-content">
-										<?php echo $render_status_icon( $item['first_column_icon'] ); ?>
+										<?php echo $render_status( $item['first_column_status'] ); ?>
 										<div class="obot-comparison__cell-text">
 											<?php echo wp_kses_post( wpautop( $item['first_column_text'] ) ); ?>
 										</div>
@@ -131,7 +135,7 @@ if ( is_array( $comparisons ) ) {
 								</td>
 								<td data-label="<?php echo esc_attr( $second_column_heading ); ?>">
 									<div class="obot-comparison__cell-content">
-										<?php echo $render_status_icon( $item['second_column_icon'] ); ?>
+										<?php echo $render_status( $item['second_column_status'] ); ?>
 										<div class="obot-comparison__cell-text">
 											<?php echo wp_kses_post( wpautop( $item['second_column_text'] ) ); ?>
 										</div>
