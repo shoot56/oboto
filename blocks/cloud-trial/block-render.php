@@ -57,6 +57,16 @@ if ( $form_height < 200 ) {
 	$form_height = 500;
 }
 
+$form_url_parts  = wp_parse_url( $form_url );
+$form_host       = strtolower( (string) ( $form_url_parts['host'] ?? '' ) );
+$form_path       = trim( (string) ( $form_url_parts['path'] ?? '' ), '/' );
+$form_path       = explode( '/', $form_path );
+$fillout_form_id = '';
+
+if ( 'forms.obot.ai' === $form_host && 't' === ( $form_path[0] ?? '' ) ) {
+	$fillout_form_id = preg_replace( '/[^A-Za-z0-9_-]/', '', (string) ( $form_path[1] ?? '' ) );
+}
+
 $form_frame_title = '' !== $form_title ? $form_title : __( 'Form', 'oboto' );
 $has_form         = ( '' !== $form_title || '' !== $form_text || '' !== $form_url || '' !== $form_disclaimer );
 
@@ -189,7 +199,17 @@ $has_any      = ( $has_hero || $has_features || $callouts || $has_selfhost );
 							<p class="cloud-trial__form-text"><?php echo nl2br( esc_html( $form_text ) ); ?></p>
 						<?php endif; ?>
 
-						<?php if ( '' !== $form_url && ! $is_preview ) : ?>
+						<?php if ( '' !== $fillout_form_id && ! $is_preview ) : ?>
+							<div
+								class="cloud-trial__form-frame cloud-trial__form-frame--fillout"
+								style="height:<?php echo esc_attr( $form_height ); ?>px;"
+								data-fillout-id="<?php echo esc_attr( $fillout_form_id ); ?>"
+								data-fillout-embed-type="standard"
+								data-fillout-inherit-parameters
+								data-fillout-dynamic-resize
+								data-fillout-domain="<?php echo esc_attr( $form_host ); ?>"
+							></div>
+						<?php elseif ( '' !== $form_url && ! $is_preview ) : ?>
 							<iframe
 								class="cloud-trial__form-frame"
 								src="<?php echo esc_url( $form_url ); ?>"
