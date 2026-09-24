@@ -1,10 +1,10 @@
 {
   "name": "oboto/comparison-hero",
   "title": "Comparison Hero",
-  "description": "Comparison page hero with an eyebrow and title.",
+  "description": "Comparison page hero with service logos, copy, and CTA buttons.",
   "category": "obot_landing",
   "icon": "cover-image",
-  "keywords": ["comparison", "hero", "eyebrow", "title"],
+  "keywords": ["comparison", "hero", "services", "logos", "buttons"],
   "acf": {
     "mode": "preview",
     "blockVersion": 3,

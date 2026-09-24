@@ -1,0 +1,39 @@
+{
+  "name": "oboto/comparison-two-columns",
+  "title": "Comparison Two Columns",
+  "description": "Two-column comparison introduction with a logo, title, and text in each column.",
+  "category": "obot_landing",
+  "icon": "columns",
+  "keywords": ["comparison", "columns", "services", "intro"],
+  "acf": {
+    "mode": "preview",
+    "blockVersion": 3,
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "__experimentalBorder": {
+      "color": true,
+      "radius": true,
+      "style": true,
+      "width": true
+    },
+    "spacing": {
+      "margin": true,
+      "padding": true
+    },
+    "color": {
+      "background": true,
+      "gradients": true,
+      "link": true
+    }
+  },
+  "style": ["comparison-two-columns"]
+}

@@ -106,8 +106,11 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **When to use**: Product pages that need the `resources` anchor section with an eyebrow, title, and linked resource cards.
   - **Note**: Defaults to `id="resources"` unless an anchor is provided, and includes ACF fields for eyebrow, title, and card rows with title, text, and button link.
 - **`oboto/comparison-hero`** — Comparison Hero block.
-  - **When to use**: Comparison pages that need a simple top hero with an eyebrow and large title.
-  - **Note**: Uses ACF fields for eyebrow, title, and an optional gradient background toggle; visual styles are currently hardcoded to match the archived comparison reference.
+  - **When to use**: Comparison pages that need a top hero with an eyebrow, paired service identities, supporting copy, and CTA buttons.
+  - **Note**: Uses ACF fields for an eyebrow, two services (uploaded logo with a text-name fallback), a multiline title, text, up to two primary/secondary buttons, and an optional gradient background toggle.
+- **`oboto/comparison-two-columns`** — Comparison Two Columns block.
+  - **When to use**: Comparison pages that introduce both services in two adjacent cards.
+  - **Note**: Each fixed column has an uploaded logo, title, and multiline text field; the cards stack on smaller screens.
 - **`oboto/comparison`** — Comparison block.
   - **When to use**: Product or landing pages that need a responsive feature comparison table with configurable column headings and comparison rows.
   - **Note**: Uses ACF fields for title, feature/column headings, comparison rows, and optional check/cross/semicircle status icons in both comparison columns; the first comparison column is visually highlighted on desktop and mobile.

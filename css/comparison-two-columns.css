@@ -1,0 +1,122 @@
+.obot-comparison-two-columns {
+    box-sizing: border-box;
+    width: 100vw;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+    padding: 80px 28px 88px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    background: #0a0b0e;
+    color: #ffffff;
+}
+
+.obot-comparison-two-columns.alignfull {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+body .is-layout-constrained > .wp-block-oboto-comparison-two-columns.obot-comparison-two-columns,
+body .is-layout-flow > .wp-block-oboto-comparison-two-columns.obot-comparison-two-columns,
+body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-comparison-two-columns.obot-comparison-two-columns {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-right: calc(50% - 50vw) !important;
+    margin-left: calc(50% - 50vw) !important;
+}
+
+.obot-comparison-two-columns *,
+.obot-comparison-two-columns *::before,
+.obot-comparison-two-columns *::after {
+    box-sizing: border-box;
+}
+
+.obot-comparison-two-columns__inner {
+    width: 100%;
+    max-width: 1240px;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.obot-comparison-two-columns__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 24px;
+}
+
+.obot-comparison-two-columns__card {
+    min-width: 0;
+    padding: 32px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: #14161b;
+}
+
+.obot-comparison-two-columns__heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 14px;
+}
+
+.obot-comparison-two-columns__heading:last-child {
+    margin-bottom: 0;
+}
+
+.obot-comparison-two-columns__logo {
+    display: block;
+    width: auto;
+    max-width: 150px;
+    height: auto;
+    max-height: 28px;
+    flex: 0 0 auto;
+    object-fit: contain;
+}
+
+.obot-comparison-two-columns__title {
+    min-width: 0;
+    margin: 0;
+    color: #ffffff;
+    font-family: var(--wp--preset--font-family--poppins), Poppins, sans-serif;
+    font-size: 19px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.02em;
+    overflow-wrap: anywhere;
+}
+
+.obot-comparison-two-columns__text {
+    margin: 0;
+    color: #98a0b0;
+    font-size: 15px;
+    font-weight: 400;
+    line-height: 1.7;
+}
+
+.obot-comparison-two-columns__placeholder {
+    display: flex;
+    min-height: 180px;
+    align-items: center;
+    justify-content: center;
+    border: 1px dashed rgba(255, 255, 255, 0.24);
+    border-radius: 14px;
+    color: rgba(255, 255, 255, 0.72);
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+}
+
+@media (max-width: 767px) {
+    .obot-comparison-two-columns {
+        padding: 56px 16px 64px;
+    }
+
+    .obot-comparison-two-columns__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .obot-comparison-two-columns__card {
+        padding: 24px;
+    }
+}
