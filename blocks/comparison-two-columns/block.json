@@ -1,10 +1,10 @@
 {
-  "name": "oboto/comparison-hero",
-  "title": "Comparison Hero",
-  "description": "Comparison page hero with service logos, copy, and CTA buttons.",
+  "name": "oboto/comparison-two-columns",
+  "title": "Comparison Two Columns",
+  "description": "Two-column comparison introduction with a logo, title, and text in each column.",
   "category": "obot_landing",
-  "icon": "cover-image",
-  "keywords": ["comparison", "hero", "services", "logos", "buttons"],
+  "icon": "columns",
+  "keywords": ["comparison", "columns", "services", "intro"],
   "acf": {
     "mode": "preview",
     "blockVersion": 3,
@@ -33,13 +33,7 @@
       "background": true,
       "gradients": true,
       "link": true
-    },
-    "dimensions": {
-      "minHeight": true
-    },
-    "position": {
-      "sticky": true
     }
   },
-  "style": ["comparison-hero"]
+  "style": ["comparison-two-columns"]
 }
