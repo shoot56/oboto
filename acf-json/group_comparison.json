@@ -133,7 +133,7 @@
                     "name": "first_column_text",
                     "aria-label": "",
                     "type": "textarea",
-                    "instructions": "",
+                    "instructions": "Wrap text that should appear bold and white in &lt;span&gt;...&lt;\/span&gt;.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": { "width": "50", "class": "", "id": "" },
@@ -146,7 +146,7 @@
                 },
                 {
                     "key": "field_comparison_first_column_icon",
-                    "label": "First Column Icon",
+                    "label": "First Column Status",
                     "name": "first_column_icon",
                     "aria-label": "",
                     "type": "select",
@@ -156,9 +156,8 @@
                     "wrapper": { "width": "50", "class": "", "id": "" },
                     "choices": {
                         "none": "None",
-                        "check": "Check",
-                        "cross": "Cross",
-                        "semicircle": "Semicircle"
+                        "check": "Yes",
+                        "cross": "No"
                     },
                     "default_value": "none",
                     "return_format": "value",
@@ -175,7 +174,7 @@
                     "name": "second_column_text",
                     "aria-label": "",
                     "type": "textarea",
-                    "instructions": "",
+                    "instructions": "Wrap text that should appear bold and white in &lt;span&gt;...&lt;\/span&gt;.",
                     "required": 0,
                     "conditional_logic": 0,
                     "wrapper": { "width": "50", "class": "", "id": "" },
@@ -188,7 +187,7 @@
                 },
                 {
                     "key": "field_comparison_second_column_icon",
-                    "label": "Second Column Icon",
+                    "label": "Second Column Status",
                     "name": "second_column_icon",
                     "aria-label": "",
                     "type": "select",
@@ -198,9 +197,8 @@
                     "wrapper": { "width": "50", "class": "", "id": "" },
                     "choices": {
                         "none": "None",
-                        "check": "Check",
-                        "cross": "Cross",
-                        "semicircle": "Semicircle"
+                        "check": "Yes",
+                        "cross": "No"
                     },
                     "default_value": "none",
                     "return_format": "value",
@@ -232,5 +230,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1783987200
+    "modified": 1790252407
 }
