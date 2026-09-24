@@ -13,6 +13,17 @@ function cloud_trial_register_assets() {
 		array(),
 		filemtime( $stylesheet_path )
 	);
+
+	wp_register_script(
+		'cloud-trial-fillout-embed',
+		'https://server.fillout.com/embed/v1/',
+		array(),
+		null,
+		array(
+			'strategy'  => 'async',
+			'in_footer' => true,
+		)
+	);
 }
 add_action( 'wp_enqueue_scripts', 'cloud_trial_register_assets' );
 add_action( 'admin_enqueue_scripts', 'cloud_trial_register_assets' );

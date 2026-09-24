@@ -240,6 +240,13 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-cloud-trial.cloud-
 	color-scheme: normal;
 }
 
+.cloud-trial__form-frame--fillout iframe {
+	display: block;
+	width: 100% !important;
+	border: 0 !important;
+	border-radius: inherit;
+}
+
 .cloud-trial__form-frame--preview {
 	display: grid;
 	padding: 24px;

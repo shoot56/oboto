@@ -25,5 +25,6 @@
       "padding": true
     }
   },
-  "style": ["cloud-trial"]
+  "style": ["cloud-trial"],
+  "viewScript": ["cloud-trial-fillout-embed"]
 }
