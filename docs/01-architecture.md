@@ -58,7 +58,7 @@
   - Disable CF7 automatic `<p>` wrapping (`inc/helpers.php`)
 - **Theme settings (admin)**
   - ACF options page `theme-general-settings` (`functions.php`)
-  - Field group in `acf-json/group_679915aae0db5.json` (e.g. `header_button`, `cta_1..3`)
+  - Field group in `acf-json/group_679915aae0db5.json` (e.g. `header_button`, `cta_1..5`)
 
 ## Dependency rules (observed)
 
