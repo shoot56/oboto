@@ -34,7 +34,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **Known fields (from `acf-json/group_679915aae0db5.json`)**
     - `header_button` (ACF Link field; used by `blocks/navigation/block-render.php`)
     - `github_button` (optional ACF Link field; renders the GitHub CTA in the main header navigation)
-    - `cta_1`, `cta_2`, `cta_3` (ACF WYSIWYG fields)
+    - `cta_1` through `cta_5` (ACF WYSIWYG fields)
 
 ## Reusable blocks (`blocks/*`)
 

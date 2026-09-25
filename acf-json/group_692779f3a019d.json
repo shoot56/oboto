@@ -19,7 +19,9 @@
             "choices": {
                 "cta_1": "CTA 1",
                 "cta_2": "CTA 2",
-                "cta_3": "CTA 3"
+                "cta_3": "CTA 3",
+                "cta_4": "CTA 4",
+                "cta_5": "CTA 5"
             },
             "default_value": "cta_1",
             "return_format": "value",
@@ -48,5 +50,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1764194926
+    "modified": 1790364336
 }
