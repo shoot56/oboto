@@ -166,11 +166,11 @@ if ( $has_rotating_emphasis ) {
 	<div class="obot-landing-hero__inner">
 		<div class="obot-landing-hero__copy">
 			<?php if ( $heading ) : ?>
-				<h1 class="obot-landing-hero__title"<?php oboto_the_aos_attributes( 100 ); ?>><?php echo esc_html( $heading ); ?></h1>
+				<h1 class="obot-landing-hero__title"><?php echo esc_html( $heading ); ?></h1>
 			<?php endif; ?>
 
 			<?php if ( $subheading_lead || $has_subheading_emphasis ) : ?>
-				<div class="obot-landing-hero__subtitle"<?php oboto_the_aos_attributes( 200 ); ?>>
+				<div class="obot-landing-hero__subtitle">
 					<?php if ( $subheading_lead ) : ?>
 						<?php echo esc_html( $subheading_lead ); ?>
 					<?php endif; ?>
@@ -186,11 +186,11 @@ if ( $has_rotating_emphasis ) {
 			<?php endif; ?>
 
 			<?php if ( $description ) : ?>
-				<p class="obot-landing-hero__description"<?php oboto_the_aos_attributes( 300 ); ?>><?php echo esc_html( $description ); ?></p>
+				<p class="obot-landing-hero__description"><?php echo esc_html( $description ); ?></p>
 			<?php endif; ?>
 
 			<?php if ( $has_primary_button ) : ?>
-				<div class="obot-landing-hero__actions"<?php oboto_the_aos_attributes( 360 ); ?>>
+				<div class="obot-landing-hero__actions">
 					<?php if ( $primary_button_type === 'popup' ) : ?>
 						<div class="obot-landing-hero__popup-embed">
 							<?php if ( $is_preview ) : ?>
@@ -222,7 +222,7 @@ if ( $has_rotating_emphasis ) {
 		</div>
 
 		<?php if ( is_array( $github_link ) && ! empty( $github_link['url'] ) ) : ?>
-			<div class="obot-landing-hero__conversion"<?php oboto_the_aos_attributes( 400 ); ?>>
+			<div class="obot-landing-hero__conversion">
 				<p class="obot-landing-hero__meta">
 					<?php if ( $github_intro ) : ?>
 						<span><?php echo esc_html( $github_intro ); ?></span>

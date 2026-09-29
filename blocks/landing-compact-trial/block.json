@@ -1,0 +1,29 @@
+{
+  "name": "oboto/landing-compact-trial",
+  "title": "Landing Compact Trial",
+  "description": "Compact trial CTA with link or Fillout popup behavior and one mobile sticky action.",
+  "category": "obot_landing",
+  "icon": "forms",
+  "keywords": ["landing", "trial", "cta", "sticky", "mcp"],
+  "acf": {
+    "mode": "preview",
+    "blockVersion": 3,
+    "renderTemplate": "block-render.php"
+  },
+  "attributes": {
+    "align": {
+      "type": "string",
+      "default": "full"
+    }
+  },
+  "supports": {
+    "align": true,
+    "anchor": true,
+    "spacing": {
+      "margin": true,
+      "padding": true
+    }
+  },
+  "style": ["landing-compact-trial"],
+  "viewScript": ["landing-compact-trial-script"]
+}
