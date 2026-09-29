@@ -35,27 +35,47 @@ document.addEventListener("DOMContentLoaded", function () {
 
   AOS.init({});
 
-  // Smooth scroll for anchore tag
-  if (document.querySelectorAll('a[href^="#"]')) {
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", function (e) {
-        e.preventDefault();
-        if (document.querySelector("nav.menu-opened")) {
-          document
-            .querySelector("nav.menu-opened")
-            .classList.remove("menu-opened");
-        }
-        var target = this.getAttribute("href");
+  // Smooth scroll only when the anchor points to an element on this page.
+  document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+    const targetSelector = anchor.getAttribute("href");
 
-        jQuery("html, body").animate(
-          {
-            scrollTop: jQuery(target).offset().top,
-          },
-          1800
-        );
-      });
+    if (!targetSelector || targetSelector === "#") {
+      return;
+    }
+
+    let targetElement;
+    try {
+      targetElement = document.querySelector(targetSelector);
+    } catch (error) {
+      return;
+    }
+
+    if (!targetElement) {
+      return;
+    }
+
+    anchor.addEventListener("click", function (e) {
+      const targetOffset = jQuery(targetElement).offset();
+
+      if (!targetOffset) {
+        return;
+      }
+
+      e.preventDefault();
+      if (document.querySelector("nav.menu-opened")) {
+        document
+          .querySelector("nav.menu-opened")
+          .classList.remove("menu-opened");
+      }
+
+      jQuery("html, body").animate(
+        {
+          scrollTop: targetOffset.top,
+        },
+        1800
+      );
     });
-  }
+  });
 
   // Copy to clipboard code
   const codes = document.querySelectorAll(

@@ -32,7 +32,12 @@ main {
     }
 
     @include mobile {
-        top: 100px;
+        position: static;
+        width: calc(100% - 32px);
+        box-sizing: border-box;
+        transform: none;
+        animation: none;
+        will-change: auto;
     }
 
     &__content {
