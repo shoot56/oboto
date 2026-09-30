@@ -64,16 +64,86 @@
             "placeholder": "https:\/\/www.youtube.com\/watch?v=9ZuTbJvniQk"
         },
         {
+            "key": "field_landing_video_button_one_type",
+            "label": "Button 1 Type",
+            "name": "button_one_type",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Primary filled button.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "choices": {
+                "link": "Link",
+                "popup": "Popup"
+            },
+            "default_value": "link",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
+        },
+        {
             "key": "field_landing_video_button_one",
             "label": "Button 1",
             "name": "button_one",
             "aria-label": "",
             "type": "link",
-            "instructions": "Primary filled button.",
+            "instructions": "Leave empty to hide the button.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_landing_video_button_one_type",
+                        "operator": "==",
+                        "value": "link"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
+            "key": "field_landing_video_button_one_popup_embed",
+            "label": "Button 1 Popup Embed",
+            "name": "button_one_popup_embed",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Paste the Fillout popup embed code. The button is hidden when this field is empty.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_landing_video_button_one_type",
+                        "operator": "==",
+                        "value": "popup"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_landing_video_button_two_type",
+            "label": "Button 2 Type",
+            "name": "button_two_type",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Secondary outlined button.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
-            "return_format": "array"
+            "choices": {
+                "link": "Link",
+                "popup": "Popup"
+            },
+            "default_value": "link",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
         },
         {
             "key": "field_landing_video_button_two",
@@ -81,11 +151,62 @@
             "name": "button_two",
             "aria-label": "",
             "type": "link",
-            "instructions": "Secondary outlined button.",
+            "instructions": "Leave empty to hide the button.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_landing_video_button_two_type",
+                        "operator": "==",
+                        "value": "link"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
+            "key": "field_landing_video_button_two_popup_embed",
+            "label": "Button 2 Popup Embed",
+            "name": "button_two_popup_embed",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Paste the Fillout popup embed code. The button is hidden when this field is empty.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_landing_video_button_two_type",
+                        "operator": "==",
+                        "value": "popup"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
+        },
+        {
+            "key": "field_landing_video_button_three_type",
+            "label": "Button 3 Type",
+            "name": "button_three_type",
+            "aria-label": "",
+            "type": "button_group",
+            "instructions": "Text link button.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": { "width": "", "class": "", "id": "" },
-            "return_format": "array"
+            "choices": {
+                "link": "Link",
+                "popup": "Popup"
+            },
+            "default_value": "link",
+            "return_format": "value",
+            "allow_null": 0,
+            "layout": "horizontal"
         },
         {
             "key": "field_landing_video_button_three",
@@ -93,11 +214,43 @@
             "name": "button_three",
             "aria-label": "",
             "type": "link",
-            "instructions": "Text link button.",
+            "instructions": "Leave empty to hide the button.",
             "required": 0,
-            "conditional_logic": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_landing_video_button_three_type",
+                        "operator": "==",
+                        "value": "link"
+                    }
+                ]
+            ],
             "wrapper": { "width": "", "class": "", "id": "" },
             "return_format": "array"
+        },
+        {
+            "key": "field_landing_video_button_three_popup_embed",
+            "label": "Button 3 Popup Embed",
+            "name": "button_three_popup_embed",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "Paste the Fillout popup embed code. The button is hidden when this field is empty.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_landing_video_button_three_type",
+                        "operator": "==",
+                        "value": "popup"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "rows": 5,
+            "placeholder": "",
+            "new_lines": ""
         }
     ],
     "location": [
@@ -118,5 +271,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1778847600
+    "modified": 1790763096
 }
