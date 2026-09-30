@@ -137,7 +137,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, a list repeater, image, and two CTA buttons.
 - **`oboto/landing-video`** — Landing Video block.
   - **When to use**: Obot landing pages that need the YouTube video section from the archived frontend reference.
-  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, text, YouTube URL, and three CTA buttons.
+  - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, text, YouTube URL, and three CTA buttons. Each CTA independently supports either a regular link or a Fillout popup embed and defaults to link behavior for existing content.
 - **`oboto/landing-traction`** — Landing Traction block.
   - **When to use**: Obot landing pages that need the traction cards and quote section from the archived frontend reference.
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, three metric cards, quote text, and quote author.
