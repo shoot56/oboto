@@ -150,6 +150,34 @@
             "new_lines": ""
         },
         {
+            "key": "field_landing_compact_trial_secondary_text",
+            "label": "Secondary Text",
+            "name": "secondary_text",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Optional text displayed below the primary CTA.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "default_value": "",
+            "maxlength": "",
+            "placeholder": "Prefer to deploy yourself?",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_landing_compact_trial_secondary_link",
+            "label": "Secondary Link",
+            "name": "secondary_link",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "Optional link displayed after the secondary text.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": { "width": "50", "class": "", "id": "" },
+            "return_format": "array"
+        },
+        {
             "key": "field_landing_compact_trial_mobile_sticky",
             "label": "Enable Mobile Sticky CTA",
             "name": "enable_mobile_sticky",
@@ -184,5 +212,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1790675109
+    "modified": 1791897493
 }

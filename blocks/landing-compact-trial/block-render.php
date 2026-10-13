@@ -53,12 +53,17 @@ if ( empty( $benefits ) ) {
 	);
 }
 
-$button_type   = (string) get_field( 'button_type' );
-$button        = get_field( 'button' );
-$popup_embed   = trim( (string) get_field( 'button_popup_embed' ) );
-$button_url    = '';
-$button_title  = '';
-$button_target = '';
+$button_type           = (string) get_field( 'button_type' );
+$button                = get_field( 'button' );
+$popup_embed           = trim( (string) get_field( 'button_popup_embed' ) );
+$secondary_text        = trim( (string) get_field( 'secondary_text' ) );
+$secondary_link        = get_field( 'secondary_link' );
+$button_url            = '';
+$button_title          = '';
+$button_target         = '';
+$secondary_link_url    = '';
+$secondary_link_title  = '';
+$secondary_link_target = '';
 
 if ( ! in_array( $button_type, array( 'link', 'popup' ), true ) ) {
 	$button_type = 'link';
@@ -68,6 +73,12 @@ if ( is_array( $button ) && ! empty( $button['url'] ) ) {
 	$button_url    = $button['url'];
 	$button_title  = ! empty( $button['title'] ) ? trim( (string) $button['title'] ) : '';
 	$button_target = ! empty( $button['target'] ) ? $button['target'] : '';
+}
+
+if ( is_array( $secondary_link ) && ! empty( $secondary_link['url'] ) ) {
+	$secondary_link_url    = $secondary_link['url'];
+	$secondary_link_title  = ! empty( $secondary_link['title'] ) ? trim( (string) $secondary_link['title'] ) : '';
+	$secondary_link_target = ! empty( $secondary_link['target'] ) ? $secondary_link['target'] : '';
 }
 
 $allowed_popup_embed_tags = array(
@@ -139,7 +150,10 @@ $has_copy             = $eyebrow !== '' || $title !== '' || $text !== '';
 $has_link_button      = $button_type === 'link' && $button_url !== '' && $button_title !== '';
 $has_popup_button     = $button_type === 'popup' && $popup_embed !== '' && $popup_button_text !== '';
 $has_button           = $has_link_button || $has_popup_button;
-$has_content          = $has_copy || ! empty( $benefits ) || $has_button;
+$has_secondary_link   = $secondary_link_url !== '' && $secondary_link_title !== '';
+$has_secondary_line   = $secondary_text !== '' || $has_secondary_link;
+$has_action           = $has_button || $has_secondary_line;
+$has_content          = $has_copy || ! empty( $benefits ) || $has_action;
 $mobile_sticky_value   = get_field( 'enable_mobile_sticky' );
 $mobile_sticky_enabled = $has_button && ( $mobile_sticky_value === null || $mobile_sticky_value === '' ? true : (bool) $mobile_sticky_value );
 
@@ -184,7 +198,7 @@ if ( ! $has_content ) {
 			</ul>
 		<?php endif; ?>
 
-		<?php if ( $has_button ) : ?>
+		<?php if ( $has_action ) : ?>
 			<div class="obot-landing-compact-trial__action">
 				<?php if ( $has_popup_button ) : ?>
 					<div class="obot-landing-compact-trial__popup-embed">
@@ -197,7 +211,7 @@ if ( ! $has_content ) {
 							<?php echo wp_kses( $popup_embed, $allowed_popup_embed_tags ); ?>
 						<?php endif; ?>
 					</div>
-				<?php else : ?>
+				<?php elseif ( $has_link_button ) : ?>
 					<a
 						class="obot-landing-compact-trial__button"
 						href="<?php echo esc_url( $button_url ); ?>"
@@ -209,6 +223,22 @@ if ( ! $has_content ) {
 						<span><?php echo esc_html( $button_title ); ?></span>
 						<span class="obot-landing-compact-trial__button-arrow" aria-hidden="true"></span>
 					</a>
+				<?php endif; ?>
+
+				<?php if ( $has_secondary_line ) : ?>
+					<p class="obot-landing-compact-trial__secondary">
+						<?php if ( $secondary_text !== '' ) : ?>
+							<span><?php echo esc_html( $secondary_text ); ?></span>
+						<?php endif; ?>
+						<?php if ( $has_secondary_link ) : ?>
+							<a
+								class="obot-landing-compact-trial__secondary-link"
+								href="<?php echo esc_url( $secondary_link_url ); ?>"
+								<?php echo $secondary_link_target ? 'target="' . esc_attr( $secondary_link_target ) . '"' : ''; ?>
+								<?php echo $secondary_link_target === '_blank' ? 'rel="noopener noreferrer"' : ''; ?>
+							><?php echo esc_html( $secondary_link_title ); ?></a>
+						<?php endif; ?>
+					</p>
 				<?php endif; ?>
 			</div>
 		<?php endif; ?>
