@@ -116,7 +116,41 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-compact-tr
 }
 
 .obot-landing-compact-trial__action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
     justify-self: end;
+    max-width: 18rem;
+}
+
+.obot-landing-compact-trial__secondary {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.62);
+    font-size: 0.8125rem;
+    line-height: 1.45;
+    text-align: center;
+}
+
+.obot-landing-compact-trial__secondary > span {
+    display: block;
+    margin-bottom: 0.125rem;
+}
+
+.obot-landing-compact-trial__secondary-link {
+    display: inline-block;
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    text-decoration: underline;
+    text-decoration-color: rgba(255, 255, 255, 0.38);
+    text-underline-offset: 0.2em;
+    transition: color 200ms ease, text-decoration-color 200ms ease;
+}
+
+.obot-landing-compact-trial__secondary-link:hover,
+.obot-landing-compact-trial__secondary-link:focus-visible {
+    color: #fff;
+    text-decoration-color: currentColor;
 }
 
 .obot-landing-compact-trial__popup-embed,
@@ -349,6 +383,7 @@ body .wp-site-blocks .wp-block-post-content > .wp-block-oboto-landing-compact-tr
     .obot-landing-compact-trial__button-arrow,
     .obot-landing-compact-trial__popup-embed button,
     .obot-landing-compact-trial__popup-embed button::after,
+    .obot-landing-compact-trial__secondary-link,
     .obot-landing-compact-trial__mobile-sticky,
     .obot-landing-compact-trial__mobile-sticky-button {
         transition: none;

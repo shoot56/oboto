@@ -149,7 +149,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
   - **Note**: Registered under the `Obot Landing` block category, includes ACF fields for eyebrow, title, text, checklist rows, HubSpot or Fillout form embed code, and bottom button rows.
 - **`oboto/landing-compact-trial`** — Landing Compact Trial block.
   - **When to use**: Repeatable conversion prompts directly below a landing hero and again mid-page.
-  - **Note**: Includes editable eyebrow, title, text, up to three benefits, and a CTA that can use either a link or a Fillout popup embed. The first enabled instance with a configured CTA supplies a single mobile sticky CTA after the visitor scrolls past the block; the sticky CTA hides again while the footer is visible.
+  - **Note**: Includes editable eyebrow, title, text, up to three benefits, a CTA that can use either a link or a Fillout popup embed, and an optional secondary text-and-link line below the CTA. The first enabled instance with a configured CTA supplies a single mobile sticky CTA after the visitor scrolls past the block; the sticky CTA hides again while the footer is visible.
 - **`obot/hero`** — Hero block.
   - **When to use**: Primary hero sections on landing pages.
 - **`oboto/hero-questions`** — Hero Chat block.
