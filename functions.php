@@ -166,6 +166,15 @@ function theme_scripts()
     // Prims
     wp_enqueue_style('prism', get_template_directory_uri() . '/css/prism-okaidia.css', array(), wp_get_theme()->get('Version'));
 
+    if (is_singular('post')) {
+        wp_enqueue_style(
+            'single-post',
+            get_template_directory_uri() . '/css/single.css',
+            array('style'),
+            filemtime(get_template_directory() . '/css/single.css')
+        );
+    }
+
 
     // JS
     wp_enqueue_script('custom', get_template_directory_uri() . '/js/script.js', array('jquery'), filemtime(get_template_directory() . '/js/script.js'), false, array("in_footer"));
