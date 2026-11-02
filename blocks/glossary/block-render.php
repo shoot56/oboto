@@ -58,6 +58,20 @@ $exclude_slugs = array_filter(
 	)
 );
 
+// Button labels for terms that exist in several taxonomies (overrides the defaults).
+$source_button_labels = array();
+if ( have_rows( 'source_buttons' ) ) {
+	while ( have_rows( 'source_buttons' ) ) {
+		the_row();
+		$button_taxonomy = sanitize_key( (string) get_sub_field( 'taxonomy' ) );
+		$button_label    = trim( (string) get_sub_field( 'label' ) );
+
+		if ( '' !== $button_taxonomy && '' !== $button_label ) {
+			$source_button_labels[ $button_taxonomy ] = $button_label;
+		}
+	}
+}
+
 $entries = oboto_glossary_collect_terms(
 	array(
 		'taxonomies'          => $term_sources,
@@ -65,6 +79,7 @@ $entries = oboto_glossary_collect_terms(
 		'require_description' => $glossary_flag( 'require_description', false ),
 		'exclude_slugs'       => $exclude_slugs,
 		'group_mode'          => $group_mode,
+		'source_labels'       => $source_button_labels,
 	)
 );
 
@@ -372,13 +387,24 @@ $arrow_icon = '<svg class="glossary__arrow-icon" width="24" height="24" viewBox=
 
 						<?php foreach ( $letter_entries as $entry ) : ?>
 							<?php
-							$term_tag        = ( $link_terms && '' !== $entry['link'] ) ? 'a' : 'div';
-							$term_attributes = array(
-								'class="glossary__term"',
+							// A term found in several taxonomies gets one button per source
+							// instead of a whole-row link, since a row can hold only one link.
+							$entry_links = array_values(
+								array_filter(
+									$entry['sources'],
+									function ( $source ) {
+										return '' !== $source['link'];
+									}
+								)
+							);
+							$has_multiple_links = $link_terms && count( $entry_links ) > 1;
+							$term_tag           = ( $link_terms && ! $has_multiple_links && '' !== $entry['link'] ) ? 'a' : 'div';
+							$term_attributes    = array(
+								'class="glossary__term' . ( $has_multiple_links ? ' glossary__term--multi' : '' ) . '"',
 								'id="' . esc_attr( $entry['anchor'] ) . '"',
 								'data-glossary-term',
 								'data-glossary-name="' . esc_attr( $entry['name'] ) . '"',
-								'data-glossary-group="' . esc_attr( $entry['group'] ) . '"',
+								'data-glossary-group="' . esc_attr( implode( '|', $entry['groups'] ) ) . '"',
 								'data-glossary-search="' . esc_attr( strtolower( $entry['name'] . ' ' . $entry['plain_text'] ) ) . '"',
 							);
 
@@ -398,6 +424,17 @@ $arrow_icon = '<svg class="glossary__arrow-icon" width="24" height="24" viewBox=
 										<p class="glossary__term-desc"><?php echo esc_html( $entry['plain_text'] ); ?></p>
 									<?php else : ?>
 										<p class="glossary__term-desc glossary__term-desc--empty"><?php esc_html_e( 'Definition coming soon.', 'oboto' ); ?></p>
+									<?php endif; ?>
+
+									<?php if ( $has_multiple_links ) : ?>
+										<div class="glossary__term-actions">
+											<?php foreach ( $entry_links as $entry_link ) : ?>
+												<a class="glossary__term-button" href="<?php echo esc_url( $entry_link['link'] ); ?>">
+													<span><?php echo esc_html( $entry_link['label'] ); ?></span>
+													<?php echo $arrow_icon; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Static inline SVG. ?>
+												</a>
+											<?php endforeach; ?>
+										</div>
 									<?php endif; ?>
 								</div>
 								<?php if ( 'a' === $term_tag ) : ?>

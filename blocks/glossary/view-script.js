@@ -102,8 +102,13 @@
     var highlightedSuggestion = -1;
 
     function matchesTerm(term) {
-      if (activeGroup !== "all" && term.getAttribute("data-glossary-group") !== activeGroup) {
-        return false;
+      // A term found in several taxonomies belongs to several groups ("A|B").
+      if (activeGroup !== "all") {
+        var termGroups = (term.getAttribute("data-glossary-group") || "").split("|");
+
+        if (termGroups.indexOf(activeGroup) === -1) {
+          return false;
+        }
       }
 
       if (!activeQuery) {

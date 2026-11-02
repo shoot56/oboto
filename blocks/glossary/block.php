@@ -114,6 +114,7 @@ function oboto_glossary_load_term_sources_field( $field ) {
 	return $field;
 }
 add_filter( 'acf/load_field/key=field_glossary_term_sources', 'oboto_glossary_load_term_sources_field' );
+add_filter( 'acf/load_field/key=field_glossary_source_button_taxonomy', 'oboto_glossary_load_term_sources_field' );
 
 /**
  * Resolve the alphabet bucket for a glossary entry.
@@ -184,10 +185,53 @@ function oboto_glossary_get_term_group( $term, $taxonomy, $group_mode, $source_l
 }
 
 /**
+ * Default button labels per source taxonomy.
+ *
+ * Used when a glossary term exists in more than one taxonomy (for example
+ * both as a Learning Center category and as a blog tag) and the row shows
+ * one button per source. Editors can override them in the block settings.
+ *
+ * @return array Map of taxonomy name => button label.
+ */
+function oboto_glossary_default_source_labels() {
+	return array(
+		'learning-center-category' => __( 'Visit Learning Center', 'oboto' ),
+		'post_tag'                 => __( 'View Blogs', 'oboto' ),
+	);
+}
+
+/**
+ * Resolve the button label for one source taxonomy.
+ *
+ * @param string $taxonomy       Taxonomy name.
+ * @param string $taxonomy_label Human readable taxonomy label (fallback).
+ * @param array  $overrides      Map of taxonomy name => label from the block settings.
+ * @return string
+ */
+function oboto_glossary_get_source_button_label( $taxonomy, $taxonomy_label, $overrides = array() ) {
+	if ( ! empty( $overrides[ $taxonomy ] ) ) {
+		return (string) $overrides[ $taxonomy ];
+	}
+
+	$defaults = oboto_glossary_default_source_labels();
+
+	if ( ! empty( $defaults[ $taxonomy ] ) ) {
+		return (string) $defaults[ $taxonomy ];
+	}
+
+	/* translators: %s: taxonomy label, for example "Tags". */
+	return sprintf( __( 'View %s', 'oboto' ), $taxonomy_label );
+}
+
+/**
  * Collect glossary entries from the configured taxonomies.
  *
- * Entries are de-duplicated by name (case insensitive) in the order the
- * taxonomies are configured, and sorted alphabetically.
+ * Terms are merged by name (case insensitive). A term that exists in several
+ * taxonomies becomes one entry with several sources, so the row can link to
+ * every archive that holds related content. When the same name appears twice
+ * inside one taxonomy, the term with more posts wins.
+ *
+ * Entries are sorted alphabetically; sources keep the configured taxonomy order.
  *
  * @param array $args {
  *     @type array  $taxonomies          Taxonomy names to read terms from.
@@ -195,6 +239,7 @@ function oboto_glossary_get_term_group( $term, $taxonomy, $group_mode, $source_l
  *     @type bool   $require_description Skip terms without a description.
  *     @type array  $exclude_slugs       Term slugs to skip.
  *     @type string $group_mode          "source" or "parent".
+ *     @type array  $source_labels       Map of taxonomy name => button label overrides.
  * }
  * @return array List of glossary entries.
  */
@@ -207,11 +252,12 @@ function oboto_glossary_collect_terms( $args = array() ) {
 			'require_description' => false,
 			'exclude_slugs'       => array(),
 			'group_mode'          => 'source',
+			'source_labels'       => array(),
 		)
 	);
 
-	$entries = array();
-	$seen    = array();
+	// Keyed by lower-cased term name while collecting.
+	$merged = array();
 
 	foreach ( (array) $args['taxonomies'] as $taxonomy ) {
 		$taxonomy = sanitize_key( $taxonomy );
@@ -222,6 +268,7 @@ function oboto_glossary_collect_terms( $args = array() ) {
 
 		$taxonomy_object = get_taxonomy( $taxonomy );
 		$source_label    = oboto_glossary_get_source_label( $taxonomy_object );
+		$button_label    = oboto_glossary_get_source_button_label( $taxonomy, $source_label, (array) $args['source_labels'] );
 
 		$terms = get_terms(
 			array(
@@ -241,37 +288,90 @@ function oboto_glossary_collect_terms( $args = array() ) {
 				continue;
 			}
 
+			$merge_key = strtolower( trim( (string) $term->name ) );
+
+			if ( '' === $merge_key ) {
+				continue;
+			}
+
+			$term_link         = get_term_link( $term );
 			$plain_description = trim( wp_strip_all_tags( (string) $term->description ) );
 
-			if ( $args['require_description'] && '' === $plain_description ) {
-				continue;
-			}
-
-			$dedupe_key = strtolower( trim( (string) $term->name ) );
-
-			if ( '' === $dedupe_key || isset( $seen[ $dedupe_key ] ) ) {
-				continue;
-			}
-
-			$seen[ $dedupe_key ] = true;
-
-			$term_link = get_term_link( $term );
-
-			$entries[] = array(
-				'term_id'     => (int) $term->term_id,
-				'name'        => (string) $term->name,
-				'slug'        => (string) $term->slug,
-				'taxonomy'    => $taxonomy,
-				'description' => (string) $term->description,
-				'plain_text'  => $plain_description,
-				'count'       => (int) $term->count,
-				'link'        => is_wp_error( $term_link ) ? '' : (string) $term_link,
-				'source'      => $source_label,
-				'group'       => oboto_glossary_get_term_group( $term, $taxonomy, $args['group_mode'], $source_label ),
-				'letter'      => oboto_glossary_get_letter( $term->name ),
-				'anchor'      => 'glossary-' . $taxonomy . '-' . $term->slug,
+			$source = array(
+				'taxonomy' => $taxonomy,
+				'term_id'  => (int) $term->term_id,
+				'slug'     => (string) $term->slug,
+				'count'    => (int) $term->count,
+				'link'     => is_wp_error( $term_link ) ? '' : (string) $term_link,
+				'label'    => $button_label,
+				'group'    => oboto_glossary_get_term_group( $term, $taxonomy, $args['group_mode'], $source_label ),
 			);
+
+			if ( ! isset( $merged[ $merge_key ] ) ) {
+				$merged[ $merge_key ] = array(
+					'name'        => (string) $term->name,
+					'description' => (string) $term->description,
+					'plain_text'  => $plain_description,
+					'letter'      => oboto_glossary_get_letter( $term->name ),
+					'sources'     => array( $taxonomy => $source ),
+				);
+				continue;
+			}
+
+			$existing_sources = $merged[ $merge_key ]['sources'];
+
+			// Same name twice inside one taxonomy: keep the term with more posts.
+			if ( ! isset( $existing_sources[ $taxonomy ] ) || $source['count'] > $existing_sources[ $taxonomy ]['count'] ) {
+				$merged[ $merge_key ]['sources'][ $taxonomy ] = $source;
+			}
+
+			// The first non-empty description, in configured taxonomy order, wins.
+			if ( '' === $merged[ $merge_key ]['plain_text'] && '' !== $plain_description ) {
+				$merged[ $merge_key ]['description'] = (string) $term->description;
+				$merged[ $merge_key ]['plain_text']  = $plain_description;
+			}
 		}
+	}
+
+	$entries = array();
+
+	foreach ( $merged as $entry ) {
+		if ( $args['require_description'] && '' === $entry['plain_text'] ) {
+			continue;
+		}
+
+		$sources = array_values( $entry['sources'] );
+
+		// Do not offer a button that leads to an empty archive when another source has content.
+		if ( count( $sources ) > 1 ) {
+			$sources_with_posts = array_values(
+				array_filter(
+					$sources,
+					function ( $source ) {
+						return $source['count'] > 0;
+					}
+				)
+			);
+
+			if ( ! empty( $sources_with_posts ) ) {
+				$sources = $sources_with_posts;
+			}
+		}
+
+		$primary = $sources[0];
+		$groups  = array_values( array_unique( array_filter( array_column( $sources, 'group' ) ) ) );
+
+		$entry['sources']  = $sources;
+		$entry['term_id']  = $primary['term_id'];
+		$entry['slug']     = $primary['slug'];
+		$entry['taxonomy'] = $primary['taxonomy'];
+		$entry['link']     = $primary['link'];
+		$entry['count']    = (int) array_sum( array_column( $sources, 'count' ) );
+		$entry['groups']   = $groups;
+		$entry['group']    = ! empty( $groups ) ? $groups[0] : '';
+		$entry['anchor']   = 'glossary-' . $primary['taxonomy'] . '-' . $primary['slug'];
+
+		$entries[] = $entry;
 	}
 
 	usort(
@@ -325,8 +425,10 @@ function oboto_glossary_get_groups( $entries ) {
 	$groups = array();
 
 	foreach ( $entries as $entry ) {
-		if ( '' !== $entry['group'] && ! in_array( $entry['group'], $groups, true ) ) {
-			$groups[] = $entry['group'];
+		foreach ( $entry['groups'] as $group ) {
+			if ( '' !== $group && ! in_array( $group, $groups, true ) ) {
+				$groups[] = $group;
+			}
 		}
 	}
 
@@ -350,8 +452,15 @@ function oboto_glossary_find_entry( $entries, $reference ) {
 	}
 
 	foreach ( $entries as $entry ) {
-		if ( strtolower( $entry['slug'] ) === $reference || strtolower( $entry['name'] ) === $reference ) {
+		if ( strtolower( $entry['name'] ) === $reference ) {
 			return $entry;
+		}
+
+		// Match the slug of any source, so a tag slug also finds a merged entry.
+		foreach ( $entry['sources'] as $source ) {
+			if ( strtolower( $source['slug'] ) === $reference ) {
+				return $entry;
+			}
 		}
 	}
 

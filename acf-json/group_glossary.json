@@ -383,6 +383,74 @@
             "ui_off_text": "No"
         },
         {
+            "key": "field_glossary_source_buttons",
+            "label": "Button labels for terms in several sources",
+            "name": "source_buttons",
+            "aria-label": "",
+            "type": "repeater",
+            "instructions": "When a term exists in more than one taxonomy (for example both a Learning Center category and a blog tag), its row shows one button per source instead of a single link. Leave empty to use the defaults: Learning Center Categories → “Visit Learning Center”, Tags → “View Blogs”.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_glossary_link_terms",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": { "width": "", "class": "", "id": "" },
+            "layout": "table",
+            "pagination": 0,
+            "min": 0,
+            "max": 0,
+            "collapsed": "",
+            "button_label": "Add label",
+            "rows_per_page": 20,
+            "sub_fields": [
+                {
+                    "key": "field_glossary_source_button_taxonomy",
+                    "label": "Taxonomy",
+                    "name": "taxonomy",
+                    "aria-label": "",
+                    "type": "select",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "choices": {
+                        "learning-center-category": "Learning Center Categories (learning-center-category)",
+                        "post_tag": "Tags (post_tag)",
+                        "category": "Categories (category)"
+                    },
+                    "default_value": false,
+                    "return_format": "value",
+                    "multiple": 0,
+                    "allow_null": 0,
+                    "ui": 0,
+                    "ajax": 0,
+                    "placeholder": "",
+                    "parent_repeater": "field_glossary_source_buttons"
+                },
+                {
+                    "key": "field_glossary_source_button_label",
+                    "label": "Button label",
+                    "name": "label",
+                    "aria-label": "",
+                    "type": "text",
+                    "instructions": "",
+                    "required": 1,
+                    "conditional_logic": 0,
+                    "wrapper": { "width": "50", "class": "", "id": "" },
+                    "default_value": "",
+                    "placeholder": "Visit Learning Center",
+                    "prepend": "",
+                    "append": "",
+                    "parent_repeater": "field_glossary_source_buttons"
+                }
+            ]
+        },
+        {
             "key": "field_glossary_tab_featured",
             "label": "Featured",
             "name": "",
@@ -902,5 +970,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1787000000
+    "modified": 1793629943
 }

@@ -405,8 +405,7 @@
   color: var(--glossary-muted);
 }
 
-.glossary__card-arrow,
-.glossary__term-link {
+.glossary__card-arrow {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -574,6 +573,54 @@ a.glossary__term:hover .glossary__term-name {
 a.glossary__term:hover .glossary__term-arrow,
 a.glossary__term:focus-visible .glossary__term-arrow {
   opacity: 1;
+}
+
+/* Terms found in several taxonomies: one button per source. */
+
+/* No hover arrow on these rows, so the space reserved for it is not needed. */
+.glossary__term.glossary__term--multi {
+  padding-right: 0;
+}
+
+.glossary__term-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.glossary__term-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 14px 9px 18px;
+  border: 1px solid var(--glossary-line);
+  border-radius: 48px;
+  background: rgba(0, 0, 0, 0.48);
+  color: var(--glossary-text);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 140%;
+  transition: all 0.3s ease-in-out;
+}
+
+.glossary__term-button .glossary__arrow-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--glossary-accent);
+  transition: color 0.3s ease-in-out;
+}
+
+.glossary__term-button:hover,
+.glossary__term-button:focus-visible {
+  border-color: var(--glossary-accent);
+  background: var(--glossary-accent);
+  color: #fff;
+}
+
+.glossary__term-button:hover .glossary__arrow-icon,
+.glossary__term-button:focus-visible .glossary__arrow-icon {
+  color: #fff;
 }
 
 /* --------------------------------------------------------- Empty state --- */
@@ -776,6 +823,17 @@ a.glossary__term:focus-visible .glossary__term-arrow {
     top: 18px;
     right: 0;
     opacity: 1;
+  }
+
+  .glossary__term-actions {
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .glossary__term-button {
+    gap: 6px;
+    padding: 8px 12px 8px 14px;
+    font-size: 13px;
   }
 }
 
