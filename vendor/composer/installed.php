@@ -3,11 +3,11 @@
         'name' => 'obot/oboto-theme',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => 'ff37053938034eeb216f7a1fa416f8caf14db299',
+        'reference' => '023543777da18de297c5e2845daa0a3a534ffd0f',
         'type' => 'wordpress-theme',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'dev' => false,
+        'dev' => true,
     ),
     'versions' => array(
         'erusev/parsedown' => array(
@@ -22,7 +22,7 @@
         'obot/oboto-theme' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => 'ff37053938034eeb216f7a1fa416f8caf14db299',
+            'reference' => '023543777da18de297c5e2845daa0a3a534ffd0f',
             'type' => 'wordpress-theme',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -47,9 +47,9 @@
             'dev_requirement' => false,
         ),
         'symfony/yaml' => array(
-            'pretty_version' => 'v6.4.43',
-            'version' => '6.4.43.0',
-            'reference' => 'd2ee2daa59be8cd0864835ea918ea209149796a3',
+            'pretty_version' => 'v6.4.49',
+            'version' => '6.4.49.0',
+            'reference' => 'bbefb7d9cd1bf804148bd1c306a9acc87f335196',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/yaml',
             'aliases' => array(),
