@@ -224,6 +224,53 @@ function oboto_glossary_get_source_button_label( $taxonomy, $taxonomy_label, $ov
 }
 
 /**
+ * Taxonomies that always come first, in this order, when a term has several sources.
+ *
+ * The order decides the button order on the row ("Visit Learning Center" before
+ * "View Blogs"), whose description is used as the definition and which archive
+ * is the primary link of a merged term.
+ *
+ * @return array Taxonomy names.
+ */
+function oboto_glossary_source_priority() {
+	return array( 'learning-center-category', 'post_tag' );
+}
+
+/**
+ * Order source taxonomies by oboto_glossary_source_priority().
+ *
+ * Taxonomies outside the priority list follow in the order they were configured.
+ * The selected order of the ACF checkbox cannot be relied on: ACF returns the
+ * values in the order of its choices, which follows taxonomy registration
+ * (WordPress registers post_tag before the Learning Center taxonomy).
+ *
+ * @param array $taxonomies Taxonomy names.
+ * @return array
+ */
+function oboto_glossary_sort_taxonomies( $taxonomies ) {
+	$priority   = oboto_glossary_source_priority();
+	$taxonomies = array_values( array_unique( array_filter( array_map( 'sanitize_key', (array) $taxonomies ) ) ) );
+	$ranked     = array();
+
+	foreach ( $taxonomies as $position => $taxonomy ) {
+		$index    = array_search( $taxonomy, $priority, true );
+		$ranked[] = array(
+			'taxonomy' => $taxonomy,
+			'rank'     => false === $index ? count( $priority ) + $position : $index,
+		);
+	}
+
+	usort(
+		$ranked,
+		function ( $first, $second ) {
+			return $first['rank'] <=> $second['rank'];
+		}
+	);
+
+	return array_column( $ranked, 'taxonomy' );
+}
+
+/**
  * Collect glossary entries from the configured taxonomies.
  *
  * Terms are merged by name (case insensitive). A term that exists in several
@@ -231,7 +278,7 @@ function oboto_glossary_get_source_button_label( $taxonomy, $taxonomy_label, $ov
  * every archive that holds related content. When the same name appears twice
  * inside one taxonomy, the term with more posts wins.
  *
- * Entries are sorted alphabetically; sources keep the configured taxonomy order.
+ * Entries are sorted alphabetically; sources follow oboto_glossary_sort_taxonomies().
  *
  * @param array $args {
  *     @type array  $taxonomies          Taxonomy names to read terms from.
@@ -259,7 +306,7 @@ function oboto_glossary_collect_terms( $args = array() ) {
 	// Keyed by lower-cased term name while collecting.
 	$merged = array();
 
-	foreach ( (array) $args['taxonomies'] as $taxonomy ) {
+	foreach ( oboto_glossary_sort_taxonomies( $args['taxonomies'] ) as $taxonomy ) {
 		$taxonomy = sanitize_key( $taxonomy );
 
 		if ( '' === $taxonomy || ! taxonomy_exists( $taxonomy ) ) {
@@ -325,7 +372,7 @@ function oboto_glossary_collect_terms( $args = array() ) {
 				$merged[ $merge_key ]['sources'][ $taxonomy ] = $source;
 			}
 
-			// The first non-empty description, in configured taxonomy order, wins.
+			// The first non-empty description, in source priority order, wins.
 			if ( '' === $merged[ $merge_key ]['plain_text'] && '' !== $plain_description ) {
 				$merged[ $merge_key ]['description'] = (string) $term->description;
 				$merged[ $merge_key ]['plain_text']  = $plain_description;
