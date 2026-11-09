@@ -224,13 +224,15 @@
         .map(function (term) {
           var name = term.getAttribute("data-glossary-name") || "";
           var description = term.querySelector(".glossary__term-desc");
-          var href = term.tagName === "A" ? term.getAttribute("href") : "#" + term.id;
+          var heading = term.querySelector(".glossary__term-name");
+          var anchor = heading && heading.id ? heading.id : "";
+          var href = term.tagName === "A" ? term.getAttribute("href") : "#" + anchor;
 
           return (
             '<a class="glossary__suggestion" role="option" href="' +
             escapeHtml(href) +
             '" data-glossary-suggestion="' +
-            escapeHtml(term.id) +
+            escapeHtml(anchor) +
             '"><strong>' +
             escapeHtml(name) +
             "</strong>" +

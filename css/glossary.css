@@ -521,10 +521,17 @@ a.glossary__term:hover .glossary__term-name {
 }
 
 .glossary__term-name {
+  margin: 0;
+  font-family: inherit;
   font-size: 17px;
   font-weight: 600;
   line-height: 140%;
   letter-spacing: -0.01em;
+  text-transform: none;
+  color: inherit;
+  /* Jump links (#agent-academy) land below the sticky header and alphabet bar,
+     with the row's top padding still visible. */
+  scroll-margin-top: calc(var(--glossary-sticky-offset) + 104px);
   transition: color 0.3s ease-in-out;
 }
 

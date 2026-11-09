@@ -416,7 +416,6 @@ function oboto_glossary_collect_terms( $args = array() ) {
 		$entry['count']    = (int) array_sum( array_column( $sources, 'count' ) );
 		$entry['groups']   = $groups;
 		$entry['group']    = ! empty( $groups ) ? $groups[0] : '';
-		$entry['anchor']   = 'glossary-' . $primary['taxonomy'] . '-' . $primary['slug'];
 
 		$entries[] = $entry;
 	}
@@ -427,6 +426,47 @@ function oboto_glossary_collect_terms( $args = array() ) {
 			return strcasecmp( $first['name'], $second['name'] );
 		}
 	);
+
+	return oboto_glossary_assign_anchors( $entries );
+}
+
+/**
+ * Give every entry a short, readable and unique anchor id built from its name,
+ * for example "Agent Academy" -> "agent-academy".
+ *
+ * The id is placed on the term heading, so /glossary/#agent-academy jumps to the
+ * term and search engines can offer jump links to individual terms. Entries are
+ * expected in display order, so the first of two clashing names keeps the clean
+ * id and the next one gets a numeric suffix.
+ *
+ * @param array $entries Glossary entries in display order.
+ * @return array Entries with an "anchor" key.
+ */
+function oboto_glossary_assign_anchors( $entries ) {
+	$used = array();
+
+	foreach ( $entries as $index => $entry ) {
+		$base = sanitize_title( $entry['name'] );
+
+		if ( '' === $base ) {
+			$base = sanitize_title( $entry['slug'] );
+		}
+
+		if ( '' === $base ) {
+			$base = 'term-' . (int) $entry['term_id'];
+		}
+
+		$anchor = $base;
+		$suffix = 2;
+
+		while ( isset( $used[ $anchor ] ) ) {
+			$anchor = $base . '-' . $suffix;
+			$suffix++;
+		}
+
+		$used[ $anchor ]             = true;
+		$entries[ $index ]['anchor'] = $anchor;
+	}
 
 	return $entries;
 }
@@ -535,6 +575,11 @@ function oboto_glossary_build_schema( $entries, $name, $url ) {
 			'name'        => $entry['name'],
 			'description' => $entry['plain_text'],
 		);
+
+		if ( '' !== $url && ! empty( $entry['anchor'] ) ) {
+			// Ties the term to its heading on the glossary page (#agent-academy).
+			$defined_term['@id'] = $url . '#' . $entry['anchor'];
+		}
 
 		if ( '' !== $entry['link'] ) {
 			$defined_term['url'] = $entry['link'];
