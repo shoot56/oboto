@@ -401,6 +401,7 @@ $arrow_icon = '<svg class="glossary__arrow-icon" width="24" height="24" viewBox=
 							$term_tag           = ( $link_terms && ! $has_multiple_links && '' !== $entry['link'] ) ? 'a' : 'div';
 							$term_attributes    = array(
 								'class="glossary__term' . ( $has_multiple_links ? ' glossary__term--multi' : '' ) . '"',
+								'id="' . esc_attr( $entry['anchor'] ) . '"',
 								'data-glossary-term',
 								'data-glossary-name="' . esc_attr( $entry['name'] ) . '"',
 								'data-glossary-group="' . esc_attr( implode( '|', $entry['groups'] ) ) . '"',
@@ -413,7 +414,7 @@ $arrow_icon = '<svg class="glossary__arrow-icon" width="24" height="24" viewBox=
 							?>
 							<<?php echo esc_html( $term_tag ) . ' ' . implode( ' ', $term_attributes ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Attributes escaped individually above. ?>>
 								<div class="glossary__term-head">
-									<h3 class="glossary__term-name" id="<?php echo esc_attr( $entry['anchor'] ); ?>"><?php echo esc_html( $entry['name'] ); ?></h3>
+									<h3 class="glossary__term-name"><?php echo esc_html( $entry['name'] ); ?></h3>
 									<?php if ( $show_counts && $entry['count'] > 0 ) : ?>
 										<span class="glossary__term-count"><?php echo esc_html( number_format_i18n( $entry['count'] ) ); ?></span>
 									<?php endif; ?>

@@ -431,16 +431,10 @@ function oboto_glossary_collect_terms( $args = array() ) {
 }
 
 /**
- * Give every entry a short, readable and unique anchor id built from its name,
- * for example "Agent Academy" -> "agent-academy".
- *
- * The id is placed on the term heading, so /glossary/#agent-academy jumps to the
- * term and search engines can offer jump links to individual terms. Entries are
- * expected in display order, so the first of two clashing names keeps the clean
- * id and the next one gets a numeric suffix.
+ * Assign unique anchor ids built from term names.
  *
  * @param array $entries Glossary entries in display order.
- * @return array Entries with an "anchor" key.
+ * @return array
  */
 function oboto_glossary_assign_anchors( $entries ) {
 	$used = array();
@@ -577,7 +571,6 @@ function oboto_glossary_build_schema( $entries, $name, $url ) {
 		);
 
 		if ( '' !== $url && ! empty( $entry['anchor'] ) ) {
-			// Ties the term to its heading on the glossary page (#agent-academy).
 			$defined_term['@id'] = $url . '#' . $entry['anchor'];
 		}
 
