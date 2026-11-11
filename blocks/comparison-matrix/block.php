@@ -21,4 +21,3 @@ function comparison_matrix_editor_styles() {
 	add_editor_style( get_template_directory_uri() . '/css/comparison-matrix.css' );
 }
 add_action( 'init', 'comparison_matrix_editor_styles' );
-

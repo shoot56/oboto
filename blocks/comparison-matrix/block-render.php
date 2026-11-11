@@ -194,4 +194,3 @@ $table_accessible_name = $title !== '' ? $title : __( 'Comparison matrix', 'obot
 		</div>
 	<?php endif; ?>
 </section>
-
