@@ -5,6 +5,14 @@ $title = (string) get_field( 'title' );
 $roles = get_field( 'roles' );
 $cta_title = (string) get_field( 'cta_title' );
 $cta_description = (string) get_field( 'cta_description' );
+$primary_button = get_field( 'primary_button' );
+$secondary_button = get_field( 'secondary_button' );
+$buttons = array();
+foreach ( array( 'primary' => $primary_button, 'secondary' => $secondary_button ) as $variant => $button ) {
+  if ( is_array( $button ) && ! empty( $button['url'] ) && ! empty( $button['title'] ) ) {
+    $buttons[] = array( 'variant' => $variant, 'link' => $button );
+  }
+}
 ?>
 <section id="<?php echo esc_attr( $anchor ); ?>" <?php echo $attributes; ?>>
   <div class="enterprise-guide__container">
@@ -16,7 +24,13 @@ $cta_description = (string) get_field( 'cta_description' );
     <?php endif; ?>
     <div class="enterprise-guide-audience__cta">
       <div><?php if ( $cta_title ) : ?><h2><?php echo esc_html( $cta_title ); ?></h2><?php endif; ?><?php if ( $cta_description ) : ?><p><?php echo esc_html( $cta_description ); ?></p><?php endif; ?></div>
-      <div class="enterprise-guide-audience__actions"><a class="enterprise-guide__button" href="#download"><?php esc_html_e( 'Download the guide', 'oboto' ); ?></a><a class="enterprise-guide__button enterprise-guide__button--outline" href="<?php echo esc_url( home_url( '/try/' ) ); ?>"><?php esc_html_e( 'Try Obot Now', 'oboto' ); ?></a></div>
+      <?php if ( $buttons ) : ?>
+        <div class="enterprise-guide-audience__actions">
+          <?php foreach ( $buttons as $button_item ) : $button = $button_item['link']; ?>
+            <a class="enterprise-guide__button<?php echo $button_item['variant'] === 'secondary' ? ' enterprise-guide__button--outline' : ''; ?>" href="<?php echo esc_url( $button['url'] ); ?>"<?php if ( ! empty( $button['target'] ) ) : ?> target="<?php echo esc_attr( $button['target'] ); ?>"<?php endif; ?><?php if ( ( $button['target'] ?? '' ) === '_blank' ) : ?> rel="noopener noreferrer"<?php endif; ?>><?php echo esc_html( $button['title'] ); ?></a>
+          <?php endforeach; ?>
+        </div>
+      <?php endif; ?>
     </div>
   </div>
 </section>

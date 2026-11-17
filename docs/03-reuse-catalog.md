@@ -82,7 +82,7 @@ This file is a catalog of **existing reusable building blocks** in this theme. P
 - **`oboto/enterprise-guide-maturity`** — Four-stage maturity model.
   - **When to use**: Present up to four maturity stages with short point lists and a progress rail that responds to card hover and keyboard focus.
 - **`oboto/enterprise-guide-audience`** — Audience roles and download CTA.
-  - **When to use**: Close a guide landing page with role-specific benefits and links back to the form and trial page.
+  - **When to use**: Close a guide landing page with role-specific benefits and two optional ACF link buttons.
 - **Obot Landing AOS attributes** — `oboto_get_aos_attributes(...)` in `inc/helpers.php` and `css/obot-landing-aos.css`.
   - **When to use**: Add the existing ACF `Add Animation` / `Animations` behavior to `oboto/landing-*` block elements.
   - **Note**: Reuses the legacy AOS field group and the globally enqueued AOS assets; landing blocks apply it to individual inner elements with staggered delays, 700ms duration, and a reduced 24px fade movement to match the archived frontend reference.

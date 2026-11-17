@@ -107,6 +107,34 @@
       "rows": 3,
       "placeholder": "",
       "new_lines": ""
+    },
+    {
+      "key": "field_enterprise_guide_audience_primary_button",
+      "label": "Primary button",
+      "name": "primary_button",
+      "type": "link",
+      "instructions": "Leave empty to hide the button.",
+      "required": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array"
+    },
+    {
+      "key": "field_enterprise_guide_audience_secondary_button",
+      "label": "Secondary button",
+      "name": "secondary_button",
+      "type": "link",
+      "instructions": "Leave empty to hide the button.",
+      "required": 0,
+      "wrapper": {
+        "width": "50",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array"
     }
   ],
   "location": [
@@ -127,5 +155,5 @@
   "active": true,
   "description": "",
   "show_in_rest": 0,
-  "modified": 1794910000
+  "modified": 1794919527
 }
