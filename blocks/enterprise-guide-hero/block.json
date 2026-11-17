@@ -1,0 +1,23 @@
+{
+  "name": "oboto/enterprise-guide-hero",
+  "title": "Enterprise Guide Hero",
+  "category": "obot_landing",
+  "icon": "book-alt",
+  "acf": {
+    "mode": "preview",
+    "blockVersion": 3,
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": [
+      "full"
+    ],
+    "anchor": true
+  },
+  "style": [
+    "enterprise-guide"
+  ],
+  "viewScript": [
+    "enterprise-guide-form"
+  ]
+}

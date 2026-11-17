@@ -1,0 +1,20 @@
+{
+  "name": "oboto/enterprise-guide-audience",
+  "title": "Enterprise Guide Audience",
+  "category": "obot_landing",
+  "icon": "book-alt",
+  "acf": {
+    "mode": "preview",
+    "blockVersion": 3,
+    "renderTemplate": "block-render.php"
+  },
+  "supports": {
+    "align": [
+      "full"
+    ],
+    "anchor": true
+  },
+  "style": [
+    "enterprise-guide"
+  ]
+}
