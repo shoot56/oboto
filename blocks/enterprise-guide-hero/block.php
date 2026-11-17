@@ -11,3 +11,10 @@ $register_assets = static function () {
 };
 add_action( 'wp_enqueue_scripts', $register_assets );
 add_action( 'admin_enqueue_scripts', $register_assets );
+add_filter( 'script_loader_tag', static function ( $tag, $handle ) {
+    if ( ! in_array( $handle, array( 'enterprise-guide-hubspot', 'enterprise-guide-form' ), true ) ) {
+        return $tag;
+    }
+
+    return str_replace( '<script ', '<script data-cfasync="false" nowprocket ', $tag );
+}, 10, 2 );
