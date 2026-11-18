@@ -1,0 +1,210 @@
+{
+  "key": "group_enterprise_guide_overview",
+  "title": "Block: Enterprise Guide Overview",
+  "fields": [
+    {
+      "key": "field_enterprise_guide_overview_metrics",
+      "label": "Metrics",
+      "name": "metrics",
+      "type": "repeater",
+      "required": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "layout": "block",
+      "pagination": 0,
+      "min": 0,
+      "max": 0,
+      "collapsed": "",
+      "button_label": "Add Row",
+      "rows_per_page": 20,
+      "sub_fields": [
+        {
+          "key": "field_enterprise_guide_overview_metrics_value",
+          "label": "Value",
+          "name": "value",
+          "type": "text",
+          "required": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "",
+          "prepend": "",
+          "append": ""
+        },
+        {
+          "key": "field_enterprise_guide_overview_metrics_label",
+          "label": "Label",
+          "name": "label",
+          "type": "text",
+          "required": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "",
+          "prepend": "",
+          "append": ""
+        }
+      ]
+    },
+    {
+      "key": "field_enterprise_guide_overview_cover",
+      "label": "Guide cover",
+      "name": "cover",
+      "type": "image",
+      "required": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "return_format": "array",
+      "preview_size": "medium",
+      "library": "all"
+    },
+    {
+      "key": "field_enterprise_guide_overview_eyebrow",
+      "label": "Eyebrow",
+      "name": "eyebrow",
+      "type": "text",
+      "required": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_enterprise_guide_overview_title",
+      "label": "Title",
+      "name": "title",
+      "type": "text",
+      "required": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "default_value": "",
+      "maxlength": "",
+      "placeholder": "",
+      "prepend": "",
+      "append": ""
+    },
+    {
+      "key": "field_enterprise_guide_overview_features",
+      "label": "Features",
+      "name": "features",
+      "type": "repeater",
+      "required": 0,
+      "wrapper": {
+        "width": "",
+        "class": "",
+        "id": ""
+      },
+      "layout": "block",
+      "pagination": 0,
+      "min": 0,
+      "max": 0,
+      "collapsed": "",
+      "button_label": "Add Row",
+      "rows_per_page": 20,
+      "sub_fields": [
+        {
+          "key": "field_enterprise_guide_overview_features_icon",
+          "label": "Icon",
+          "name": "icon",
+          "type": "select",
+          "required": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "choices": {
+            "chart": "Maturity chart",
+            "calendar": "Calendar",
+            "shield": "Shield",
+            "catalog": "Catalog",
+            "network": "Network"
+          },
+          "default_value": "chart",
+          "return_format": "value",
+          "multiple": 0,
+          "allow_null": 0,
+          "ui": 1,
+          "ajax": 0,
+          "placeholder": ""
+        },
+        {
+          "key": "field_enterprise_guide_overview_features_title",
+          "label": "Title",
+          "name": "title",
+          "type": "text",
+          "required": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "placeholder": "",
+          "prepend": "",
+          "append": ""
+        },
+        {
+          "key": "field_enterprise_guide_overview_features_description",
+          "label": "Description",
+          "name": "description",
+          "type": "textarea",
+          "required": 0,
+          "wrapper": {
+            "width": "",
+            "class": "",
+            "id": ""
+          },
+          "default_value": "",
+          "maxlength": "",
+          "rows": 3,
+          "placeholder": "",
+          "new_lines": ""
+        }
+      ]
+    }
+  ],
+  "location": [
+    [
+      {
+        "param": "block",
+        "operator": "==",
+        "value": "oboto/enterprise-guide-overview"
+      }
+    ]
+  ],
+  "menu_order": 0,
+  "position": "normal",
+  "style": "default",
+  "label_placement": "top",
+  "instruction_placement": "label",
+  "hide_on_screen": "",
+  "active": true,
+  "description": "",
+  "show_in_rest": 0,
+  "modified": 1794910000
+}
